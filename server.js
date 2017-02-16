@@ -11,7 +11,7 @@ mongoose.connect(dbUrl);*/
 
 var app = express();
 
-app.set('port', process.env.VCAP_APP_PORT || 3000);
+app.set('port', process.env.VCAP_APP_PORT || 18080);
 app.set('views', path.join(__dirname, './src/client/views'));
 app.use(express.static(path.join(__dirname, 'src/client')));
 app.set('view engine', 'jade');
