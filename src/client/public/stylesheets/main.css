@@ -1,0 +1,12 @@
+.remsel{
+  display: block;
+  width:150px;
+}
+.remipt{
+  display: inline-block;
+  width:150px;
+}
+.sel{
+  width:150px;
+  border:1px solid black;
+}
