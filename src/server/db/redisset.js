@@ -4,7 +4,7 @@ var username = 'dc83cfc97573454b86b2e5b198aaaebe';  //用户AK
 var password = '99a5cb920e874d31a72550219b9e42b9';  //用户SK
 var db_host = 'redis.duapp.com';
 var db_port = 80;
-var db_name = 'redistest';   //数据库名称
+var db_name = 'iaPPhFTzCcLBtKvBdePR';   //数据库名称
 console.log(db_host);
 console.log(db_port);
 var options = {"no_ready_check":true};
@@ -46,7 +46,6 @@ function returnlocalclient(){
 testRedis={
   testRedisreq:Redisreq,
   returnclient:returnclient,
-  returnlocalclient:returnlocalclient
-  }
+  returnlocalclient:returnlocalclient}
 
 module.exports = testRedis;
