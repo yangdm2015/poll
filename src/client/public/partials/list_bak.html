@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h1>投票列表</h1>
+</div>
+<div class="row">
+  <div class="col-xs-3">
+    <a href="#/new" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span> 新投票</a>
+  </div>
+  <div class="col-xs-4">
+    <input type="text" class="form-control" ng-model="islogin" >
+  </div>
+  <div class="col-xs-5">
+    <input type="text" class="form-control" ng-model="query" placeholder="输入关键字搜索">
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12"><hr></div>
+</div>
+<div class="row" ng-switch on="polls.length">
+  <ul ng-switch-when="0">
+    <li><em>没有正在进行的投票，你想<a href="#/new">新建</a>一个吗？</li>
+  </ul>
+  <ul ng-switch-default>
+    <li ng-repeat="poll in polls | filter:query">
+      <a href="#/poll/{{poll._id}}">{{poll.question}}</a>
+    </li>
+  </ul>
+</div>
+<p>&nbsp;</p>

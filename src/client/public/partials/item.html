@@ -1,0 +1,86 @@
+<header><h2>{{poll.question}}</h2> <hr> <p ng-bind = 'poll.description'></p> </header>
+
+
+<!-- <div class="page-header"ng-show="poll.userChoice">
+  <h1>投票结果</h1>
+</div> -->
+<!-- <div class="page-header"ng-hide="poll.userChoice">
+  <h1>参与投票</h1>
+</div> -->
+<!-- <div class="well well-lg">
+  <h2>{{poll.question}}</h2><br>
+  <p ng-bind = 'poll.description'></p>
+</div> -->
+<div ng-hide="poll.userVoted" >
+  <p class="lead">请选择<label for="" ng-show="poll.max_chosen_num==1">一个</label><label for="" ng-show="poll.max_chosen_num!=1">{{poll.max_chosen_num}}个或以下的</label>选项：</p>
+
+  <form role="form" ng-submit="vote()" >
+    <div ng-repeat="choice in poll.choices" onmouseover="this.style.cursor='pointer'">
+      <label class='choicelable choicewrap' onmouseover="this.style.cursor='pointer'" ng-show='!poll.allow_muti_choice'>
+        <input type="radio" ng-model='poll.nobodycares'ng-click="updateSelection($event,choice._id)" value="{{choice._id}}">
+       {{choice.text}}
+    </label>
+    <label class='choicelable choicewrap' onmouseover="this.style.cursor='pointer'" ng-show='poll.allow_muti_choice'>
+        <input type="checkbox"  ng-click="updateSelection($event,choice._id)" value="{{choice._id}}" >
+        {{choice.text}}
+      </label>
+    </div>
+    <p><hr></p>
+    <div class="form-group createpoll">
+      <div class="itemlabel">
+        <a href="#/polls" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> 返回投票列表</a>
+
+      </div>
+
+      <div class="itemcontext" >
+        <button type="button" class="btn btn-danger"ng-show='hover1'>你最多只能选择 {{poll.max_chosen_num}}个选项!</button>
+        <button type="button" class="btn btn-danger"ng-show='hover'>请先登录再投票!</button>
+        <button class="btn btn-primary pull-right" type="submit" ng-show=
+        'islogin&&!overvoted'
+        >投票 &raquo;</button>
+        <button class="btn btn-primary pull-right" type="button" ng-show='overvoted' ng-mouseleave="hover1 = false" ng-mouseenter="hover1 = true"ng-init="hover1 = false">投票 &raquo;</button>
+        <button class="btn btn-primary pull-right" type="button"
+        ng-mouseleave="hover = false" ng-mouseenter="hover = true"ng-init="hover = false" ng-hide='islogin'>投票 &raquo;</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div ng-show="poll.userVoted">
+  <div class="ttt">投票结果</div>
+  <div class="barswrap">
+    <div class="barwrap"ng-repeat="choice in poll.choices" >
+      <div class="choicename">{{choice.text}}</div>
+      <div class="barspace">:</div>
+      <div style="width:100%">
+        <div class="bar" style="background-color: lightblue; width: {{choice.votes.length/poll.totalVotes*100}}%; text-align: left">     {{choice.votes.length}} </div>{{choice.votes.length/poll.totalVotes*100| number:1}}%
+
+      </div>
+    </div>
+
+  </div>
+  <!-- <table class="result-table">
+    <tr ng-repeat="choice in poll.choices">
+      <td>{{choice.text}}</td>
+      <td>
+        <table style="background-color: lightblue; width: {{choice.votes.length/poll.totalVotes*100}}%; text-align: right">
+          <tr><td>{{choice.votes.length}}</td></tr>
+        </table>
+      </td>
+    </tr>
+  </table> -->
+
+  <p>
+    <em>
+      {{poll.totalVotedpeople}} 个人参与了投票.
+      <span ng-show="poll.userVoted">你的选择是 <strong ng-repeat="text in poll.userChoice.text">{{text}} <label
+        ng-show="$index!=poll.userChoice._id.length-1"for="">,</label> </strong>.</span>
+    </em>
+  </p>
+
+  <p><hr></p>
+
+  <p><a href="#/polls" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span>返回投票列表</a></p>
+</div>
+
+<p>&nbsp;</p>

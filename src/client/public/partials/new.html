@@ -1,0 +1,65 @@
+<header><h2>发起投票</h2> <hr>  </header>
+<!-- <div class="page-header">
+  <h1>创建投票</h1>
+</div> -->
+
+<form role="form" ng-submit="createPoll()" id='newform'>
+  <div class="form-group">
+    <label for="pollQuestion"class="itemlabel">主题</label>
+    <input type="text" ng-model="poll.question" class=" form-control itemcontext" id="pollQuestion" placeholder="输入投票主题">
+  </div>
+  <div class="form-group">
+    <label for="pollDsp"class="itemlabel">描述</label>
+    <textarea class="form-control itemcontext" ng-model="poll.description" rows="3"id="pollDsp" placeholder="输入投票描述"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="pollDsp"class="itemlabel">是否允许多选</label>
+    <input type="checkbox" class="itemcontext" ng-model="poll.allow_muti_choice">
+    <!-- <input type="checkbox" ng-model="poll.allow_muti_choice" class="form-control" id="pollAmc" > -->
+  </div>
+  <div class="form-group" ng-show="poll.allow_muti_choice">
+    <label for="pollDsp"class="itemlabel" ng-init="choicenum=[1,2]">最多允许选择数</label>
+    <select ng-init="poll.max_chosen_num = choicenum[0]" ng-model="poll.max_chosen_num" ng-options="x for x in choicenum">
+    </select>
+    <!-- <select class="combobox itemcontext" >
+      <option ng-repeat="choice in poll.choices" value="{{$index}}">{{$index}}</option>
+    </select>
+    <label for=""ng-repeat="choice in poll.choices">{{$index}}</label> -->
+    <!-- <input type="text" ng-model="poll.max_chosen_num"> -->
+  </div>
+  <div class="form-group top">
+    <label class="choiceitemlabel itemlabel">选项</label>
+    <div class="newchoicewrap itemcontext">
+      <div ng-repeat="choice in poll.choices" class='choiceitem'>
+        <input type="text" ng-model="choice.text" class="form-control " placeholder="输入第 {{$index+1}} 个选项"><br>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="form-group">
+    <div class="itemlabel">
+    </div>
+    <div class="itemcontext">
+      <button type="button" class="addchoice btn btn-default" ng-click="addChoice()"><span class="glyphicon glyphicon-plus"></span> 新增选项</button>
+      <button type="button" class="removechoice btn btn-default" ng-click="popChoice()"><span class="glyphicon glyphicon-minus"></span> 删除选项</button>
+    </div>
+  </div>
+
+  <p><hr></p>
+
+  <div class="form-group createpoll" >
+    <div class="itemlabel">
+      <a href="#/polls" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> 返回投票列表</a>
+    </div>
+    <div class="itemcontext ">
+       <button type="button" class="btn btn-danger"ng-show='hover'>请先登录再创建!</button>
+      <button class="btn btn-primary pull-right" type="submit" ng-show='islogin'>发起投票 &raquo;</button>
+      <button class="btn btn-primary pull-right" type="button" ng-mouseleave="hover = false" ng-mouseenter="hover = true" ng-hide='islogin'>发起投票 &raquo;</button>
+    </div>
+  </div>
+
+  <p>&nbsp;</p>
+</form>

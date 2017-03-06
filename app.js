@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 var routes = require('./src/server/routers/routers');
+var pollctrl = require('./src/server/controller/pollctrl')
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
