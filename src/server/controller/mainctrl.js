@@ -46,7 +46,7 @@ exports.redisiw = function(req, res) {
  /* console.log("words",iw)
   var w = new Words({word:iw})*/
   /*var c = testRedis.returnclient()*/
-  var c = testRedis.returnlocalclient()
+  var c = testRedis.returnclient()
   c.set('baidu', 'welcome to BAE');
   c.get('baidu', function(err, data){
     console.log(data)

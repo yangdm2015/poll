@@ -17,7 +17,7 @@ mongoset.init()
 var app = express();
 
 var rstore=new RedisStore({
-    client:testRedis.returnlocalclient()
+    client:testRedis.returnclient()
     /*host: ""127.0.0.1"",
     port: 6379*/
 })
