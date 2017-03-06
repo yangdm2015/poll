@@ -42,14 +42,19 @@ exports.redisgw = function(req, res) {
 };
 exports.redisiw = function(req, res) {
   var iw = req.query.words;
+  console.log('iw')
  /* console.log("words",iw)
   var w = new Words({word:iw})*/
   /*var c = testRedis.returnclient()*/
-  var c = testRedis.returnclient()
+  var c = testRedis.returnlocalclient()
   c.set('baidu', 'welcome to BAE');
-  c.get('baidu', function(err, result){
-    res.json({'result':result})
-  })
+  c.get('baidu', function(err, data){
+    console.log(data)
+    c.get('baidu', function(err, result){
+      res.json({'result':result})
+    })
+  });
+
  /* w.save(function(err){
     if(err){
       console.log('save ERR!',err)
