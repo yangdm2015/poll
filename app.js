@@ -1,15 +1,21 @@
 /*jshint node:true*/
 var express = require('express');
-
+var cookieParser = require('cookie-parser')
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var routes = require('./src/server/routers/routers');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var mongoset = require('./src/server/db/mongoset')
-/*var dbUrl = 'mongodb://localhost/remwords'
-mongoose.connect(dbUrl);*/
+var COOKIE_SECRET = 'keyboard cat';
+var COOKIE_NAME = 'sid';
 mongoset.init()
 var app = express();
+
+app.use(bodyParser());
+app.use(cookieParser(COOKIE_SECRET));
 
 app.set('port', process.env.VCAP_APP_PORT || 18080);
 app.set('views', path.join(__dirname, './src/client/views'));

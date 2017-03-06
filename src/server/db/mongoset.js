@@ -5,12 +5,15 @@ var host, database, port, options;
 
 if (process.env.SERVER_SOFTWARE == 'bae/3.0') {
     host = 'mongo.duapp.com';
-    database = 'ncJpnNORbOeQMehbTXep';
+    /*database = 'ncJpnNORbOeQMehbTXep';*/
+    database = 'xFMmBeATEneTFKwVklWP';
     port = 8908;
     options = {
         server: {poolSize: 5},
-        user: '0D3dd7950cbddde51845e4d353050c0a',
-        pass: 'F77ecdb28b252895cef07290abec2360',
+       /* user: '0D3dd7950cbddde51845e4d353050c0a',
+        pass: 'F77ecdb28b252895cef07290abec2360',*/
+        user: 'dc83cfc97573454b86b2e5b198aaaebe',
+        pass: '99a5cb920e874d31a72550219b9e42b9',
     };
 } else {
     host = 'localhost';
