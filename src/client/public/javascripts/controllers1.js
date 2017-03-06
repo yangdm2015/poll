@@ -12,23 +12,22 @@ rem.controller('HomeCtrl',function ($scope,$http,remServices) {
     }
     remServices.savewrds(inputw)
     .then(su,er)
+  }
 
-
-    /*remServices.savewrds(inputw)
-    .success(function(data){
-      console.log('receive data:',data)
-      $scope.items = data;
+  $scope.getredis=function(){
+    console.log('getredis')
+    $http({
+      method:'GET',
+      url:'/redis/iw',
+      params:{
+      'words':'inputw'
+      }
+    }).success(function(data){
+      console.log('data=',data)
+      $scope.red = data.result;
     }).error(function(err){
       console.log(err)
-    })*/
-    /*$scope.items = remServices.savewrds.query(inputw);*/
-
-    /*$scope.items = [
-      {'value':inputw+1},
-      {'value':inputw+2},
-      {'value':inputw+3},
-      {'value':inputw+4},
-    ]*/
+    })
   }
   $scope.iptwds=function(){
     var inputw = $scope.rem
@@ -43,6 +42,5 @@ rem.controller('HomeCtrl',function ($scope,$http,remServices) {
     }).error(function(err){
       console.log(err)
     })
-
   }
 })

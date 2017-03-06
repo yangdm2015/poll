@@ -9,10 +9,19 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var mongoset = require('./src/server/db/mongoset')
+var testRedis = require('./src/server/db/redisset')
+
 var COOKIE_SECRET = 'keyboard cat';
 var COOKIE_NAME = 'sid';
 mongoset.init()
 var app = express();
+
+var rstore=new RedisStore({
+    client:testRedis.returnclient()
+    /*host: ""127.0.0.1"",
+    port: 6379*/
+})
+
 
 app.use(bodyParser());
 app.use(cookieParser(COOKIE_SECRET));

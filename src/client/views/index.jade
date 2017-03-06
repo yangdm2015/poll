@@ -22,3 +22,5 @@ html(lang='en', ng-app='remm')
       button(ng-click='iptwds()') 搜索
       .sel(ng-show = 'items.length>0')
         lable.remsel( ng-repeat = "item in items" value = "{{item.word}}") {{item.word}}
+      button(ng-click='getredis()') redis
+      label(ng-model="red") {{red}}
