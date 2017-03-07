@@ -10,7 +10,7 @@ mongoose.connect(dbUrl);
 
 exports.index = function(req, res) {
   console.log("index_index")
-  res.render('index');
+  res.render('pollindex');
 };
 exports.list = function(req, res) {
   console.log("index_list")

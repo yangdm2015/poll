@@ -4,8 +4,8 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
-/*var routes = require('./src/server/routers/routers');*/
-var routes = require('./src/server/routers/pollrouters');
+var routes = require('./src/server/routers/routers');
+/*var routes = require('./src/server/routers/pollrouters');*/
 var pollctrl = require('./src/server/controller/pollctrl')
 var http = require('http');
 var path = require('path');
@@ -23,7 +23,8 @@ app.use(cookieParser(COOKIE_SECRET));
 
 
 var rstore=new RedisStore({
-    client:testRedis.returnclient()
+   /* client:testRedis.returnclient()*/
+    client:testRedis.returnlocalclient()
     /*host: ""127.0.0.1"",
     port: 6379*/
 })
