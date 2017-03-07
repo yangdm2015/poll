@@ -6,17 +6,6 @@ var COOKIE = require('cookie');
 var pollctrl = require('../controller/pollctrl')
 var userctrl = require('../controller/userctrl')
 
-/*var db;*/
-/*if (process.env.VCAP_SERVICES) {
-   var env = JSON.parse(process.env.VCAP_SERVICES);
-   db = mongoose.createConnection(env['mongodb-2.2'][0].credentials.url);
-} else {
-   db = mongoose.createConnection('localhost', 'pollsapp');
-}*/
-   /*db = mongoose.createConnection('localhost', 'pollsapp');*/
-
-
-
 
 // Get Poll schema and model
 

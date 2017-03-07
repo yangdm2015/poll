@@ -1,12 +1,7 @@
-var mongoose = require('mongoose');
 var dbUrl = 'mongodb://localhost/pollsapp'
-/*var PollSchema = require('../models/Poll.js').PollSchema;
-var Poll = mongoose.model('polls', PollSchema);*/
 var Poll = require('../models/Poll.js');
-var passport = require('passport');
+/*var Poll = mongoose.model('polls', PollSchema);*/
 var COOKIE = require('cookie');
-
-mongoose.connect(dbUrl);
 
 exports.index = function(req, res) {
   console.log("index_index")
@@ -22,11 +17,6 @@ exports.mypolls = function(req, res) {
   console.log("in mypoll!!!!!")
   var created_user = req.params.created_user;
 
- /* Poll.findOne({created_user:created_user}, 'question description img_Url created_user', function(error, polls) {
-    console.log('polls=')
-    console.log(polls)
-    res.json(polls);
-  });*/
   Poll.find({created_user:created_user}, 'question description img_Url created_user', function(error, polls) {
     res.json(polls);
   });
@@ -42,10 +32,6 @@ exports.myvotes = function(req, res) {
     res.json(polls);
   })
 
-  /*Poll.find({}, 'question description img_Url created_user', function(error, polls) {
-    res.json(polls);
-  })
-  .where('dd').in('choices.votes.ip');*/
 }
 
 // JSON API for getting a single poll
