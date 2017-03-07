@@ -1,6 +1,5 @@
 var dbUrl = 'mongodb://localhost/pollsapp'
 var Poll = require('../models/Poll.js');
-/*var Poll = mongoose.model('polls', PollSchema);*/
 var COOKIE = require('cookie');
 
 exports.index = function(req, res) {

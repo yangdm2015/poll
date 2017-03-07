@@ -47,17 +47,4 @@ UserSchema.methods={
 var Users = mongoset.db.model('Users',UserSchema)
 module.exports = Users
 
-/*var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var passportLocalMongoose = require('passport-local-mongoose');
-
-
-var UserSchema = new Schema({
-  account: String,
-  password: String
-});
-
-UserSchema.plugin(passportLocalMongoose,{usernameField:'account'});
-var User = mongoose.model('User',UserSchema)
-module.exports = User*/
 
