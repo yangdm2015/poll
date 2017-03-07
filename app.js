@@ -23,8 +23,8 @@ app.use(cookieParser(COOKIE_SECRET));
 
 
 var rstore=new RedisStore({
-   /* client:testRedis.returnclient()*/
-    client:testRedis.returnlocalclient()
+    client:testRedis.returnclient()
+    /*client:testRedis.returnlocalclient()*/
     /*host: ""127.0.0.1"",
     port: 6379*/
 })
