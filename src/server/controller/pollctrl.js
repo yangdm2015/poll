@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var dbUrl = 'mongodb://localhost/pollsapp'
-var PollSchema = require('../models/Poll.js').PollSchema;
-var Poll = mongoose.model('polls', PollSchema);
+/*var PollSchema = require('../models/Poll.js').PollSchema;
+var Poll = mongoose.model('polls', PollSchema);*/
+var Poll = require('../models/Poll.js');
 var passport = require('passport');
 var COOKIE = require('cookie');
 

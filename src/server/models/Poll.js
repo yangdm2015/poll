@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var voteSchema = new mongoose.Schema({ ip: 'String' });
+var mongoset = require('../db/mongoset')
 var choiceSchema = new mongoose.Schema({
   text: String,
   img_Url:String,
@@ -38,4 +39,5 @@ PollSchema.pre('save',function(next){
   }
   next()
 })
-exports.PollSchema = PollSchema;
+var Poll = mongoset.db.model('polls',PollSchema)
+module.exports = Poll
