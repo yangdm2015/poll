@@ -15,11 +15,9 @@ var testRedis = require('./src/server/db/redisset')
 var COOKIE_SECRET = 'keyboard cat';
 var COOKIE_NAME = 'sid';
 
-
 var app = express();
 app.use(bodyParser());
 app.use(cookieParser(COOKIE_SECRET));
-
 
 var rstore=new RedisStore({
     client:testRedis.returnclient()
@@ -41,10 +39,6 @@ app.use(session({
         maxAge: 1000*60*60*24
     }
 }));
-
-
-
-
 app.set('port', process.env.VCAP_APP_PORT || 18080);
 app.set('views', path.join(__dirname, './src/client/views'));
 app.use(express.static(path.join(__dirname, 'src/client')));
@@ -59,9 +53,7 @@ app.use(function(err, req, res, next) {
   res.json({error: true});
 });
 
-
 routes(app)
-
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
