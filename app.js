@@ -16,7 +16,7 @@ var testRedis = require('./src/server/db/redisset')
 var COOKIE_SECRET = 'keyboard cat';
 var COOKIE_NAME = 'sid';
 
-mongoset.init()
+
 var app = express();
 app.use(bodyParser());
 app.use(cookieParser(COOKIE_SECRET));
@@ -51,7 +51,8 @@ app.set('views', path.join(__dirname, './src/client/views'));
 app.use(express.static(path.join(__dirname, 'src/client')));
 app.set('view engine', 'jade');
 
-console.log("process.env.SERVER_SOFTWARE:",process.env.SERVER_SOFTWARE)
+console.log("process.env.SERVER_SOFTWARE11111:",process.env.SERVER_SOFTWARE)
+mongoset.init()
 // Handle Errors gracefully
 app.use(function(err, req, res, next) {
   if(!err) return next();

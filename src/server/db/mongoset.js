@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var db = mongoose.createConnection();
 
 var host, database, port, options;
-
 if (process.env.SERVER_SOFTWARE == 'bae/3.0') {
+    console.log("在mongoset! process.env.SERVER_SOFTWARE == 'bae/3.0'")
     host = 'mongo.duapp.com';
     /*database = 'ncJpnNORbOeQMehbTXep';*/
     database = 'xFMmBeATEneTFKwVklWP';
@@ -18,15 +18,17 @@ if (process.env.SERVER_SOFTWARE == 'bae/3.0') {
 } else {
     host = 'localhost';
     database = 'remwords';
-    port = 27017;
+    /*port = 27017;*/
+    port = 27019;
 }
 
 module.exports = {
     db: db,
     init: function(){
+         console.log("在mongoset.init!!")
         db.on('error', function(err) {
             //do something..
-            console.log("connect error");
+            console.log("connect error 连接错误！");
         });
         //断线重连.
         db.on('disconnected', function() {
