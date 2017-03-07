@@ -51,6 +51,7 @@ exports.login=function(req, res,next){
       }
       if(isMatch){
         req.session.user = user
+        console.log('req.session=',req.session)
         c('psword is matched')
         res.json({status:'ok'})
         /*return res.redirect('/')*/
