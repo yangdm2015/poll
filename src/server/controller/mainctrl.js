@@ -41,10 +41,9 @@ exports.redisgw = function(req, res) {
   });
 };
 exports.redisiw = function(req, res) {
+  req.session.user={account:'re',password:'re'}
   var iw = req.query.words;
   console.log('iw')
- /* console.log("words",iw)
-  var w = new Words({word:iw})*/
   var c = testRedis.returnclient()
   /*var c = testRedis.returnlocalclient()*/
   c.set('baidu', 'welcome to BAE');
@@ -54,12 +53,8 @@ exports.redisiw = function(req, res) {
       res.json({'result':result})
     })
   });
-
- /* w.save(function(err){
-    if(err){
-      console.log('save ERR!',err)
-    }else{
-      res.json({status:200});
-    }
-  })*/
+};
+exports.sess = function(req, res) {
+  var u = req.session.user
+  res.json(u)
 };

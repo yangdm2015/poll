@@ -29,6 +29,20 @@ rem.controller('HomeCtrl',function ($scope,$http,remServices) {
       console.log(err)
     })
   }
+  $scope.getredissession=function(){
+    $http({
+      method:'GET',
+      url:'/redis/sess',
+      params:{
+      'words':'inputw'
+      }
+    }).success(function(data){
+      console.log('data=',data)
+      $scope.sess = data.account;
+    }).error(function(err){
+      console.log(err)
+    })
+  }
   $scope.iptwds=function(){
     var inputw = $scope.rem
     $http({

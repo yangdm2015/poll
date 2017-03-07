@@ -24,3 +24,5 @@ html(lang='en', ng-app='remm')
         lable.remsel( ng-repeat = "item in items" value = "{{item.word}}") {{item.word}}
       button(ng-click='getredis()') redis
       label(ng-model="red") {{red}}
+      button(ng-click='getredissession()') get redis session
+      label {{sess}}

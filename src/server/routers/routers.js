@@ -12,6 +12,7 @@ module.exports = function(app){
   /*pollcontroller*/
   app.get('/',mainctrl.index)
   app.get('/redis/gw',mainctrl.redisgw)
+  app.get('/redis/sess',mainctrl.sess)
   app.get('/redis/iw',mainctrl.redisiw)
   app.get('/mongo/gw',mainctrl.mongogw)
   app.get('/mongo/iw',mainctrl.mongoiw)
