@@ -22,7 +22,9 @@ exports.register=function(req, res){
           res.json({status:'wrong!'})
         }else{
           c('save ok')
+
           req.session.user =user
+          console.log('req.session=',req.session)
           res.json({status:'ok'})
         }
       })

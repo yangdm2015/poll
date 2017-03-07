@@ -4,7 +4,7 @@
   </ul>
     <div class='wrap' >
       <div class="pollitem hvr-border-fade"ng-repeat="poll in polls | filter:query" style="order:-{{poll.order}}" href="#/poll/{{poll._id}}"onmouseover="this.style.cursor='pointer'"
-      ng-click="showItemdetail(poll._id)"  >{{poll.meta.updateAt|date:'yyMMddHHmmss'}}
+      ng-click="showItemdetail(poll._id)"  >
           <div class="imgholder">
             <img class='holder'data-src="holder.js/300x300" src= '../public/img/logo.png' alt="...">
             <div class="imgtitle" >{{poll.question}}</div>
