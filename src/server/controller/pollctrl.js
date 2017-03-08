@@ -8,6 +8,7 @@ exports.index = function(req, res) {
 };
 exports.list = function(req, res) {
   console.log("index_list")
+  console.log('req.session=',req.session)
   Poll.find({}, 'question description img_Url created_user meta', function(error, polls) {
     res.json(polls);
   });

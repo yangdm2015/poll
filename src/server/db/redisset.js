@@ -1,6 +1,7 @@
 var redis = require('redis');
 /*数据库连接信息host,port,user,pwd,dbname(可查询数据库详情页)*/
-var username , password,db_host,db_port ,db_name, options, client,usernamepassword ;
+var username , password,db_host,db_port ,db_name, client,usernamepassword ;
+var options ={"no_ready_check":true};
 
 if (process.env.SERVER_SOFTWARE == 'bae/3.0') {
   username = 'dc83cfc97573454b86b2e5b198aaaebe';  //用户AK
@@ -13,7 +14,7 @@ if (process.env.SERVER_SOFTWARE == 'bae/3.0') {
   client = redis.createClient(db_port, db_host, options);
   client.auth(username + '-' + password + '-' + db_name);
 } else {
-  client = redis.createClient(6379, "127.0.0.1");
+  client = redis.createClient(6379, "127.0.0.1",options);
     /*port = 27019;*/
 }
 

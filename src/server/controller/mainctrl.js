@@ -41,20 +41,24 @@ exports.redisgw = function(req, res) {
   });
 };
 exports.redisiw = function(req, res) {
-  req.session.user={account:'re',password:'re'}
-  var iw = req.query.words;
+  /*console.log('req.session.user=',req.session.user)
+  console.log('req.session=',req.session)*/
+  req.session.rr={account:'dfsfsfdf',password:'rtrrt'}
+  console.log('req.session=',req.session)
+  /*var iw = req.query.words;
   console.log('iw')
   var c = testRedis.returnclient()
-  /*var c = testRedis.returnlocalclient()*/
   c.set('baidu', 'welcome to BAE');
   c.get('baidu', function(err, data){
     console.log(data)
     c.get('baidu', function(err, result){
       res.json({'result':result})
     })
-  });
+  });*/
 };
 exports.sess = function(req, res) {
-  var u = req.session.user
+  var u = req.session.rr
+  /*console.log('u=',req.session.user)*/
+  console.log('req.session=',req.session)
   res.json(u)
 };

@@ -77,6 +77,7 @@ exports.logout=function(req, res) {
 };
 
 exports.status=function(req, res){
+  console.log('req.session=',req.session)
   if (!req.session.user) {
     return res.status(200).json({
       status: false

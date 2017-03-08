@@ -4,8 +4,9 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
-var routes = require('./src/server/routers/routers');
-/*var routes = require('./src/server/routers/pollrouters');*/
+var MongoStore = require('connect-mongo')(session)
+/*var routes = require('./src/server/routers/routers');*/
+var routes = require('./src/server/routers/pollrouters');
 var pollctrl = require('./src/server/controller/pollctrl')
 var http = require('http');
 var path = require('path');
@@ -19,10 +20,9 @@ var app = express();
 app.use(bodyParser());
 app.use(cookieParser(COOKIE_SECRET));
 
-var redisoption={
-  host:'redis.duapp.com',
-  port:'80',
-}
+mongoset.init()
+
+var mgstore = new MongoStore({ mongooseConnection: mongoset.db })
 
 var rstore=new RedisStore({
     /*client:testRedis.returnclient()*/
@@ -33,10 +33,10 @@ var rstore=new RedisStore({
 
 app.use(session({
     name: COOKIE_NAME,
-    store: rstore,
+    store: mgstore,
     secret: COOKIE_SECRET,
     saveUninitialized: true,
-    resave: false,
+    resave: true,
     cookie: {
         path: '/',
         httpOnly: true,
@@ -50,7 +50,7 @@ app.use(express.static(path.join(__dirname, 'src/client')));
 app.set('view engine', 'jade');
 
 console.log("process.env.SERVER_SOFTWARE11111:",process.env.SERVER_SOFTWARE)
-mongoset.init()
+
 
 app.use(function(err, req, res, next) {
   if(!err) return next();
