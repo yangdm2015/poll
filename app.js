@@ -19,9 +19,14 @@ var app = express();
 app.use(bodyParser());
 app.use(cookieParser(COOKIE_SECRET));
 
+var redisoption={
+  host:'redis.duapp.com',
+  port:'80',
+}
+
 var rstore=new RedisStore({
+    /*client:testRedis.returnclient()*/
     client:testRedis.returnclient()
-    /*client:testRedis.returnlocalclient()*/
     /*host: ""127.0.0.1"",
     port: 6379*/
 })
