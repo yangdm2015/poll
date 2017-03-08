@@ -5,14 +5,15 @@ polls1.factory('userservice',["$q","$http",function($q,$http){
     var promise = deferred.promise;
     $http.get('/user/status')
     .success(function (data) {
-      if(data.status){
+      /*if(data.status=='ok'){
         accountinfo.islogin = true;
         accountinfo.account = data.account;
       } else {
         accountinfo.islogin = false;
         accountinfo.account = "";
       }
-      deferred.resolve(accountinfo)
+      deferred.resolve(accountinfo)*/
+      deferred.resolve(data)
     })
     .error(function (err) {
       deferred.reject(err)

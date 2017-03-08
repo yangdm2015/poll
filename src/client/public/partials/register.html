@@ -2,13 +2,15 @@
   <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
   <form action="" class="form-login" role="form" ng-submit="register()">
     <h3 class="form-login-heading">用户注册</h3>
+
     <div class="form-login-group">
       <input type="text" class="form-control" placeholder="账号/手机号"required autofocus ng-model="user.account">
       <input type="password" class="form-control" placeholder="密码"required ng-model="user.password">
     <lable class="checkbox">
-      <input type="checkbox" value="remember">注册后自动登陆
+      <input type="checkbox" value="remember" ng-model='autologin'>注册后自动登陆
     </lable>
       <button type="submit" class="btn btn-primary btn-block" >注册</button>
+      <button type="button" class="btn btn-danger"ng-show='msg'style="display:block;width:100%;margin:1rem 0">{{msg}}</button>
     </div>
   </form>
 </div>

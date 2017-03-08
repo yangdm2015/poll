@@ -29,6 +29,8 @@ module.exports = {
         db.on('error', function(err) {
             //do something..
             console.log("connect error 连接错误！");
+            console.log(err);
+
         });
         //断线重连.
         db.on('disconnected', function() {

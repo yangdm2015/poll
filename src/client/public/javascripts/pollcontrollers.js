@@ -116,6 +116,7 @@ polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pol
     if(data._id === $routeParams.pollId) {
       $scope.poll.choices = data.choices;
       $scope.poll.totalVotes = data.totalVotes;
+      $scope.poll.totalVotedpeople = data.totalVotedpeople;
       $scope.poll.userVoted = true;
       $scope.poll.userChoice = data.userChoice;
     }

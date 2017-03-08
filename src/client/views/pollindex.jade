@@ -64,7 +64,7 @@ html(lang='en', ng-app='polls')
 						.wrap-tri-b
 							.line-tri-b
 		//- div.wid12rem
-		div.menuwrap(ng-show='showmenu')
+		div.menuwrap(ng-show='showmenu' ng-click="showmenu=false")
 			div.dropmenu
 				a(href="#/new") +发起投票
 				a(href="#/mypolls" ) 我发起的投票

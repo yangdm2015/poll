@@ -6,11 +6,14 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
     $scope.error = false;
     $scope.disabled = true;
     userservice.signin({account,password}).then(function(result){
-      if(result.status){
+      if(result.status=='ok'){
         $scope.$emit('userchange', { islogin:true,account: $scope.user.account });
         $location.path('/');
         $scope.islogin = true;
         $scope.currusername = $scope.user.account;
+      }else{
+        $scope.islogin = false;
+        $scope.msg=result.status;
       }
     })
     .catch(function(){
@@ -37,17 +40,32 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
     var password = $scope.user.password
     userservice.signup({account,password})
     .then(function(result){
-      if(result.status){
+      if(result.status=='ok'){
         $location.path('/login');
         $scope.disabled = false;
-        $scope.registerForm = {};
+        if($scope.autologin){
+          return userservice.signin({account,password})
+        }
+      }else{
+        $scope.msg=result.status;
+      }
+      return "goon"
+    })
+    .then(function(result){
+      if(result.status=='ok'){
+        $scope.$emit('userchange', { islogin:true,account: $scope.user.account });
+        $location.path('/');
+        $scope.islogin = true;
+        $scope.currusername = $scope.user.account;
+      }else{
+        $location.path('/login');
+        $scope.disabled = false;
       }
     })
     .catch(function () {
       $scope.error = true;
       $scope.errorMessage = "Something went wrong!";
       $scope.disabled = false;
-      $scope.registerForm = {};
     });
   }
 }])

@@ -1,5 +1,5 @@
 <div class="container">
-  <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
+  <!-- <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div> -->
 
   <form action="" class="form-login" role="form" ng-submit="login()">
     <h3 class="form-login-heading">用户登录</h3>
@@ -10,6 +10,7 @@
         <input type="checkbox" value="remember"></input>下次自动登录
       </div>
       <button type="submit" class="btn btn-primary btn-block" >登录</button>
+      <button type="button" class="btn btn-danger"ng-show='msg'style="display:block;width:100%;margin:1rem 0">{{msg}}</button>
     </div>
     <!-- <lable class="checkbox">
       <input type="checkbox" value="remember">下次自动登录
