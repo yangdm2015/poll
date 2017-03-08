@@ -31,13 +31,14 @@ polls1.factory('userservice',["$q","$http",function($q,$http){
       }
     }
     $http(option).success(function(data){
-      if(data.status){
+      /*if(data.status=='OK'){
         accountinfo.islogin = true;
         accountinfo.name = user.name;
       }else{
         accountinfo.islogin = false;
         accountinfo.name = "";
       }
+      deferred.resolve(data);*/
       deferred.resolve(data);
     })
     return promise;

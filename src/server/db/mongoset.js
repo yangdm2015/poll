@@ -25,7 +25,6 @@ if (process.env.SERVER_SOFTWARE == 'bae/3.0') {
 module.exports = {
     db: db,
     init: function(){
-        console.log("mongoset.init!!1111111111111111")
         db.on('error', function(err) {
             //do something..
             console.log("connect error 连接错误！");
@@ -36,10 +35,6 @@ module.exports = {
         db.on('disconnected', function() {
             db.open(host, database, port, options);
         });
-        console.log("before open,host="+host)
-        console.log("before open,database="+database)
-        console.log("before open,port="+port)
-        console.log("before open,options="+options)
         db.open(host, database, port, options);
     }
 }

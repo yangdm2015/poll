@@ -6,6 +6,7 @@ polls1.controller('HomeCtrl',['$timeout','$scope','$location','$route','userserv
   })
   $scope.$on('userchange',function(e,data){
     $scope.islogin = data.islogin;
+    console.log('userchangeuserchangeuserchangeuserchangeuserchange')
     $scope.currusername = data.account;
   })
 }])
@@ -108,7 +109,7 @@ polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pol
 
   $scope.$on('userchange',function(e,data){
     $scope.islogin = data.islogin;
-    $scope.currusername = data.name;
+    $scope.currusername = data.account;
   })
 /*var socket = io.connect();*/
   socket.on('vote', function(data) {

@@ -11,14 +11,17 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
         $location.path('/');
         $scope.islogin = true;
         $scope.currusername = $scope.user.account;
-      }else{
+      }else if(result.status=='wrongpass'){
         $scope.islogin = false;
-        $scope.msg=result.status;
+        $scope.msg="Invalid username and/or password. 用户名/密码不对";
+      }else if(result.status=='notexist'){
+         $scope.islogin = false;
+        $scope.msg='User '+account+' does not exist. 用户'+account+'不存在'
       }
     })
     .catch(function(){
       $scope.error = true;
-      $scope.errorMessage = "Invalid username and/or password";
+      $scope.msg = "Invalid username and/or password";
       $scope.disabled = false;
       $scope.user = {};
     });
@@ -45,26 +48,33 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
         $scope.disabled = false;
         if($scope.autologin){
           return userservice.signin({account,password})
+        }else{
+          return 'tologin'
         }
-      }else{
-        $scope.msg=result.status;
+      }else if(result.status =='exist'){
+        return 'exist'
       }
-      return "goon"
     })
     .then(function(result){
       if(result.status=='ok'){
-        $scope.$emit('userchange', { islogin:true,account: $scope.user.account });
-        $location.path('/');
+        $scope.$emit('userchange', { islogin:true,account: account });
+        console.log('emituserchange')
         $scope.islogin = true;
         $scope.currusername = $scope.user.account;
-      }else{
+        $location.path('/');
+      }else if(result.status=='wrongpass'){
+        $scope.msg='Password not matched. 密码不对'
         $location.path('/login');
         $scope.disabled = false;
+      }else if(result == 'exist'){
+        $scope.msg='User "'+account+'" alrady exist! 用户 '+account+' 已存在';
+      }else if(result=='tologin'){
+        $location.path('/login');
       }
     })
     .catch(function () {
       $scope.error = true;
-      $scope.errorMessage = "Something went wrong!";
+      $scope.msg = "Something went wrong!";
       $scope.disabled = false;
     });
   }
