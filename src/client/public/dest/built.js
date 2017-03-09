@@ -335,6 +335,7 @@ polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pol
       $scope.poll.userVote=[]
       console.log("poll="+$scope.poll)
       $scope.overvoted = false;
+      $scope.qrsrc = document.URL;
   });
   var updateSelected = function(action,id){
     if(action == 'add' && $scope.poll.userVote.indexOf(id) == -1){
