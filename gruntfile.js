@@ -9,22 +9,28 @@ module.exports = function(grunt) {
                 // 动态文件映射，
                 // 当任务运行时会自动在 "src/bin/" 目录下查找 "**/*.js" 并构建文件映射，
                 // 添加或删除文件时不需要更新 Gruntfile。
+                /*files: [
+                    {
+                        expand: true,     // 启用动态扩展
+                        src: ['src/framework/angular-1.3.0.14/angular.min.js',
+                            'src/framework/angular-1.3.0.14/angular-route.min.js',
+                            'src/client/public/javascripts/clientroute.js',
+                            'src/client/public/javascripts/pollcontrollers.js',
+                            'src/client/public/javascripts/usercontroller.js',
+                            'src/client/public/javascripts/userservices.js',
+                            'src/client/public/javascripts/pollservices.js'
+                        ], // 匹配模式
+                        dest: 'dest/js/',   // 目标路径前缀
+                        ext: '.min.js',   // 目标文件路径中文件的扩展名
+                        extDot: 'first'   // 扩展名始于文件名的第一个点号
+                    },
+                ],*/
                 files: [
                     {
                         expand: true,     // 启用动态扩展
-                        /*cwd: 'js/',      // 源文件匹配都相对此目录*/
-                        src: ['src/framework/angular-1.3.0.14/angular.min.js',
-                            'src/framework/angular-1.3.0.14/angular-route.min.js',
-                            'src/framework/angular-1.3.0.14/angular-resource.min.js',
-                            'src/framework/jquery-1.9.1.js',
-                            'src/framework/bootstrap/js/bootstrap.min.js',
-                            '/socket.io/socket.io.js',
-                            'src/public/javascripts/app1.js',
-                            'src/public/javascripts/services1.js',
-                            'src/public/javascripts/controllers1.js',
-                            'src/public/javascripts/comb.js'
+                        src: ['src/client/public/dest/built.js'
                         ], // 匹配模式
-                        dest: 'dest/js/',   // 目标路径前缀
+                        //dest: 'min/',   // 目标路径前缀
                         ext: '.min.js',   // 目标文件路径中文件的扩展名
                         extDot: 'first'   // 扩展名始于文件名的第一个点号
                     },
@@ -36,11 +42,18 @@ module.exports = function(grunt) {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
             },
             build: {
+                /*files: [{
+                    expand: true,
+                    src: ['src/client/public/stylesheets/poll.css','src/client/public/stylesheets/normalize.css'],
+                    dest: 'dest/css/',
+                    ext: '.min.css',
+                    'output.css':['dest/css/src/client/public/stylesheets/poll.css','dest/css/src/client/public/stylesheets/normalize.css'],
+                    extDot: 'first'
+                }]*/
                 files: [{
                     expand: true,
-                    /*cwd: 'css/',*/
-                    src: ['src/public/stylesheets/*.css'],
-                    dest: 'dest/css/',
+                    src: 'src/client/public/dest/built.css',
+                    //dest: 'min/',
                     ext: '.min.css',
                     extDot: 'first'
                 }]
@@ -50,19 +63,21 @@ module.exports = function(grunt) {
             options: {
                 separator: ';'
             },
-            allInOne: { //所有JS文件全部合并成一份文件
-                src: [  /*  'dest/js/src/framework/angular-1.3.0.14/angular.min.js',
-                    'dest/js/src/framework/angular-1.3.0.14/angular-route.min.js',
-                    'dest/js/src/framework/angular-1.3.0.14/angular-resource.min.js',
-                    'dest/js/src/framework/jquery-1.min.js',
-                    'dest/js/src/framework/bootstrap/js/bootstrap.min.js',
-                   'dest/js//socket.io/socket.io.min.js',*/
-                   /*'dest/js/src/public/javascripts/app1.min.js',
-                    'dest/js/src/public/jav ascripts/services1.min.js',
-                    'dest/js/src/public/javascripts/controllers1.min.js'*/
-                    'dest/js/src/public/javascripts/comb.min.js'
+            concatjs: { //所有JS文件全部合并成一份文件
+                src: [
+                    'src/client/framework/angular-1.3.0.14/angular.min.js',
+                    'src/client/framework/angular-1.3.0.14/angular-route.min.js',
+                    'src/client/public/javascripts/clientroute.js',
+                    'src/client/public/javascripts/pollcontrollers.js',
+                    'src/client/public/javascripts/usercontroller.js',
+                    'src/client/public/javascripts/userservices.js',
+                    'src/client/public/javascripts/pollservices.js'
                 ],
-                dest: 'dest//built.js'
+                dest: 'src/client/public/dest/built.js'
+            },
+            concatcss:{
+                src:['src/client/public/stylesheets/bootstrap_cus.min.css','src/client/public/stylesheets/normalize.css','src/client/public/stylesheets/poll.css'],
+                dest: 'src/client/public/dest/built.css'
             }
         },
         watch: {
@@ -115,7 +130,7 @@ module.exports = function(grunt) {
           },
         },
         concurrent:{
-          tasks:['nodemon','watch'/*,'concat','uglify','cssmin'*/],
+          tasks:['nodemon','watch','concat','uglify','cssmin'],
           options:{
             logConcurrentOutput:true
           }

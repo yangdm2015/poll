@@ -5,7 +5,8 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
     var password = $scope.user.password;
     $scope.error = false;
     $scope.disabled = true;
-    userservice.signin({account,password}).then(function(result){
+    userservice.signin({account:account,password:password})
+    .then(function(result){
       if(result.status=='ok'){
         $scope.$emit('userchange', { islogin:true,account: $scope.user.account });
         $location.path('/');
@@ -42,10 +43,10 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
     var account = 'dd';
     var password = 'rere';
     /*userservice.signup({'dd','rere'})*/
-      userservice.signup({account,password})
+      userservice.signup({account:account,password:password})
     .then(function(result){
       if(result.status =='exist'){
-        return userservice.signin({account,password})
+        return userservice.signin({account:account,password:password})
       }
     })
     .then(function(result){
@@ -66,13 +67,13 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
     $scope.disabled = true;
     var account = $scope.user.account;
     var password = $scope.user.password
-    userservice.signup({account,password})
+    userservice.signup({account:account,password:password})
     .then(function(result){
       if(result.status=='ok'){
         /*$location.path('/login');
         $scope.disabled = false;*/
         if($scope.autologin){
-          return userservice.signin({account,password})
+          return userservice.signin({account:account,password:password})
         }else{
           return 'tologin'
         }
