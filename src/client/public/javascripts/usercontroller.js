@@ -26,6 +26,7 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
       $scope.user = {};
     });
   }
+
   $scope.logout=function(){
     userservice.signout()
     .then(function(result){
@@ -36,6 +37,30 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
       }
     })
   }
+  var t =0
+  $scope.tt=function(){
+    var account = 'dd';
+    var password = 'rere';
+    /*userservice.signup({'dd','rere'})*/
+      userservice.signup({account,password})
+    .then(function(result){
+      if(result.status =='exist'){
+        return userservice.signin({account,password})
+      }
+    })
+    .then(function(result){
+      if(result.status=='wrongpass'){
+         $scope.$emit('userchange', {islogin:true,test:true,t:t});
+      }
+    })
+    /*userservice.getUserStatus()
+    .then(function(result){
+      if(!result.status){
+        t=t+1;
+        $scope.$emit('userchange', {islogin:true,test:true,t:t});
+      }
+    })*/
+  }
   $scope.register=function(){
     $scope.error = false;
     $scope.disabled = true;
@@ -44,8 +69,8 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
     userservice.signup({account,password})
     .then(function(result){
       if(result.status=='ok'){
-        $location.path('/login');
-        $scope.disabled = false;
+        /*$location.path('/login');
+        $scope.disabled = false;*/
         if($scope.autologin){
           return userservice.signin({account,password})
         }else{
@@ -57,16 +82,21 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
     })
     .then(function(result){
       if(result.status=='ok'){
+        t=t+1
         $scope.$emit('userchange', { islogin:true,account: account });
+        /*$scope.$emit('userchange', {islogin:true,test:true,t:t});*/
         console.log('emituserchange')
-        $scope.islogin = true;
-        $scope.currusername = $scope.user.account;
+        /*$scope.islogin = true;
+        $scope.currusername = $scope.user.account;*/
         $location.path('/');
       }else if(result.status=='wrongpass'){
         $scope.msg='Password not matched. 密码不对'
         $location.path('/login');
         $scope.disabled = false;
       }else if(result == 'exist'){
+        t=t+1
+        console.log('emituserchange test:true,t=',t)
+        /*$scope.$emit('userchange', {islogin:true,test:true,t:t});*/
         $scope.msg='User "'+account+'" alrady exist! 用户 '+account+' 已存在';
       }else if(result=='tologin'){
         $location.path('/login');

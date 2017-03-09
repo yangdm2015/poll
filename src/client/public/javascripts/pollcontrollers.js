@@ -4,10 +4,20 @@ polls1.controller('HomeCtrl',['$timeout','$scope','$location','$route','userserv
     $scope.islogin=result.islogin;
     $scope.currusername = result.account;
   })
+  var test =0
   $scope.$on('userchange',function(e,data){
-    $scope.islogin = data.islogin;
-    console.log('userchangeuserchangeuserchangeuserchangeuserchange')
-    $scope.currusername = data.account;
+    console.log('HomeCtrlHomeCtrlHomeCtrlHomeCtrl')
+    if(data.test){
+      console.log(data.t)
+    }else{
+      $scope.islogin = data.islogin;
+      $scope.currusername = data.account;
+    }
+  })
+
+  $scope.$on('test',function(e,data){
+    /*test++;*/
+    console.log('test=',data.name)
   })
 }])
 polls1.controller('MyPollListCtrl',['$timeout','$scope','$location','$route','pollservice','userservice',function ($timeout,$scope,$location,$route,pollservice,userservice) {
@@ -48,7 +58,7 @@ polls1.controller('PollListCtrl',['$timeout','$scope','$location','$route','poll
       d=(d.getTime()+"").slice(0,7);
       $scope.polls[p].order=d;
     }
-    console.log('polls=',$scope.polls);
+    /*console.log('polls=',$scope.polls);*/
   });
 }])
 
@@ -108,6 +118,7 @@ polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pol
   };
 
   $scope.$on('userchange',function(e,data){
+    console.log('PollItemCtrlPollItemCtrlPollItemCtrl')
     $scope.islogin = data.islogin;
     $scope.currusername = data.account;
   })
