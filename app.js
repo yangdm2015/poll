@@ -1,4 +1,3 @@
-/*jshint node:true*/
 var express = require('express');
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser');
@@ -60,6 +59,11 @@ app.use(function(err, req, res, next) {
 
 routes(app)
 
+/*var server = app.listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
+});
+var io = require('socket.io').listen(server);
+io.sockets.on('connection', pollctrl.vote);*/
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
