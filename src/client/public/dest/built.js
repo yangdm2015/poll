@@ -327,10 +327,22 @@ polls1.controller('PollListCtrl',['$timeout','$scope','$location','$route','poll
     /*console.log('polls=',$scope.polls);*/
   });
 }])
-
+function choicesvotepercent(poll){
+  for(var i=0,len=poll.choices.length;i<len;i++){
+    var pc = poll.choices[i];
+    var vl = (pc.votes.length/poll.totalVotes*100).toFixed(2)+'%';
+    poll.choices[i].choicesvotepercent = vl;
+    poll.choices[i].mystyle = {
+      "background-color":"lightblue",
+      "width":vl,
+      "text-align":'left'
+    }
+  }
+}
 /*polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, socket, pollservice,userservice) {*/
 polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pollservice,socket,userservice) {
   pollservice.getpoll($routeParams.pollId).then(function(poll){
+      choicesvotepercent(poll);
       $scope.poll = poll;
       $scope.poll.userVote=[]
       console.log("poll="+$scope.poll)
@@ -399,6 +411,7 @@ polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pol
       $scope.poll.totalVotedpeople = data.totalVotedpeople;
       $scope.poll.userVoted = true;
       $scope.poll.userChoice = data.userChoice;
+      /*choicesvotepercent($scope.poll)*/
     }
   });
 
@@ -426,18 +439,35 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
   // Validate and save the new poll to the database
   $scope.createPoll = function() {
     console.log("createPoll");
+    var fileread = $scope.fileread;
     var poll = $scope.poll;
+   /* var fd = new FormData();
+    angular.forEach(poll, function(val, key) {
+      fd.append(key, val);
+    });
+    fd.append('poll_theme', fileread);*/
+
     userservice.getUserStatus()
     .then(function(result){
+      /*fd.append('created_user', result.account);*/
       poll.created_user=result.account;
-      return pollservice.savepoll(poll);
+      return pollservice.savepoll(poll,fileread);
     })
     .then(function(result){
       console.log('result=',result)
       $location.path('polls');
     })
   };
-}]);polls1.controller('UserCtrl',['$scope','$http','userservice','$location',function ($scope,$http,userservice,$location){
+}])
+.directive("fileread", function () {
+  return{
+    link:function(scope,element,attrs){
+      element.bind('change',function(){
+        scope.fileread=element[0].files[0];
+      })
+    }
+  }
+});polls1.controller('UserCtrl',['$scope','$http','userservice','$location',function ($scope,$http,userservice,$location){
   $scope.test='test'
   $scope.login=function(){
     var account = $scope.user.account;
@@ -662,7 +692,17 @@ polls1
     });
     return promise;
   }
-  var savepoll=function(poll){
+  function fds(poll,fileread){
+    var fd = new FormData();
+    angular.forEach(poll, function(val, key) {
+      if(key=='choices'){
+        fd.append(key, JSON.stringigy(val))
+      }else fd.append(key, val);
+    });
+    fd.append('poll_theme', fileread);
+    return fd;
+  }
+  var savepoll=function(poll,fileread){
     var deferred = $q.defer();
     var promise = deferred.promise;
     if(poll.question.length > 0) {
@@ -674,10 +714,15 @@ polls1
         }
       }
       if(choiceCount > 1) {
+        var fd = fds(poll,fileread)
          var option = {
           method:'post',
           url:'polls',
-          data:{poll:poll}
+          data:fd,
+          headers: {'Content-Type': undefined},
+          /*headers: {'Content-Type': 'multipart/form-data'},*/
+          transformRequest: angular.identity
+          /*data:{poll:poll}*/
         }
         $http(option).success(function(data){
           console.log("save successful");

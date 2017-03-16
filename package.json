@@ -24,9 +24,11 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^4.0.0",
     "redis": "^2.6.3",
-    "socket.io": "^1.7.2"
+    "socket.io": "^1.7.2",
+    "multer":"*"
   },
   "devDependencies": {
+    "grunt-contrib-less":"*",
     "grunt-concurrent": "^2.3.1",
     "grunt-contrib-connect": "^0.7.1",
     "grunt-nodemon": "^0.4.2",

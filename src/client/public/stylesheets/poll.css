@@ -88,11 +88,9 @@ header .top ul li span {
 }
 @media only screen and (min-width: 48em) and (max-width: 75em){ /* 分三档，800px及以上，481-800px，480px以下 */
   header{margin-bottom: 1.2rem;}
-  header .top {}
 }
 @media only screen and (min-width: 30em) and (max-width: 48em){
   header{margin-bottom: 0.8rem;}
-  header .top {}
   .header_main_center .flex3 ul li:nth-child(1),
   header .top ul li:nth-child(1){
     display: none;
@@ -101,9 +99,6 @@ header .top ul li span {
 @media only screen and  (max-width: 30em){
   header{margin-bottom: 0.5rem;}
   .header_main_top{display: none}
-  header .top {
-
-  }
   header .top ul li:nth-child(1),
   header .top ul li:nth-child(2){
     display: none;
@@ -213,7 +208,7 @@ header .main .header_search input{
   }
 }
 @media only screen and (min-width: 30em) and (max-width: 48em){
-  header .main ul  a {
+  header .main ul a {
     padding: 0 0.5rem;
     line-height: 3.7rem;
     font-size: 1.6rem;
@@ -288,7 +283,7 @@ header .main ul li:nth-child(2){margin-left: 1rem}
     padding: 0rem 0.5rem 0;
   }
   header .main .header_search{
-    width: 12rem
+    width: 12rem;
   }
   header .main .header_search input{
     margin: .5rem .2rem 0 0.4rem;

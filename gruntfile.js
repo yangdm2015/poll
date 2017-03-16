@@ -1,30 +1,12 @@
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
             build: {
-                // 动态文件映射，
-                // 当任务运行时会自动在 "src/bin/" 目录下查找 "**/*.js" 并构建文件映射，
-                // 添加或删除文件时不需要更新 Gruntfile。
-                /*files: [
-                    {
-                        expand: true,     // 启用动态扩展
-                        src: ['src/framework/angular-1.3.0.14/angular.min.js',
-                            'src/framework/angular-1.3.0.14/angular-route.min.js',
-                            'src/client/public/javascripts/clientroute.js',
-                            'src/client/public/javascripts/pollcontrollers.js',
-                            'src/client/public/javascripts/usercontroller.js',
-                            'src/client/public/javascripts/userservices.js',
-                            'src/client/public/javascripts/pollservices.js'
-                        ], // 匹配模式
-                        dest: 'dest/js/',   // 目标路径前缀
-                        ext: '.min.js',   // 目标文件路径中文件的扩展名
-                        extDot: 'first'   // 扩展名始于文件名的第一个点号
-                    },
-                ],*/
                 files: [
                     {
                         expand: true,     // 启用动态扩展
@@ -99,11 +81,15 @@ module.exports = function(grunt) {
                 }
             },
             css:{
-                files:['src/public/stylesheets/*.css'],
+                files:['src/client/public/stylesheets/*.css'],
                 options:{
                   livereload: "<%= connect.options.livereload %>"
                 }
             },
+            less: {
+                files: ['*src/client/public/stylesheets/*.less'],
+                tasks: ['less']
+            }
         },
         nodemon:{
           dev:{
@@ -122,6 +108,13 @@ module.exports = function(grunt) {
             }
           }
         },
+        less: {
+            compile: {
+                files: {
+                    'src/client/public/stylesheets/polles.css': 'src/client/public/stylesheets/polles.less'
+                }
+            }
+        },
         connect: {
           options: {
             port: 9001,
@@ -130,7 +123,7 @@ module.exports = function(grunt) {
           },
         },
         concurrent:{
-          tasks:['nodemon','watch','concat','uglify','cssmin'],
+          tasks:['less','nodemon','watch','concat','uglify','cssmin'],
           options:{
             logConcurrentOutput:true
           }
@@ -145,6 +138,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-concurrent');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
 
     grunt.option('force',true)

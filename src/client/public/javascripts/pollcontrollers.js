@@ -54,6 +54,7 @@ polls1.controller('PollListCtrl',['$timeout','$scope','$location','$route','poll
     $scope.polls = polls;
     for(var p in $scope.polls){
       var po = $scope.polls[p];
+      $scope.polls[p].img_Url= po.img_Url?po.img_Url:'../public/img/logo.png'
       var d = new Date(po.meta.updateAt);
       d=(d.getTime()+"").slice(0,7);
       $scope.polls[p].order=d;
@@ -61,16 +62,33 @@ polls1.controller('PollListCtrl',['$timeout','$scope','$location','$route','poll
     /*console.log('polls=',$scope.polls);*/
   });
 }])
-
+function choicesvotepercent(poll){
+  for(var i=0,len=poll.choices.length;i<len;i++){
+    var pc = poll.choices[i];
+    var vl = (pc.votes.length/poll.totalVotes*100).toFixed(2)+'%';
+    poll.choices[i].choicesvotepercent = vl;
+    poll.choices[i].mystyle = {
+      "background-color":"lightblue",
+      "width":vl,
+      "text-align":'left'
+    }
+  }
+}
 /*polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, socket, pollservice,userservice) {*/
 polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pollservice,socket,userservice) {
   pollservice.getpoll($routeParams.pollId).then(function(poll){
+      choicesvotepercent(poll);
       $scope.poll = poll;
       $scope.poll.userVote=[]
       console.log("poll="+$scope.poll)
       $scope.overvoted = false;
       $scope.qrsrc = document.URL;
-
+      $scope.headerstyle = {
+        'background-image':'url('+poll.img_Url+')',
+        'background-repeat':'no-repeat',
+        'background-size':'100% 50rem',
+        'background-position': '50% 40%'
+      }
   });
   var updateSelected = function(action,id){
     if(action == 'add' && $scope.poll.userVote.indexOf(id) == -1){
@@ -133,6 +151,7 @@ polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pol
       $scope.poll.totalVotedpeople = data.totalVotedpeople;
       $scope.poll.userVoted = true;
       $scope.poll.userChoice = data.userChoice;
+      /*choicesvotepercent($scope.poll)*/
     }
   });
 
@@ -141,6 +160,7 @@ polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pol
 polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice',function PollNewCtrl($scope, $location, userservice,pollservice) {
   console.log("PollNewCtrl")
   // Define an empty poll model object
+  $scope.theme_pic_location=pollservice.getthemepic();
   $scope.poll = {
     question: '',
     max_chosen_num:2,
@@ -160,15 +180,48 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
   // Validate and save the new poll to the database
   $scope.createPoll = function() {
     console.log("createPoll");
+    var fileread = $scope.fileread?$scope.fileread:$scope.theme_pic_location;
     var poll = $scope.poll;
+   /* var fd = new FormData();
+    angular.forEach(poll, function(val, key) {
+      fd.append(key, val);
+    });
+    fd.append('poll_theme', fileread);*/
+
     userservice.getUserStatus()
     .then(function(result){
+      /*fd.append('created_user', result.account);*/
       poll.created_user=result.account;
-      return pollservice.savepoll(poll);
+      return pollservice.savepoll(poll,fileread);
     })
     .then(function(result){
       console.log('result=',result)
       $location.path('polls');
     })
   };
+  $scope.trigger_input=function(){
+    document.querySelector("[name='theme_pic']").click()
+  }
 }])
+.directive("fileread", function () {
+  return{
+    link:function(scope,element,attrs){
+      element.bind('change',function(changeEvent){
+        scope.fileread=element[0].files[0];
+        showpic(changeEvent,scope)
+      })
+    }
+  }
+})
+function showpic(changeEvent,scope){
+  var reader = new FileReader();
+  reader.onload = function (loadEvent) {
+    scope.$apply(function () {
+      scope.fileread = loadEvent.target.result;
+      scope.theme_pic_location = scope.fileread;
+      /*var output = document.getElementById('output');
+      output.src = scope.fileread;*/
+    });
+  }
+  reader.readAsDataURL(changeEvent.target.files[0]);
+}

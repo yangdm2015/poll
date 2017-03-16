@@ -1,4 +1,10 @@
-<header><h2>{{poll.question}}</h2> <hr> <p ng-bind = 'poll.description'></p> </header>
+<header id='item_header' ng-style='headerstyle'>
+  <div id="headwrap">
+    <h2>{{poll.question}}</h2>
+    <hr>
+    <p ng-bind = 'poll.description'></p>
+  </div>
+</header>
 
 <!-- <div class="page-header"ng-show="poll.userChoice">
   <h1>投票结果</h1>
@@ -52,8 +58,8 @@
       <div class="choicename">{{choice.text}}</div>
       <div class="barspace">:</div>
       <div style="width:100%">
-        <div class="bar" style="background-color: lightblue; width: {{choice.votes.length/poll.totalVotes*100}}%; text-align: left">     {{choice.votes.length}} </div>{{choice.votes.length/poll.totalVotes*100| number:1}}%
-
+        <!-- <div class="bar" style="background-color: lightblue; width: {{choice.votes.length/poll.totalVotes*100| number:1}}%; text-align: left">     {{choice.votes.length}}    </div>{{choice.votes.length/poll.totalVotes*100| number:1}}% -->
+        <div class="bar" ng-style="choice.mystyle">     {{choice.votes.length}}    </div>{{choice.votes.length/poll.totalVotes*100| number:1}}%
       </div>
     </div>
 

@@ -5,7 +5,7 @@ var COOKIE = require('cookie');
 /*var passport = require('passport');*/
 var pollctrl = require('../controller/pollctrl')
 var userctrl = require('../controller/userctrl')
-
+var imgupload =require('./imgupload')();
 
 // Get Poll schema and model
 
@@ -19,7 +19,7 @@ module.exports = function(app){
   app.get('/polls/:id', pollctrl.poll);
   app.get('/mypolls/:created_user', pollctrl.mypolls);
   app.get('/myvotes/:current_user', pollctrl.myvotes);
-  app.post('/polls',pollctrl.create)
+  app.post('/polls',imgupload.single('poll_theme'),pollctrl.create)
   app.post('/vote',pollctrl.vote)
 
 

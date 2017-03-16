@@ -26,7 +26,17 @@ polls1
     });
     return promise;
   }
-  var savepoll=function(poll){
+  function fds(poll,fileread){
+    var fd = new FormData();
+    angular.forEach(poll, function(val, key) {
+      if(key=='choices'){
+        fd.append(key, JSON.stringify(val))
+      }else fd.append(key, val);
+    });
+    fd.append('poll_theme', fileread);
+    return fd;
+  }
+  var savepoll=function(poll,fileread){
     var deferred = $q.defer();
     var promise = deferred.promise;
     if(poll.question.length > 0) {
@@ -38,10 +48,15 @@ polls1
         }
       }
       if(choiceCount > 1) {
+        var fd = fds(poll,fileread)
          var option = {
           method:'post',
           url:'polls',
-          data:{poll:poll}
+          data:fd,
+          headers: {'Content-Type': undefined},
+          /*headers: {'Content-Type': 'multipart/form-data'},*/
+          transformRequest: angular.identity
+          /*data:{poll:poll}*/
         }
         $http(option).success(function(data){
           console.log("save successful");
@@ -94,7 +109,12 @@ polls1
     }
     return promise;
   }
+  var getthemepic=function(){
+    var theme_pic_location = 'public/theme_pic/'+Math.floor((Math.random()*21)+1)+'.jpg'
+    return theme_pic_location;
+  }
   return {
+    getthemepic:getthemepic,
     getmypoll:getmypoll,
     getmyvote:getmyvote,
     getpoll:getpoll,

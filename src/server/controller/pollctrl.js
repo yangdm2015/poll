@@ -82,13 +82,23 @@ exports.poll = function(req, res) {
 
 // JSON API for creating a new poll
 exports.create = function(req, res) {
-  console.log('index_create')
-  var reqBody = req.body.poll,
-      choices = reqBody.choices.filter(function(v) { return v.text != ''; }),
+  console.log('req.file=',req.file)
+  var filepath,
+      reqBody = req.body,
+      chsarry = JSON.parse(reqBody.choices),
+      choices = chsarry.filter(function(v) { return v.text != ''; });
+  if(!!req.file){
+    filepath ='public/upload/images/'+ req.file.filename;
+    console.log('index_create,filepath='+filepath)
+    console.log('req.body=',req.body)
+  }else{
+    filepath = reqBody.poll_theme
+  }
+  /*var reqBody = req.body.poll,*/
   pollObj = {
     question: reqBody.question,
     description: reqBody.description,
-    img_Url: reqBody.img_Url,
+    img_Url: filepath,
     created_user: reqBody.created_user,
     created_time: reqBody.created_time,
     begin_time: reqBody.begin_time,
