@@ -322,12 +322,44 @@ header .main .header_search input {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+  .container #item_header {
+    height: 22rem;
+  }
+  .container #item_header #headwrap {
+    padding: 0.5rem 1.5rem;
+  }
+  .container #item_header #headwrap h2 {
+    font-size: 2.5rem;
+    margin: 1.2rem 0;
+  }
+  .container #item_header #headwrap hr {
+    margin: 0.5rem 0;
+  }
+  .container #item_header #headwrap p {
+    margin: 0.2rem 0;
+  }
 }
 @media only screen and (max-width: 30em) {
   .container {
     width: 95%;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+  }
+  .container #item_header {
+    height: 15rem;
+  }
+  .container #item_header #headwrap {
+    padding: 0.5rem 0.5rem;
+  }
+  .container #item_header #headwrap h2 {
+    font-size: 2rem;
+    margin: 0.6rem 0;
+  }
+  .container #item_header #headwrap hr {
+    margin: 0.2rem 0;
+  }
+  .container #item_header #headwrap p {
+    margin: 0.1rem 0;
   }
 }
 /* 项目样式 */
