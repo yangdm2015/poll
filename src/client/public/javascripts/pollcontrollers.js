@@ -85,9 +85,7 @@ polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pol
       $scope.qrsrc = document.URL;
       $scope.headerstyle = {
         'background-image':'url('+poll.img_Url+')',
-        'background-repeat':'no-repeat',
-        'background-size':'100% 50rem',
-        'background-position': '50% 40%'
+
       }
   });
   var updateSelected = function(action,id){
@@ -158,6 +156,7 @@ polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, pol
 })
 
 polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice',function PollNewCtrl($scope, $location, userservice,pollservice) {
+  document.body.addEventListener('touchstart', function () { });
   console.log("PollNewCtrl")
   // Define an empty poll model object
   $scope.theme_pic_location=pollservice.getthemepic();
