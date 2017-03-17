@@ -410,7 +410,7 @@ header .main .header_search input {
 }
 .wrap .pollitem .caption p {
   border-top: 1px solid#eee;
-  padding-top: 0.4rem;
+  padding: 0.4rem;
   height: calc(90%);
   overflow: hidden;
 }
