@@ -65,7 +65,7 @@ polls1.controller('PollListCtrl',['$timeout','$scope','$location','$route','poll
 function choicesvotepercent(poll){
   for(var i=0,len=poll.choices.length;i<len;i++){
     var pc = poll.choices[i];
-    var vl = (pc.votes.length/poll.totalVotes*100).toFixed(2)+'%';
+    var vl = (pc.votes.length/poll.totalVotes*100).toFixed(2)*0.9+'%';
     poll.choices[i].choicesvotepercent = vl;
     poll.choices[i].mystyle = {
       "background-color":"lightblue",

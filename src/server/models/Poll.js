@@ -10,6 +10,7 @@ PollSchema = new mongoose.Schema({
   question: { type: String, required: true },
   description:String,
   img_Url:String,
+  allow_img_choice:Boolean,
   created_user:String,
   created_time:Date,
   begin_time:Date,
