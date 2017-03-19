@@ -34,7 +34,7 @@ module.exports = function(grunt) {
                 }]*/
                 files: [{
                     expand: true,
-                    src: 'src/client/public/dest/built.css',
+                    src: 'src/client/dest/built.css',
                     //dest: 'min/',
                     ext: '.min.css',
                     extDot: 'first'
@@ -47,26 +47,26 @@ module.exports = function(grunt) {
             },
             concatjs: { //所有JS文件全部合并成一份文件
                 src: [
-                    'src/client/framework/angular-1.3.0.14/angular.min.js',
-                    'src/client/framework/angular-1.3.0.14/angular-route.min.js',
-                    'src/client/public/javascripts/clientroute.js',
-                    'src/client/public/javascripts/pollcontrollers.js',
-                    'src/client/public/javascripts/usercontroller.js',
-                    'src/client/public/javascripts/userservices.js',
-                    'src/client/public/javascripts/pollservices.js'
+                    'src/client/module/abt/angular-animate.min.js',
+                    'src/client/module/angular-route.min.js',
+                    'src/client/routercomponent/clientroute.js',
+                    'src/client/pollcomponent/pollcontrollers.js',
+                    'src/client/usercomponent/usercontroller.js',
+                    'src/client/usercomponent/userservices.js',
+                    'src/client/usercomponent/pollservices.js'
                 ],
-                dest: 'src/client/public/dest/built.js'
+                dest: 'src/client/dest/built.js'
             },
             concatcss:{
-                src:['src/client/public/stylesheets/bootstrap_cus.min.css','src/client/public/stylesheets/normalize.css','src/client/public/stylesheets/poll.css'],
-                dest: 'src/client/public/dest/built.css'
+                src:['src/client/module/bootstrap/css/bootstrap.min.css','src/client/routercomponent/stylesheets/polles.css'],
+                dest: 'src/client/dest/built.css'
             }
         },
         watch: {
             javascript: {
 
                 //files: ['app.js','src/public/**/*.js','src/routes/*.js','src/models/*.js'],
-                files: ['app.js','src/public/**/*.js','src/routes/*.js','src/models/*.js'],
+                files: ['app.js','src/client/**/*.js','src/client/*.js','src/client/*.js'],
                 /*tasks: ['concat:allInOne', 'uglify:buildsrc', 'uglify:buildrelease'],*/
                 options: {
                     spawn: true,
@@ -81,13 +81,13 @@ module.exports = function(grunt) {
                 }
             },
             css:{
-                files:['src/client/public/stylesheets/*.css'],
+                files:['src/client/routercomponent/stylesheets/*.css'],
                 options:{
                   livereload: "<%= connect.options.livereload %>"
                 }
             },
             less: {
-                files: ['*src/client/public/stylesheets/*.less'],
+                files: ['*src/client/routercomponent/stylesheets/*.less'],
                 tasks: ['less']
             }
         },
@@ -111,7 +111,7 @@ module.exports = function(grunt) {
         less: {
             compile: {
                 files: {
-                    'src/client/public/stylesheets/polles.css': 'src/client/public/stylesheets/polles.less'
+                    'src/client/routercomponent/stylesheets/polles.css': 'src/client/routercomponent/stylesheets/polles.less'
                 }
             }
         },

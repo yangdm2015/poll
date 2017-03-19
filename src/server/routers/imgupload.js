@@ -2,7 +2,7 @@ var multer  = require('multer')
 module.exports = function(){
 
 var storage = multer.diskStorage({
-  destination: "src/client/public/upload/images/",
+  destination: "src/client/pollcomponent/upload/images/",
   filename: function (req, file, cb) {
     console.log('file.originalname.split(.)',file.originalname.split('.'))
     var expname=file.originalname.split('.').pop()

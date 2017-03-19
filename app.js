@@ -35,7 +35,7 @@ app.use(session({
     store: mgstore,
     secret: COOKIE_SECRET,
     saveUninitialized: true,
-    resave: true,
+    resave: false,
     cookie: {
         path: '/',
         httpOnly: true,
@@ -44,7 +44,7 @@ app.use(session({
     }
 }));
 app.set('port', process.env.VCAP_APP_PORT || 18080);
-app.set('views', path.join(__dirname, './src/client/views'));
+app.set('views', path.join(__dirname, 'src/client/pages/jades'));
 app.use(express.static(path.join(__dirname, 'src/client')));
 app.set('view engine', 'jade');
 

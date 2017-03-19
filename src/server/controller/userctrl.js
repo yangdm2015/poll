@@ -34,7 +34,7 @@ exports.login=function(req, res,next){
   var _user = req.body.user
   var account = _user.account
   var password = _user.password
-  c('user');c(_user);
+  c('in login in login in login in login in login')
   User.findOne({account:account},function(err,user){
     if(err){c(err)}
     if(!user){//当找不到user时， user = ''  !user = true
@@ -74,6 +74,7 @@ exports.status=function(req, res){
       status: false
     });
   }
+  console.log('in session,useraccount =',req.session.user.account)
   res.json({status:'ok',account:req.session.user.account,islogin:true})
   /*console.log('in status, isauth=',req.isAuthenticated())
   console.log('req.user=',req.user)

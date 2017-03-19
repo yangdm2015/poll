@@ -1,0 +1,55 @@
+<!-- <div class="modal-demo1111" ng-controller="ModalUserCtrl as $ctrl">
+
+
+<button class="btn btn-default"type="button" ng-click="$ctrl.open()">Open me!</button>
+</div> -->
+<script id="LoginModalContent"type="text/ng-template">
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-title">用户登录</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
+    <div class="form-group">
+      <input type="text" class="form-control" type="text" class="form-control" placeholder="账号/手机号"required autofocus ng-model="$ctrl.account">
+    </div>
+    <div class="form-group">
+      <input  class="form-control" type="password" class="form-control" placeholder="密码"required ng-model="$ctrl.password">
+    </div>
+    <div class="form-group">
+      <input type="checkbox" value="remember">下次自动登录
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="$ctrl.ok()">登录</button>
+    <button class="btn btn-warning" ng-click="$ctrl.cancel()">取消</button>
+  </div>
+  <div ng-controller="AlertDemoCtrl as $actrl">
+    <div uib-alert ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="$ctrl.closeAlert($index)" style="text-align:left">{{alert.msg}}</div>
+    </div>
+  </div>
+</script>
+
+<script id="registerModalContent"type="text/ng-template">
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-title">用户注册</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
+    <div class="form-group">
+      <input type="text" class="form-control" type="text" class="form-control" placeholder="账号/手机号"required autofocus ng-model="$ctrl.account">
+    </div>
+    <div class="form-group">
+      <input  class="form-control" type="password" class="form-control" placeholder="密码"required ng-model="$ctrl.password">
+    </div>
+    <div class="form-group">
+      <input type="checkbox" ng-model="$ctrl.autologin">注册后自动登录
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" ng-click="$ctrl.ok()">注册</button>
+    <button class="btn btn-warning" ng-click="$ctrl.cancel()">取消</button>
+  </div>
+  <div ng-controller="AlertDemoCtrl as $actrl">
+    <div uib-alert ng-repeat="alert in $ctrl.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="$ctrl.closeAlert($index)" style="text-align:left">{{alert.msg}}</div>
+    </div>
+  </div>
+</script>
+

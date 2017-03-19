@@ -1,0 +1,47 @@
+header(ng-controller="ModalHeaderCtrl as $ctrl")
+  .header_main_top
+    nav.top
+      span.notice 公告：新用户发布投票须知
+      ul
+        li
+          a(href='#') 联系我们
+          span
+        li
+          a(href='#') 帮助中心
+          span
+        li(ng-hide='$ctrl.islogin')
+          a(ng-click="$ctrl.loginmodalopen()" ng-hide='$ctrl.islogin' ) 登录
+          a(ng-click="$ctrl.registermodalopen()"  href='#' ng-hide='$ctrl.islogin') 注册
+        li(ng-show='$ctrl.islogin' ) 欢迎您，{{$ctrl.curraccount}}
+          span
+          a(href='#' ng-click='$ctrl.logout()') 登出
+    include modaltemplate.html
+  .header_main_center
+    nav.main
+      .flex1
+        a(href='#').brand
+          img(src='routercomponent/routerimg/logo_nowords.png' alt='回到首页')
+      .flex3
+        .header_search
+          input(ng-model="query"  placeholder="输入关键字查询")
+        ul
+          li
+            a(href="#")#mainpage 首页
+          li
+            a(href="#/new")#newpoll +发起投票
+          li
+            a(href="#/mypolls" )#findpoll 我发起的投票
+          li
+            a(href="#/myvotes")#findpoll 我参与的投票
+      .flex1(ng-click="$ctrl.showmenu=$ctrl.showmenu?false:true" ng-init="$ctrl.showmenu=false")
+        .wrap-tri-b
+          .line-tri-b
+    div.menuwrap(ng-show='$ctrl.showmenu' ng-click="$ctrl.showmenu=false")
+      div.dropmenu
+        a(href="#/new") +发起投票
+        a(href="#/mypolls" ) 我发起的投票
+        a(href="#/myvotes") 我参与的投票
+        a( ng-hide='$ctrl.islogin' ng-click="$ctrl.loginmodalopen()") 登录
+        a(ng-hide='$ctrl.islogin' ng-click="$ctrl.registermodalopen()" ) 注册
+        a(ref="#") 欢迎您，{{$ctrl.curraccount}}
+        a( ng-show='$ctrl.islogin' ng-click='$ctrl.logout()') 登出

@@ -1,0 +1,13 @@
+.modal-demo(ng-controller="ModalDemoCtrl as $ctrl")
+  script#myModalContent(type="text/ng-template")
+    .modal-header
+      h3.modal-title#modal-title 用户登录
+    .modal-body#modal-body
+      input.form-control(type="text" class="form-control" placeholder="账号/手机号"required autofocus ng-model="$ctrl.account")
+      input.form-control(type="password" class="form-control" placeholder="密码"required ng-model="$ctrl.password")
+      .checkbox
+        input(type="checkbox" value="remember")
+    .modal-footer
+      button.btn.btn-primary(type="button" ng-click="$ctrl.ok()") 登录
+      button.btn.btn-warning(type="button" ng-click="$ctrl.cancel()") 取消
+button.btn.btn-default( type="button" ng-click="$ctrl.open()") Open me!

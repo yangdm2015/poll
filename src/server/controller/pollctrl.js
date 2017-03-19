@@ -4,7 +4,8 @@ var COOKIE = require('cookie');
 
 exports.index = function(req, res) {
   console.log("index_index")
-  res.render('pollindex');
+  /*res.render('pollindex');*/
+  res.render('boindex');
 };
 exports.list = function(req, res) {
   console.log("index_list")
@@ -21,9 +22,7 @@ exports.mypolls = function(req, res) {
   });
 }
 exports.myvotes = function(req, res) {
-  console.log("in myvotes!!!!!")
   var created_user = req.params.current_user;
-  console.log("created_user = ",created_user)
   Poll.find({})
   .where('choices.votes.ip').in(created_user)
   .exec(function(err,polls){
@@ -37,12 +36,11 @@ exports.myvotes = function(req, res) {
 exports.poll = function(req, res) {
   // Poll ID comes in the URL
   var pollId = req.params.id;
+  var username,islogin;
   if(req.session.user){
-    var username = req.session.user.account;
-  }else{
-    var username =""
+    username = req.session.user.account;
+    islogin=true
   }
-  console.log('in poll,username=',username)
   Poll.findById(pollId, '', { lean: true }, function(err, poll) {
     if(poll) {
       var userVoted = false,votedtext = [],votedid = [],votedip=[],
@@ -56,12 +54,10 @@ exports.poll = function(req, res) {
           if(votedip.indexOf(vote.ip)>-1){
           }else{
             votedip.push(vote.ip)
-            console.log("in poll, votedip=",votedip)
             totalVotedpeople++
           }
 
           if(vote.ip === username) {
-            console.log('vote.ip === (username)')
             userVoted = true;
             votedid.push(choice._id);
             votedtext.push(choice.text);
@@ -73,6 +69,8 @@ exports.poll = function(req, res) {
       poll.userChoice = {_id:votedid,text:votedtext};
       poll.totalVotes = totalVotes;
       poll.totalVotedpeople = totalVotedpeople;
+      poll.current_user = username;
+      poll.islogin = islogin;
       res.json(poll);
     } else {
       res.json({error:true});
@@ -89,8 +87,6 @@ exports.create = function(req, res) {
       choices = chsarry.filter(function(v) { return v.text != ''; });
   if(!!req.file){
     filepath ='public/upload/images/'+ req.file.filename;
-    console.log('index_create,filepath='+filepath)
-    console.log('req.body=',req.body)
   }else{
     filepath = reqBody.poll_theme
   }
@@ -123,7 +119,11 @@ exports.create = function(req, res) {
 };
 
 exports.vote = function(socket) {
+  socket.on('userchange',function(accountinfo){
+    socket.emit('userchangeclient', accountinfo);
+  })
   socket.on('send:vote', function(voteObj) {
+    console.log('send:vote!')
     ip=voteObj.useraccount;
     Poll.findById(voteObj.poll_id, function(err, poll) {
       for( var index in voteObj.choices){

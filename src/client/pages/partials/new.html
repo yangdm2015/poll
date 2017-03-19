@@ -1,0 +1,97 @@
+<header><h2>发起投票</h2> <hr>  </header>
+<!-- <div class="page-header">
+  <h1>创建投票</h1>
+</div> -->
+<div class="wrap">
+
+</div>
+<!--  <input type="file" name='theme_pic' ng-hide='true' fileread="fileread" ng-model="fileread" class=" form-control itemcontext" required="required"  placeholder=">主题图片"> -->
+<fileread  fileread='fileread'> </fileread>
+<form role="form" ng-submit="createPoll()" id='newform'>
+  <div class="form-group">
+    <label for="pollQuestion"class="itemlabel">主题图片</label>
+    <div id="poll_theme_pic">
+      <img id='output' src = '{{theme_pic_location}}' ng-click='trigger_input()'>
+    </div>
+
+
+  </div>
+  <div class="form-group">
+    <label for="pollQuestion"class="itemlabel">主题</label>
+    <input type="text" ng-model="poll.question" class=" form-control itemcontext" id="pollQuestion"required="required" placeholder="输入投票主题">
+    <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
+  </div>
+  <div class="form-group">
+    <label for="pollDsp"class="itemlabel">描述</label>
+    <textarea class="form-control itemcontext" ng-model="poll.description" rows="3"id="pollDsp"required="required" placeholder="输入投票描述"></textarea>
+    <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
+  </div>
+
+  <div class="form-group">
+    <label for="muti_choice"class="itemlabel">是否允许多选</label>
+    <label for="muti_choice"class="checkcontext">
+      <input type="checkbox" class="itemcontext" id = 'muti_choice'name = 'muti_choice'ng-model="poll.allow_muti_choice">
+
+    </label>
+    <!-- <input type="checkbox" ng-model="poll.allow_muti_choice" class="form-control" id="pollAmc" > -->
+  </div>
+  <div class="form-group" ng-show="poll.allow_muti_choice">
+    <label for="max_chosen_num"class="itemlabel" ng-init="choicenum=[1,2]">最多允许选择数</label>
+    <select ng-init="poll.max_chosen_num = choicenum[0]" id ='max_chosen_num' name='max_chosen_num'ng-model="poll.max_chosen_num" ng-options="x for x in choicenum" ng-required="poll.allow_muti_choice"  class="form-control">
+    </select>
+    <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
+  </div>
+  <div class="form-group">
+    <label for="muti_choice"class="itemlabel">是否为图片选择</label>
+    <label for="muti_choice"class="checkcontext">
+      <input type="checkbox" class="itemcontext" id = 'allow_img_choice'name = 'allow_img_choice'ng-model="poll.allow_img_choice" ng-init='poll.allow_img_choice=true'>
+    </label>
+    <!-- <input type="checkbox" ng-model="poll.allow_muti_choice" class="form-control" id="pollAmc" > -->
+  </div>
+  <div class="form-group top" ng-show = '!poll.allow_img_choice'>
+    <label class="choiceitemlabel itemlabel">选项</label>
+    <div class="newchoicewrap itemcontext">
+      <div ng-repeat="choice in poll.choices" class='choiceitem'>
+        <input type="text" ng-model="choice.text" class="form-control "required="required" placeholder="输入第 {{$index+1}} 个选项">
+        <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
+        <!-- <br> -->
+      </div>
+    </div>
+  </div>
+  <div class="form-group top" ng-show = 'poll.allow_img_choice'>
+    <label class="choiceitemlabel itemlabel">图片选项</label>
+    <div class="newchoicewrap itemcontext">
+      <div ng-repeat="choice in poll.choices" class='choiceitem img_wrap'>
+        <div class="choice_img"> 点击上传图片</div>
+        <textarea type="text" ng-model="choice.text" class="form-control "required="required" placeholder="输入第 {{$index+1}} 个选项"></textarea>
+        <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
+        <!-- <br> -->
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <div class="itemlabel">
+    </div>
+    <div class="itemcontext">
+      <button type="button" class="addchoice btn btn-default" ng-click="addChoice()"><span class="glyphicon glyphicon-plus"></span> 新增选项</button>
+      <button type="button" class="removechoice btn btn-default" ng-click="popChoice()"><span class="glyphicon glyphicon-minus"></span> 删除选项</button>
+    </div>
+  </div>
+
+  <p><hr></p>
+
+  <div class="form-group createpoll" >
+    <div class="itemlabel">
+      <a href="#/polls" class="btn btn-default" role="button"><span class="glyphicon glyphicon-arrow-left"></span> 返回投票列表</a>
+    </div>
+    <div class="itemcontext ">
+      <button type="button" class="btn btn-danger"ng-show='hover'>请先登录再创建!</button>
+      <button class="btn btn-primary pull-right" type="submit" ng-show='islogin'>发起投票 &raquo;</button>
+      <button class="btn btn-primary pull-right" type="button" ng-mouseleave="hover = false" ng-mouseenter="hover = true" ng-hide='islogin'>发起投票 &raquo;</button>
+    </div>
+  </div>
+
+  <p>&nbsp;</p>
+</form>
