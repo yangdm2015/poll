@@ -30,3 +30,14 @@ polls1.run(function ($rootScope, $location, $route, userservice) {
       });
   });
 });
+
+polls1.service('messageService', ['$rootScope', function($rootScope) {
+  return {
+    publish: function(name, parameters) {
+      $rootScope.$emit(name, parameters);
+    },
+    subscribe: function(name, listener) {
+      $rootScope.$on(name, listener);
+    }
+  };
+}]);

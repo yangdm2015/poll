@@ -8,28 +8,31 @@ exports.index = function(req, res) {
   res.render('boindex');
 };
 exports.list = function(req, res) {
-  console.log("index_list")
-  Poll.find({}, 'question description img_Url created_user meta', function(error, polls) {
+  var query = req.query.query=='undefined'?RegExp(undefined):RegExp(req.query.query)
+  /*query = RegExp('t')*/
+  console.log("query=",query)
+
+  Poll.find({'question':query}, 'question description img_Url created_user meta', function(error, polls) {
+    console.log('polls.length=',polls.length)
     res.json(polls);
   });
 };
 exports.mypolls = function(req, res) {
   console.log("in mypoll!!!!!")
+  var query = req.query.query=='undefined'?RegExp(undefined):RegExp(req.query.query)
   var created_user = req.params.created_user;
-
-  Poll.find({created_user:created_user}, 'question description img_Url created_user', function(error, polls) {
+  Poll.find({created_user:created_user,'question':query},'question description img_Url created_user', function(error, polls) {
     res.json(polls);
   });
 }
 exports.myvotes = function(req, res) {
+  var query = req.query.query=='undefined'?RegExp(undefined):RegExp(req.query.query)
   var created_user = req.params.current_user;
-  Poll.find({})
+  Poll.find({'question':query})
   .where('choices.votes.ip').in(created_user)
   .exec(function(err,polls){
-    console.log("polls",polls)
     res.json(polls);
   })
-
 }
 
 // JSON API for getting a single poll
@@ -78,28 +81,7 @@ exports.poll = function(req, res) {
   });
 };
 
-function getimgurlfromfile(files ,index){
-  var path = 'pollcomponent/upload/images/'+files[index].filename;
-  return path;
-}
-function addchoiceimgpath(files,len,chosarray){
-  var imgarray = [];
-  for(var i=0;i<len;i++){
-    var fn = getimgurlfromfile(files,i)
-    chosarray[i].img_Url=fn;
-    imgarray.push(fn)
-  }
-  console.log('in addchoiceimgpath,chosarray=',chosarray)
-  return imgarray;
-}
-function str2boolean(str){
-  if(typeof str !='string'){
-    return str;
-  }else{
-    if(str=='false') return false;
-    if(str=='true') return true;
-  }
-}
+
 // JSON API for creating a new poll
 exports.create = function(req, res) {
   /*console.log('req.files=',req.files)*/
@@ -176,6 +158,31 @@ if(wrong){
       res.json(doc);
     }
   });
+  function getimgurlfromfile(files ,index){
+    var path = 'pollcomponent/upload/images/'+files[index].filename;
+    return path;
+  }
+  function addchoiceimgpath(files,len,chosarray){
+    var imgarray = [];
+    for(var i=0;i<len;i++){
+      var fn = getimgurlfromfile(files,i)
+      chosarray[i].img_Url=fn;
+      imgarray.push(fn)
+    }
+    console.log('in addchoiceimgpath,chosarray=',chosarray)
+    return imgarray;
+  }
+  function str2boolean(str){
+    if(typeof str !='string'){
+      return str;
+    }else{
+      if(str=='false') return false;
+      if(str=='true') return true;
+      return str;
+    }
+  }
+
+
 };
 
 exports.vote = function(socket) {

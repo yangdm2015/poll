@@ -2,16 +2,54 @@
 /*angular.module('pollServices', ['ngResource'])*/
 polls1
 .factory('pollservice',['$q',"$http",function($q,$http){
-  var getallpolls = function(){
+  var getallpolls = function(query){
     var deferred = $q.defer();
     var promise = deferred.promise;
-    $http.get('/polls/polls')
+    console.log('query=',query)
+    $http.get('/polls/polls?query='+query)
     .then(function(data){
       deferred.resolve(data);
     })
     .catch(function (err) {
       deferred.reject(err);
     });
+    return promise;
+  }
+  var getmypoll=function(username,query){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    if(username){
+      var url = '/mypolls/'+username;
+      url = url+'?query='+query
+      $http.get(url)
+      .then(function(data){
+        console.log('in getmypoll, return data=',data)
+        deferred.resolve(data);
+      })
+      .catch(function (err) {
+        deferred.reject(err);
+      });
+    }else{
+      deferred.reject('Please login first!');
+    }
+    return promise;
+  }
+  var getmyvote=function(username,query){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    if(username){
+      var url = '/myvotes/'+username;
+      url = url+'?query='+query
+      $http.get(url)
+      .then(function(data){
+        deferred.resolve(data);
+      })
+      .catch(function (err) {
+        deferred.reject(err);
+      });
+    }else{
+      deferred.reject('Please login first!');
+    }
     return promise;
   }
   var getpoll = function(pollId){
@@ -86,41 +124,7 @@ polls1
     }
     return promise;
   }
-  var getmypoll=function(username){
-    var deferred = $q.defer();
-    var promise = deferred.promise;
-    if(username){
-      var url = '/mypolls/'+username;
-      $http.get(url)
-      .then(function(data){
-        console.log('in getmypoll, return data=',data)
-        deferred.resolve(data);
-      })
-      .catch(function (err) {
-        deferred.reject(err);
-      });
-    }else{
-      deferred.reject('Please login first!');
-    }
-    return promise;
-  }
-  var getmyvote=function(username){
-    var deferred = $q.defer();
-    var promise = deferred.promise;
-    if(username){
-      var url = '/myvotes/'+username;
-      $http.get(url)
-      .then(function(data){
-        deferred.resolve(data);
-      })
-      .catch(function (err) {
-        deferred.reject(err);
-      });
-    }else{
-      deferred.reject('Please login first!');
-    }
-    return promise;
-  }
+
   var getthemepic=function(){
     var theme_pic_location = 'pollcomponent/theme_pic/'+Math.floor((Math.random()*21)+1)+'.jpg'
     return theme_pic_location;

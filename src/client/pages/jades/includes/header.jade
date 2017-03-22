@@ -23,7 +23,8 @@ header(ng-controller="ModalHeaderCtrl as $ctrl")
           img(src='routercomponent/routerimg/logo_nowords.png' alt='回到首页')
       .flex3
         .header_search
-          input(ng-model="query"  placeholder="输入关键字查询")
+          input(ng-model="$ctrl.query"  placeholder="输入关键字查询")
+          .sbtn(ng-click="$ctrl.select()") GO
         ul
           li
             a(href="#")#mainpage 首页
@@ -43,5 +44,5 @@ header(ng-controller="ModalHeaderCtrl as $ctrl")
         a(href="#/myvotes") 我参与的投票
         a( ng-hide='$ctrl.islogin' ng-click="$ctrl.loginmodalopen()") 登录
         a(ng-hide='$ctrl.islogin' ng-click="$ctrl.registermodalopen()" ) 注册
-        a(ref="#") 欢迎您，{{$ctrl.curraccount}}
+        a(ref="#" ng-show ='$ctrl.islogin' ) 欢迎您，{{$ctrl.curraccount}}
         a( ng-show='$ctrl.islogin' ng-click='$ctrl.logout()') 登出

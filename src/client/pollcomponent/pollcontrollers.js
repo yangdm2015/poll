@@ -23,13 +23,19 @@ polls1.controller('HomeCtrl',['$timeout','$scope','$location','$route','userserv
     console.log('test=',data.name)
   })*/
 }])
-polls1.controller('MyPollListCtrl',['$timeout','$scope','$location','$route','pollservice','userservice',function ($timeout,$scope,$location,$route,pollservice,userservice) {
+polls1.controller('MyPollListCtrl',['$timeout','$scope','$location','$route','pollservice','userservice','messageService',function ($timeout,$scope,$location,$route,pollservice,userservice,messageService) {
+  messageService.subscribe('query4question', function(event, data) {
+    console.log("MyVoteListCtrl",data.query)
+    getmypoll(data.query)
+  })
+
+  function getmypoll(query){
     userservice.getUserStatus()
     .then(function(re){
       var result=re.data
       var name = result.account;
      /* $scope.polls =MyPolls.query({cuser:username})*/
-      return pollservice.getmypoll(name)
+      return pollservice.getmypoll(name,query)
     })
     .then(function(po){
       $scope.polls = po.data;
@@ -37,13 +43,26 @@ polls1.controller('MyPollListCtrl',['$timeout','$scope','$location','$route','po
     .catch(function (err) {
       console.log(err);
     });
+  }
+  getmypoll()
+  $scope.showItemdetail = function(itemId){
+    window.location.href='#/poll/'+itemId
+    return false;
+  };
+
+
 }])
-polls1.controller('MyVoteListCtrl',['$timeout','$scope','$location','$route','pollservice','userservice',function ($timeout,$scope,$location,$route,pollservice,userservice) {
+polls1.controller('MyVoteListCtrl',['$timeout','$scope','$location','$route','pollservice','userservice','messageService',function ($timeout,$scope,$location,$route,pollservice,userservice,messageService) {
+  messageService.subscribe('query4question', function(event, data) {
+    console.log("MyVoteListCtrl",data.query)
+    getmyvote(data.query)
+  })
+  function getmyvote(query){
     userservice.getUserStatus()
     .then(function(re){
       var result=re.data
       var username = result.account;
-      return pollservice.getmyvote(username)
+      return pollservice.getmyvote(username,query)
       /*$scope.polls =MyVotes.query({cuser:username})*/
     })
     .then(function(po){
@@ -52,39 +71,48 @@ polls1.controller('MyVoteListCtrl',['$timeout','$scope','$location','$route','po
     .catch(function (err) {
       console.log(err);
     });
+  }
+  getmyvote()
+  $scope.showItemdetail = function(itemId){
+    window.location.href='#/poll/'+itemId
+    return false;
+  };
 }])
 
-polls1.controller('PollListCtrl',['$timeout','$scope','$location','$route','pollservice','userservice',function ($timeout,$scope,$location,$route,pollservice) {
+
+
+polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice','messageService',function PollListCtrl($timeout,$scope,$location,pollservice,messageService) {
   console.log('PollListCtrl')
   $scope.showItemdetail = function(itemId){
     window.location.href='#/poll/'+itemId
     return false;
   };
-  pollservice.getallpolls()
-  .then(function(polls){
-    $scope.polls = polls.data;
-    for(var p in $scope.polls){
-      var po = $scope.polls[p];
-      $scope.polls[p].img_Url= po.img_Url?po.img_Url:'routercomponent/routerimg/logo.png'
+  function genorder(polls){
+    var ps = polls
+    for(var p in ps){
+      var po = ps[p];
+      po.img_Url= po.img_Url?po.img_Url:'routercomponent/routerimg/logo.png'
       var d = new Date(po.meta.updateAt);
       d=(d.getTime()+"").slice(0,7);
-      $scope.polls[p].order=d;
+      po.order=d;
     }
-    /*console.log('polls=',$scope.polls);*/
+    return ps
+  }
+  messageService.subscribe('query4question', function(event, data) {
+    console.log(data.query)
+    pollservice.getallpolls(data.query)
+    .then(function(result){
+      $scope.polls=genorder(result.data)
+    });
+  })
+  pollservice.getallpolls()
+  .then(function(result){
+    $scope.polls=genorder(result.data)
   });
 }])
- var isvoted=function(poll,account){
-  for(c in poll.choices) {
-    var choice = poll.choices[c];
-    for(v in choice.votes) {
-      var vote = choice.votes[v];
-      if(vote.ip === account) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
+
+
+
 /*polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, socket, pollservice,userservice) {*/
 polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socket','userservice','$rootScope',function PollItemCtrl($scope, $routeParams, pollservice,socket,userservice,$rootScope) {
 
@@ -94,6 +122,18 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
     $scope.poll.userVoted = isvoted($scope.poll,accountinfo.account)
     console.log('userchangeclient')
   })
+  var isvoted=function(poll,account){
+    for(c in poll.choices) {
+      var choice = poll.choices[c];
+      for(v in choice.votes) {
+        var vote = choice.votes[v];
+        if(vote.ip === account) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
  /* $scope.$on('userchangeItem',function(event,data){
     $scope.islogin = data.islogin;
     $scope.currusername = data.account;

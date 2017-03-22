@@ -1,4 +1,4 @@
-polls1.controller('ModalHeaderCtrl', ['userservice','$uibModal','$rootScope','socket',function (userservice,$uibModal,$rootScope,socket) {
+polls1.controller('ModalHeaderCtrl', ['userservice','$uibModal','$rootScope','socket','messageService',function (userservice,$uibModal,$rootScope,socket,messageService) {
   var $ctrl = this;
   $ctrl.animationsEnabled = true;
   userservice.getUserStatus()
@@ -12,6 +12,9 @@ polls1.controller('ModalHeaderCtrl', ['userservice','$uibModal','$rootScope','so
     }
   })
 
+  $ctrl.select=function(){
+    messageService.publish('query4question',{query:$ctrl.query})
+  }
 
   $ctrl.logout=function(){
       userservice.signout()

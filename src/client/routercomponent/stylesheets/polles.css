@@ -149,22 +149,51 @@ header .main ul li a #newpoll {
   background-color: #fff;
 }
 header .main .header_search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   height: 3rem;
-  width: 16rem;
+  width: 22rem;
   border-radius: 0.3rem;
-  background-color: #7e8291;
+  /* background-color: #7e8291; */
+  background-color: #fff;
   margin: 0;
 }
 header .main .header_search input {
+  margin-left: 0.5rem;
   width: 13rem;
-  height: 1.8rem;
-  background-color: #7e8291;
+  height: 2.4rem;
+  /* background-color: red; */
+  background-color: #fff;
   /* float:left; */
-  margin: .5rem .5rem 0 1rem;
+  /* margin:.5rem .5rem 0 1rem; */
   font-size: 1.4rem;
-  color: #e5e6e9;
-  border: 0px solid #7e8291;
+  color: #3d445c;
+  border: 0px solid #fff;
   outline: none;
+}
+header .main .header_search .sbtn {
+  display: inline-block;
+  flex: 0 1 4rem;
+  height: 100%;
+  text-align: center;
+  line-height: 3rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #3d445c;
+  background-color: #fff;
+  border-top-right-radius: 4px 4px;
+  border-bottom-right-radius: 4px 4px;
+}
+@media only screen and (max-width: 38em) {
+  header .main .header_search {
+    width: 18rem;
+  }
+}
+@media only screen and (max-width: 31em) {
+  header .main .header_search {
+    width: 16rem;
+  }
 }
 @media only screen and (min-width: 48em) and (max-width: 75em) {
   header {
@@ -195,7 +224,7 @@ header .main .header_search input {
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    width: 100%;
+    /* width:100%; */
   }
   header .main ul li:nth-child(2) {
     margin-right: 0.8rem;
@@ -232,10 +261,12 @@ header .main .header_search input {
     padding: 0rem 0.5rem 0;
   }
   header .main .header_search {
-    width: 12rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   header .main .header_search input {
-    margin: .5rem .2rem 0 0.4rem;
+    /* margin: .5rem .2rem 0 0.4rem; */
     width: 11rem;
   }
   header .main .flex1 .wrap-tri-b {

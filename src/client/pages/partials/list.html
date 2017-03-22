@@ -2,19 +2,19 @@
   <ul ng-switch-when="0">
     <li><em>没有正在进行的投票，你想<a href="#/new">新建</a>一个吗？</li>
   </ul>
-    <div class='wrap' >
-      <div class="pollitem hvr-border-fade"ng-repeat="poll in polls | filter:query" style="order:-{{poll.order}}" href="#/poll/{{poll._id}}"onmouseover="this.style.cursor='pointer'"
-      ng-click="showItemdetail(poll._id)"  >
-          <div class="imgholder">
-            <!-- <img class='holder'data-src="holder.js/300x300" src= '../public/img/logo.png' alt="..."> -->
-            <img class='holder' ng-src= '{{poll.img_Url}}' alt="{{poll.description}}">
-            <div class="imgtitle" >{{poll.question}}</div>
-          </div>
-          <div class="caption">
-            <p>{{poll.description}}</p>
-          </div>
+  <div class='wrap' >
+    <div class="pollitem hvr-border-fade"ng-repeat="poll in polls" style="order:-{{poll.order}}" href="#/poll/{{poll._id}}"onmouseover="this.style.cursor='pointer'"
+    ng-click="showItemdetail(poll._id)"  >
+      <div class="imgholder">
+        <!-- <img class='holder'data-src="holder.js/300x300" src= '../public/img/logo.png' alt="..."> -->
+        <img class='holder' ng-src= '{{poll.img_Url}}' alt="{{poll.description}}">
+        <div class="imgtitle" >{{poll.question}}</div>
+      </div>
+      <div class="caption">
+        <p>{{poll.description}}</p>
       </div>
     </div>
+  </div>
 
 </div>
 
