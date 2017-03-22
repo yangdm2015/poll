@@ -28,12 +28,24 @@ polls1
   }
   function fds(poll,fileread){
     var fd = new FormData();
+    var imgchs = poll.allow_img_choice
     angular.forEach(poll, function(val, key) {
       if(key=='choices'){
+        if(imgchs){
+          for(var i=0,len=val.length;i<len;i++){
+            var filetmp = val[i].file;
+            fd.append('poll_theme', filetmp);
+            /*delete val[i].file;*/
+          }
+        }
         fd.append(key, JSON.stringify(val))
       }else fd.append(key, val);
     });
-    fd.append('poll_theme', fileread);
+    if(typeof fileread =='string'){/*说明用的是默认图片*/
+      fd.append('poll_theme_url', fileread);
+    }else{
+      fd.append('poll_theme', fileread);
+    }
     return fd;
   }
   var savepoll=function(poll,fileread){

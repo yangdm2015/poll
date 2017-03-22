@@ -1,12 +1,6 @@
 <header><h2>发起投票</h2> <hr>  </header>
-<!-- <div class="page-header">
-  <h1>创建投票</h1>
-</div> -->
-<div class="wrap">
-
-</div>
 <!--  <input type="file" name='theme_pic' ng-hide='true' fileread="fileread" ng-model="fileread" class=" form-control itemcontext" required="required"  placeholder=">主题图片"> -->
-<fileread  fileread='fileread'> </fileread>
+<filefrominput  fileread='fileread'> </filefrominput>
 <form role="form" ng-submit="createPoll()" id='newform'>
   <div class="form-group">
     <label for="pollQuestion"class="itemlabel">主题图片</label>
@@ -17,18 +11,18 @@
 
   </div>
   <div class="form-group">
-    <label for="pollQuestion"class="itemlabel">主题</label>
-    <input type="text" ng-model="poll.question" class=" form-control itemcontext" id="pollQuestion"required="required" placeholder="输入投票主题">
+    <label for="pollQuestion"class="itemlabel">主题{{islogin}}{{poll.test}}</label>
+    <input type="text" ng-model="poll.question" class=" form-control itemcontext" id="pollQuestion"required="required" placeholder="输入投票主题" name='pollQuestion'>
     <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
   </div>
   <div class="form-group">
     <label for="pollDsp"class="itemlabel">描述</label>
-    <textarea class="form-control itemcontext" ng-model="poll.description" rows="3"id="pollDsp"required="required" placeholder="输入投票描述"></textarea>
+    <textarea class="form-control itemcontext" ng-model="poll.description" rows="3"id="pollDsp"required="required" placeholder="输入投票描述"name='pollDsp'></textarea>
     <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
   </div>
 
   <div class="form-group">
-    <label for="muti_choice"class="itemlabel">是否允许多选</label>
+    <label for="muti_choice"class="itemlabel">是否允许多选</label>{{max_chosen_num}}
     <label for="muti_choice"class="checkcontext">
       <input type="checkbox" class="itemcontext" id = 'muti_choice'name = 'muti_choice'ng-model="poll.allow_muti_choice">
 
@@ -42,9 +36,9 @@
     <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
   </div>
   <div class="form-group">
-    <label for="muti_choice"class="itemlabel">是否为图片选择</label>
+    <label for="muti_choice"class="itemlabel">是否为图片选择 </label>
     <label for="muti_choice"class="checkcontext">
-      <input type="checkbox" class="itemcontext" id = 'allow_img_choice'name = 'allow_img_choice'ng-model="poll.allow_img_choice" ng-init='poll.allow_img_choice=true'>
+      <input type="checkbox" class="itemcontext" id = 'allow_img_choice'name = 'allow_img_choice'ng-model="poll.allow_img_choice" ng-init='poll.allow_img_choice=true'value="{{poll.allow_img_choice}}">
     </label>
     <!-- <input type="checkbox" ng-model="poll.allow_muti_choice" class="form-control" id="pollAmc" > -->
   </div>
@@ -52,21 +46,28 @@
     <label class="choiceitemlabel itemlabel">选项</label>
     <div class="newchoicewrap itemcontext">
       <div ng-repeat="choice in poll.choices" class='choiceitem'>
-        <input type="text" ng-model="choice.text" class="form-control "required="required" placeholder="输入第 {{$index+1}} 个选项">
+        <input type="text" ng-model="choice.text" class="form-control " ng-required="!poll.allow_img_choice" placeholder="输入第 {{$index+1}} 个选项" name='chs'>
         <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
-        <!-- <br> -->
       </div>
     </div>
   </div>
   <div class="form-group top" ng-show = 'poll.allow_img_choice'>
     <label class="choiceitemlabel itemlabel">图片选项</label>
     <div class="newchoicewrap itemcontext">
-      <div ng-repeat="choice in poll.choices" class='choiceitem img_wrap'>
-        <div class="choice_img"> 点击上传图片</div>
-        <textarea type="text" ng-model="choice.text" class="form-control "required="required" placeholder="输入第 {{$index+1}} 个选项"></textarea>
+      <div ng-repeat="choice in poll.choices" class='choiceitem img_wrap' multiimgup  idx='{{$index}}' chos='poll.choices'>
+        <textarea type="text" ng-model="choice.text" class="form-control "required="required" placeholder="输入第 {{$index+1}} 个选项" name='imgctrl'></textarea>
         <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
-        <!-- <br> -->
       </div>
+
+     <!--  <div ng-repeat="choice in poll.choices" class='choiceitem img_wrap'>
+       <div class="choice_img"> 点击上传图片
+         <img id="choice_img_{{$index}}"  src="" alt="">
+       </div>
+       <textarea type="text" ng-model="choice.text" class="form-control "required="required" placeholder="输入第 {{$index+1}} 个选项"></textarea>
+       <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
+     </div> -->
+
+
     </div>
   </div>
 

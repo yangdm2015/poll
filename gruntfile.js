@@ -34,7 +34,8 @@ module.exports = function(grunt) {
                 }]*/
                 files: [{
                     expand: true,
-                    src: 'src/client/dest/built.css',
+                    /*src: 'src/client/dest/built.css',*/
+                    src: 'src/client/routercomponent/stylesheets/polles.css',
                     //dest: 'min/',
                     ext: '.min.css',
                     extDot: 'first'
@@ -47,20 +48,19 @@ module.exports = function(grunt) {
             },
             concatjs: { //所有JS文件全部合并成一份文件
                 src: [
-                    'src/client/module/abt/angular-animate.min.js',
                     'src/client/module/angular-route.min.js',
                     'src/client/routercomponent/clientroute.js',
                     'src/client/pollcomponent/pollcontrollers.js',
-                    'src/client/usercomponent/usercontroller.js',
+                    'src/client/usercomponent/Headermodule.js',
                     'src/client/usercomponent/userservices.js',
-                    'src/client/usercomponent/pollservices.js'
+                    'src/client/pollcomponent/pollservices.js',
                 ],
                 dest: 'src/client/dest/built.js'
             },
-            concatcss:{
+            /*concatcss:{
                 src:['src/client/module/bootstrap/css/bootstrap.min.css','src/client/routercomponent/stylesheets/polles.css'],
                 dest: 'src/client/dest/built.css'
-            }
+            }*/
         },
         watch: {
             javascript: {

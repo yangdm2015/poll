@@ -4,9 +4,10 @@ html(lang='en', ng-app='polls')
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no')
     title 轻松投
-    include ./includes/refer
+    include ./includes/cssrefer
   body(ng-controller="HomeCtrl" )
     include ./includes/header
     block content
+    include ./includes/jsrefer
     //- include ./includes/header
     //- h1 #{title}

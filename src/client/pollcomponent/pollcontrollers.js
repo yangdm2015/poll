@@ -65,7 +65,7 @@ polls1.controller('PollListCtrl',['$timeout','$scope','$location','$route','poll
     $scope.polls = polls.data;
     for(var p in $scope.polls){
       var po = $scope.polls[p];
-      $scope.polls[p].img_Url= po.img_Url?po.img_Url:'../public/img/logo.png'
+      $scope.polls[p].img_Url= po.img_Url?po.img_Url:'routercomponent/routerimg/logo.png'
       var d = new Date(po.meta.updateAt);
       d=(d.getTime()+"").slice(0,7);
       $scope.polls[p].order=d;
@@ -111,6 +111,7 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       $scope.headerstyle = {
         'background-image':'url('+poll.img_Url+')',
       };
+
       $scope.currusername = poll.current_user;
       $scope.islogin = poll.islogin;
   });
@@ -178,18 +179,34 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
 
 }])
 
-polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice',function PollNewCtrl($scope, $location, userservice,pollservice) {
-  document.body.addEventListener('touchstart', function () { });
+polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice','socket','$q',function PollNewCtrl($scope, $location, userservice,pollservice,socket,$q) {
   console.log("PollNewCtrl")
   // Define an empty poll model object
-  $scope.theme_pic_location=pollservice.getthemepic();
-  $scope.poll = {
-    question: '',
-    max_chosen_num:2,
-    allow_muti_choice:false,
-    choices: [{ text: '' }, { text: '' }]
-  };
-  console.dir($scope.poll)
+  userservice.getUserStatus()
+    .then(function(re){
+      var result=re.data
+      $scope.currusername = result.account;
+      $scope.islogin = result.islogin;
+      $scope.theme_pic_location=pollservice.getthemepic();
+      $scope.poll = {
+        question: '',
+        max_chosen_num:1,
+        allow_muti_choice:false,
+        allow_img_choice:true,
+        test:false,
+        choices: [{ text: '' }, { text: '' }],
+        choicefileread:[{srcnode:'#choice_img_0'},{srcnode:'#choice_img_1'}]
+      };
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  socket.on('userchangeclient', function(accountinfo) {
+    $scope.islogin = accountinfo.islogin;
+    $scope.currusername = accountinfo.account;
+    console.log('userchangeclient')
+  })
+
   // Method to add an additional choice option
   $scope.addChoice = function() {
     $scope.poll.choices.push({ text: '' });
@@ -208,42 +225,50 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
   // Validate and save the new poll to the database
   $scope.createPoll = function() {
     console.log("createPoll");
-    /*var fileread = $scope.fileread?$scope.fileread:$scope.theme_pic_location;*/
-    var poll = $scope.poll;
-   /* var fd = new FormData();
-    angular.forEach(poll, function(val, key) {
-      fd.append(key, val);
-    });
-    fd.append('poll_theme', fileread);*/
-
+    var defered = $q.defer();
     userservice.getUserStatus()
     .then(function(re){
       var result=re.data
-      /*fd.append('created_user', result.account);*/
+      var file = $scope.fileread.file?$scope.fileread.file:$scope.theme_pic_location;
+      var poll = $scope.poll;
       poll.created_user=result.account;
-      return pollservice.savepoll(poll,$scope.fileread.file);
+      if(poll.allow_img_choice){
+        for(var i=0,len=poll.choices.length;i<len;i++){
+          var c = poll.choices[i];
+          if(!c.file){
+            defered.reject("Please upload images! 请上传选项的图片！")
+          }
+        }
+      }
+      return pollservice.savepoll(poll,file);
     })
     .then(function(result){
       console.log('result=',result)
       $location.path('polls');
     })
+    .catch(function (err) {
+      alert(err)
+      console.log(err);
+    })
   };
-  $scope.trigger_input=function(){
+  /*$scope.trigger_input=function(){
     document.querySelector("[name='theme_pic']").click()
-  }
+  }*/
 }])
 
-.directive("fileread", function () {
+.directive("filefrominput", function () {
   return {
     replace:true,
     scope: {
       fileread: "="
     },
-    template: '<input id="in"type="file" ng-hide=true >',
+    template: '<input id="in" type="file" ng-hide=true >',
     link: function (scope, element, attributes) {
       var srcnode = document.querySelector(scope.fileread.srcnode);
-      srcnode.onclick=function(){
-        element[0].click();
+      if(srcnode){
+        srcnode.onclick=function(){
+          element[0].click();
+        }
       }
       element.bind('change',function(changeEvent){
         scope.fileread.file=element[0].files[0];
@@ -253,8 +278,10 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
           reader.onload = function (loadEvent) {
             scope.$apply(function () {
               scope.fileread.imgsrc = loadEvent.target.result;
-              var target = document.querySelector(scope.fileread.target)
+              if(scope.fileread.target){
+                var target = document.querySelector(scope.fileread.target)
                 target.src=scope.fileread.imgsrc
+              }
             });
           }
           reader.readAsDataURL(changeEvent.target.files[0]);
@@ -263,27 +290,42 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
     }
   }
 })
-
-/*.directive("fileread", function () {
-  return{
-    link:function(scope,element,attrs){
-      element.bind('change',function(changeEvent){
-        scope.fileread=element[0].files[0];
-        showpic(changeEvent,scope)
-      })
+.directive("multiimgup",function(){
+  function link(scope,element,attrs){
+    scope.name = 'Jeff';
+    var img=element.find('img')[0]
+    var ipt = element.find('input')[0]
+    element.children()[0].onclick=function(e){
+      ipt.click()
     }
+
+    element.bind('change',function(changeEvent){
+      var file=ipt.files[0];
+      scope.c[attrs.idx].file=file;
+      if(file){
+        showpic(img);
+      }
+      function showpic(img){
+        var reader = new FileReader();
+        reader.onload=function(loadEvent){
+          img.src=loadEvent.target.result;
+        }
+        reader.readAsDataURL(ipt.files[0]);
+      }
+    })
+  }
+  return{
+    link:link,
+    transclude: true,
+    scope: {
+      'index':'@idx',
+      'c':'=chos'
+    },
+    templateUrl:'pages/templates/choiceimg.html'
   }
 })
-function showpic(changeEvent,scope){
-  var reader = new FileReader();
-  reader.onload = function (loadEvent) {
-    scope.$apply(function () {
-      scope.fileread = loadEvent.target.result;
-      scope.theme_pic_location = scope.fileread;
-    });
-  }
-  reader.readAsDataURL(changeEvent.target.files[0]);
-}*/
+
+
 function choicesvotepercent(poll){
   for(var i=0,len=poll.choices.length;i<len;i++){
     var pc = poll.choices[i];

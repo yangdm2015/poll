@@ -17,17 +17,35 @@
   <p ng-bind = 'poll.description'></p>
 </div> -->
 <div ng-hide="poll.userVoted" >
-  <p class="lead">请选择<label for="" ng-show="poll.max_chosen_num==1">一个</label><label for="" ng-show="poll.max_chosen_num!=1">{{poll.max_chosen_num}}个或以下的</label>选项：</p>
+  <p class="lead">请选择<label for="" ng-show="!poll.allow_muti_choice">一个</label><label for="" ng-show="poll.allow_muti_choice">{{poll.max_chosen_num}}个或以下的</label>选项：</p>
 
   <form role="form" ng-submit="vote()" >
-    <div ng-repeat="choice in poll.choices" onmouseover="this.style.cursor='pointer'">
+    <div ng-repeat="choice in poll.choices" onmouseover="this.style.cursor='pointer'" ng-hide = "poll.allow_img_choice">
       <label class='choicelable choicewrap' onmouseover="this.style.cursor='pointer'" ng-show='!poll.allow_muti_choice'>
         <input type="radio" ng-model='poll.nobodycares'ng-click="updateSelection($event,choice._id)" value="{{choice._id}}">
        {{choice.text}}
-    </label>
-    <label class='choicelable choicewrap' onmouseover="this.style.cursor='pointer'" ng-show='poll.allow_muti_choice'>
+      </label>
+      <label class='choicelable choicewrap' onmouseover="this.style.cursor='pointer'" ng-show='poll.allow_muti_choice'>
         <input type="checkbox"  ng-click="updateSelection($event,choice._id)" value="{{choice._id}}" >
         {{choice.text}}
+      </label>
+    </div>
+    <div ng-repeat="choice in poll.choices" onmouseover="this.style.cursor='pointer'" ng-show = "poll.allow_img_choice">
+      <label class='choicelable choicewrap' onmouseover="this.style.cursor='pointer'" ng-show='!poll.allow_muti_choice'>
+        <span>
+          <input type="radio" ng-model='poll.nobodycares'ng-click="updateSelection($event,choice._id)" value="{{choice._id}}">
+          {{choice.text}}
+        </span>
+        <div class="chsimgwrap">
+          <img ng-src="{{choice.img_Url}}" alt="">
+        </div>
+      </label>
+      <label class='choicelable choicewrap' onmouseover="this.style.cursor='pointer'" ng-show='poll.allow_muti_choice'>
+        <input type="checkbox"  ng-click="updateSelection($event,choice._id)" value="{{choice._id}}" >
+        <span>{{choice.text}}</span>
+        <div class="chsimgwrap">
+          <img ng-src="{{choice.img_Url}}" alt="">
+        </div>
       </label>
     </div>
     <p><hr></p>
@@ -55,6 +73,9 @@
   <div class="ttt">投票结果</div>
   <div class="barswrap">
     <div class="barwrap"ng-repeat="choice in poll.choices" >
+      <div class="chsimgwrap" ng-show='poll.allow_img_choice'>
+        <img ng-src="{{choice.img_Url}}" alt="">
+      </div>
       <div class="choicename">{{choice.text}}</div>
       <div class="barspace">:</div>
       <div style="width:100%">

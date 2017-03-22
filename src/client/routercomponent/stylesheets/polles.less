@@ -451,12 +451,26 @@ header {
 
 /* item页面 */
 .choicelable{
-  display:inline-block;width:calc(100% - 2rem);height:100%;padding:1rem;margin:0.5rem 0;
+  display:flex;width:calc(100% - 2rem);height:100%;padding:1rem;margin:0.5rem 0;
+  border-radius: 4px;
+  justify-content:flex-start;
+  span{flex:0 1 5rem;};
 }
+.chsimgwrap{
+    flex:0 1 20rem;
+    max-height: 30rem ;
+    overflow: hidden;
+    border-radius: 4px;
+    border:1px solid #ddd;
+    transition: max-height 1s;
+    img{
+      width: 100%;
+    }
+  }
 .choicewrap{
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 0 1px transparent;
-  position: relative;
+  /* position: relative; */
   transition-property: color;
   transition-duration: 0.3s;
   background: #e1e1e1;
@@ -487,7 +501,8 @@ header {
   width: 80%;margin:0 auto;display: flex;flex-flow:column; align-items:flex-start;
   .barwrap{
     width:100%;display: flex;flex-flow:row;justify-content:flex-start;margin-bottom: 1rem;font-weight:bold;
-    .choicename{flex:1 1 6rem;}
+    /* border-radius: 4px;border:1px solid #ddd; */align-items:center;
+    .choicename{flex:1 1 6rem; margin-left: 1rem;}
     .barspace{flex:1 1 2rem;}
     .bar{flex:4 1 ;height:2rem;padding-left: 1rem;line-height: 2rem;display: inline-block;}
   }
@@ -599,13 +614,28 @@ header {
       border:1px solid #ddd;
       padding:0.7rem;
       align-items:center;
+      justify-content:flex-start;
+      overflow: hidden;
+      img{
+        /* width: @img_width;
+        height:@img_height; */
+       max-width:100%;
+       max-height:100%;
+      }
+      .textareawrap{
+        display: flex;
+        justify-content: space-around;
+        width:100%;
+      }
       textarea{
+        /* flex:1 1 auto; */
         margin-left: 3rem;
         width: 100%;
         height:  @img_height;
         display: inline-block;
       }
-      @img_height:12rem;
+      @img_height:15rem;
+      @img_width:15rem;
       .choice_img{
         font-size: 1.4em;
         font-family: "Microsoft YaHei";
@@ -614,7 +644,8 @@ header {
         text-align: center;
         vertical-align:middle;
         height: @img_height;
-        width: 15rem;
+        max-width: 60%;
+        min-width: @img_width;
         background-color: #fff;
         border-radius: 4px;
         border:1px solid #ddd;

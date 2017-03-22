@@ -473,16 +473,32 @@ header .main .header_search input {
 }
 /* item页面 */
 .choicelable {
-  display: inline-block;
+  display: flex;
   width: calc(98%);
   height: 100%;
   padding: 1rem;
   margin: 0.5rem 0;
+  border-radius: 4px;
+  justify-content: flex-start;
+}
+.choicelable span {
+  flex: 0 1 5rem;
+}
+.chsimgwrap {
+  flex: 0 1 20rem;
+  max-height: 30rem ;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  transition: max-height 1s;
+}
+.chsimgwrap img {
+  width: 100%;
 }
 .choicewrap {
   transform: perspective(1px) translateZ(0);
   box-shadow: 0 0 1px transparent;
-  position: relative;
+  /* position: relative; */
   transition-property: color;
   transition-duration: 0.3s;
   background: #e1e1e1;
@@ -527,9 +543,12 @@ header .main .header_search input {
   justify-content: flex-start;
   margin-bottom: 1rem;
   font-weight: bold;
+  /* border-radius: 4px;border:1px solid #ddd; */
+  align-items: center;
 }
 .barswrap .barwrap .choicename {
   flex: 1 1 6rem;
+  margin-left: 1rem;
 }
 .barswrap .barwrap .barspace {
   flex: 1 1 2rem;
@@ -641,6 +660,47 @@ header .main .header_search input {
 .form-group .newchoicewrap .choiceitem input {
   width: 100%;
   display: inline-block;
+}
+.form-group .newchoicewrap .img_wrap {
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  padding: 0.7rem;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+.form-group .newchoicewrap .img_wrap img {
+  /* width: @img_width;
+        height:@img_height; */
+  max-width: 100%;
+  max-height: 100%;
+}
+.form-group .newchoicewrap .img_wrap .textareawrap {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+.form-group .newchoicewrap .img_wrap textarea {
+  /* flex:1 1 auto; */
+  margin-left: 3rem;
+  width: 100%;
+  height: 15rem;
+  display: inline-block;
+}
+.form-group .newchoicewrap .img_wrap .choice_img {
+  font-size: 1.4em;
+  font-family: "Microsoft YaHei";
+  line-height: 15rem;
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  vertical-align: middle;
+  height: 15rem;
+  max-width: 60%;
+  min-width: 15rem;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  margin-left: 1rem;
 }
 @media only screen and (max-width: 30em) {
   .form-group .itemcontext button {

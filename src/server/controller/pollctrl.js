@@ -78,32 +78,74 @@ exports.poll = function(req, res) {
   });
 };
 
+function getimgurlfromfile(files ,index){
+  var path = 'pollcomponent/upload/images/'+files[index].filename;
+  return path;
+}
+function addchoiceimgpath(files,len,chosarray){
+  var imgarray = [];
+  for(var i=0;i<len;i++){
+    var fn = getimgurlfromfile(files,i)
+    chosarray[i].img_Url=fn;
+    imgarray.push(fn)
+  }
+  console.log('in addchoiceimgpath,chosarray=',chosarray)
+  return imgarray;
+}
 // JSON API for creating a new poll
 exports.create = function(req, res) {
-  console.log('req.file=',req.file)
-  var filepath,
+  /*console.log('req.files=',req.files)*/
+  var file_theme_path,
+      files=req.files,
+      choices_imgs_path=[];
       reqBody = req.body,
+      wrong=false;
       chsarry = JSON.parse(reqBody.choices),
       choices = chsarry.filter(function(v) { return v.text != ''; });
-  if(!!req.file){
-    filepath ='public/upload/images/'+ req.file.filename;
-  }else{
-    filepath = reqBody.poll_theme
+if(reqBody.poll_theme_url&&reqBody.allow_img_choice){
+  if(files.length<2){
+    wrong=true;
   }
-  /*var reqBody = req.body.poll,*/
-  pollObj = {
+}else if(!reqBody.poll_theme_url&&reqBody.allow_img_choice){
+  if(files.length<3){
+    wrong=true;
+  }
+}
+if(wrong){
+  throw new Error("Error");
+}
+
+  var pollObj = {
     question: reqBody.question,
     description: reqBody.description,
-    img_Url: filepath,
+    img_Url: file_theme_path,
     created_user: reqBody.created_user,
     created_time: reqBody.created_time,
     begin_time: reqBody.begin_time,
     end_time: reqBody.end_time,
     allow_muti_choice: reqBody.allow_muti_choice,
+    allow_img_choice:reqBody.allow_img_choice,
     max_chosen_num: reqBody.max_chosen_num,
     key_required: reqBody.key_required,
     choices: choices
   };
+
+  if(reqBody.poll_theme_url){/*默认主题图*/
+    if(reqBody.allow_img_choice){/*图片选择*/
+      choices_imgs_path = addchoiceimgpath(files,files.length,pollObj.choices) /*files中全是选择图*/
+    }else{}/*非图片选择*/
+    file_theme_path = reqBody.poll_theme_url
+  }else{/*上传主题图*/
+    if(reqBody.allow_img_choice){/*图片选择*/
+      choices_imgs_path = addchoiceimgpath(files,files.length-1,pollObj.choices);/*files中除最后一个外，全是选择图*/
+      file_theme_path=getimgurlfromfile(files,files.length-1);/*files中最后一个是主题图*/
+    }else{/*非图片选择*/
+      file_theme_path=getimgurlfromfile(files,0)/*files中唯一一个是主题图*/
+    }
+  }
+  pollObj.img_Url=file_theme_path;
+  /*var reqBody = req.body.poll,*/
+
   console.log('pollObj=',pollObj)
   var poll = new Poll(pollObj);
   // Save poll to DB

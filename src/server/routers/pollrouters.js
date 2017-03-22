@@ -19,7 +19,7 @@ module.exports = function(app){
   app.get('/polls/:id', pollctrl.poll);
   app.get('/mypolls/:created_user', pollctrl.mypolls);
   app.get('/myvotes/:current_user', pollctrl.myvotes);
-  app.post('/polls',imgupload.single('poll_theme'),pollctrl.create)
+  app.post('/polls',imgupload.array('poll_theme'),pollctrl.create)
   /*app.post('/vote',pollctrl.vote)*/
 
 
