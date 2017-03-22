@@ -32,20 +32,20 @@
     </div>
     <div ng-repeat="choice in poll.choices" onmouseover="this.style.cursor='pointer'" ng-show = "poll.allow_img_choice">
       <label class='choicelable choicewrap' onmouseover="this.style.cursor='pointer'" ng-show='!poll.allow_muti_choice'>
-        <span>
-          <input type="radio" ng-model='poll.nobodycares'ng-click="updateSelection($event,choice._id)" value="{{choice._id}}">
+        <span class = 'imgchsipt'><input type="radio" ng-model='poll.nobodycares'ng-click="updateSelection($event,choice._id)" value="{{choice._id}}"></span>
+        <div class="chsimgwrap">
+          <img ng-src="{{choice.img_Url}}" alt="">
+        </div>
+        <span class='imgchstext'>
           {{choice.text}}
         </span>
-        <div class="chsimgwrap">
-          <img ng-src="{{choice.img_Url}}" alt="">
-        </div>
       </label>
       <label class='choicelable choicewrap' onmouseover="this.style.cursor='pointer'" ng-show='poll.allow_muti_choice'>
-        <input type="checkbox"  ng-click="updateSelection($event,choice._id)" value="{{choice._id}}" >
-        <span>{{choice.text}}</span>
+        <span class = 'imgchsipt'><input type="checkbox"  ng-click="updateSelection($event,choice._id)" value="{{choice._id}}" ></span>
         <div class="chsimgwrap">
           <img ng-src="{{choice.img_Url}}" alt="">
         </div>
+        <span class='imgchstext'>{{choice.text}}</span>
       </label>
     </div>
     <p><hr></p>

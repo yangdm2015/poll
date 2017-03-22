@@ -477,8 +477,18 @@ header .main .header_search input {
   border-radius: 4px;
   justify-content: flex-start;
 }
-.choicelable span {
+.imgchsipt {
+  flex: 0 1 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.imgchstext {
   flex: 0 1 5rem;
+  margin-left: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .chsimgwrap {
   flex: 0 1 20rem;
