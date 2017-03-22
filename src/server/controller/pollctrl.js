@@ -92,6 +92,14 @@ function addchoiceimgpath(files,len,chosarray){
   console.log('in addchoiceimgpath,chosarray=',chosarray)
   return imgarray;
 }
+function str2boolean(str){
+  if(typeof str !='string'){
+    return str;
+  }else{
+    if(str=='false') return false;
+    if(str=='true') return true;
+  }
+}
 // JSON API for creating a new poll
 exports.create = function(req, res) {
   /*console.log('req.files=',req.files)*/
@@ -102,12 +110,22 @@ exports.create = function(req, res) {
       wrong=false;
       chsarry = JSON.parse(reqBody.choices),
       choices = chsarry.filter(function(v) { return v.text != ''; });
+
+  reqBody.allow_muti_choice=str2boolean(reqBody.allow_muti_choice)
+  reqBody.allow_img_choice=str2boolean(reqBody.allow_img_choice)
+
+
+
+
 if(reqBody.poll_theme_url&&reqBody.allow_img_choice){
+  console.log('reqBody.poll_theme_url&&reqBody.allow_img_choice=',reqBody.poll_theme_url&&reqBody.allow_img_choice)
   if(files.length<2){
+    console.log('files.length<2')
     wrong=true;
   }
 }else if(!reqBody.poll_theme_url&&reqBody.allow_img_choice){
   if(files.length<3){
+    console.log('files.length<3')
     wrong=true;
   }
 }

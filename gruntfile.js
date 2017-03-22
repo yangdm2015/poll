@@ -123,7 +123,7 @@ module.exports = function(grunt) {
           },
         },
         concurrent:{
-          tasks:['less','nodemon','watch','concat','uglify','cssmin'],
+          tasks:['less','nodemon','watch'/*,'concat','uglify','cssmin'*/],
           options:{
             logConcurrentOutput:true
           }

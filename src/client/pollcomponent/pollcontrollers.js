@@ -294,6 +294,7 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
   function link(scope,element,attrs){
     scope.name = 'Jeff';
     var img=element.find('img')[0]
+    var span=element.find('span')
     var ipt = element.find('input')[0]
     element.children()[0].onclick=function(e){
       ipt.click()
@@ -303,6 +304,7 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
       var file=ipt.files[0];
       scope.c[attrs.idx].file=file;
       if(file){
+        span.css('display','none')
         showpic(img);
       }
       function showpic(img){

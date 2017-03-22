@@ -684,6 +684,7 @@ header .main .header_search input {
   display: inline-block;
 }
 .form-group .newchoicewrap .img_wrap .choice_img {
+  cursor: pointer;
   font-size: 1.4em;
   font-family: "Microsoft YaHei";
   line-height: 15rem;
