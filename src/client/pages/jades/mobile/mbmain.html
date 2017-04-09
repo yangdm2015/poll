@@ -1,0 +1,65 @@
+<!-- Sidebars -->
+<div ng-include="'pages/mobile/sidebar.html'" ui-track-as-search-param="true" class="sidebar sidebar-left"></div>
+<div ng-include="'pages/mobile/usermanagement.html'" ui-track-as-search-param="true" class="sidebar sidebar-right"></div>
+<!-- <div ng-include="'pages/mobile/testoverlay.html'" ui-track-as-search-param="true" class="sidebar sidebar-right"></div> -->
+
+<!-- <div ng-include="'pages/templates/mb/sidebarRight.html'"  class="sidebar sidebar-right"></div> -->
+
+<div class="app" ui-swipe-right="Ui.turnOn('uiSidebarLeft')" ui-swipe-left="Ui.turnOff('uiSidebarLeft')">
+  <!-- Navbars -->
+  <div class="navbar navbar-app navbar-absolute-top" >
+    <div class="navbar-brand navbar-brand-center" ui-yield-to="title">
+      轻松投
+    </div>
+    <div class="btn-group pull-left gobackwrap" ng-click='goback()'>
+      <i class="fa fa-chevron-left fa-2x goback" aria-hidden="true"></i>
+      <!-- <p id='gobackp'>返回</p> -->
+<!--       <div ui-toggle="uiSidebarLeft" class="btn sidebar-toggle">
+  <i class="fa fa-bars middlesizeicon"></i>
+</div> -->
+    </div>
+    <div class="btn-group pull-right" ui-yield-to="navbarAction">
+      <div ui-toggle="uiSidebarRight" class="btn sidebar-right-toggle">
+        <i class="fa fa-user-circle middlesizeicon"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="navbar navbar-app navbar-absolute-bottom" >
+    <!-- <div class="btn-group justified" >
+      <a href="#/polllist " class="btn btn-navbar" ><i class="fa fa-home fa-navbar"></i> 首页</a>
+      <a href="#/new" class="btn btn-navbar"><i class="fa fa-pencil-square-o fa-navbar"></i> 发起投票</a>
+      <a href="#/myvotelist" class="btn btn-navbar" ><i class="fa fa-check-square-o fa-navbar"></i> 已投</a>
+      <a href="#/usermg" class="btn btn-navbar" ><i class="fa fa-book fa-navbar"></i> 我的投票</a>
+    </div> -->
+    <div class="btn-group justified" ui-shared-state="navbarbtn" >
+      <a href="#/polllist " class="btn btn-navbar" ui-set="{navbarbtn:1}" ui-class="{btnnavbaron:navbarbtn==1}"><i class="fa fa-home fa-navbar"></i> 首页</a>
+      <a href="#/new" class="btn btn-navbar" ui-set="{navbarbtn:2}" ui-class="{btnnavbaron:navbarbtn==2}"><i class="fa fa-pencil-square-o fa-navbar"></i> 发起投票</a>
+      <a href="#/myvotelist" class="btn btn-navbar" ui-set="{navbarbtn:3}"ui-class="{btnnavbaron:navbarbtn==3}"><i class="fa fa-check-square-o fa-navbar"></i> 已投</a>
+      <a href="#/mypollslist" class="btn btn-navbar" ui-set="{navbarbtn:4}"ui-class="{btnnavbaron:navbarbtn==4}"><i class="fa fa-check-square fa-navbar"></i> 我的投票</a>
+    </div>
+  </div>
+
+  <!-- App Body -->
+  <div class="app-body" ng-class="{loading: loading}">
+    <div ng-show="loading" class="app-content-loading">
+      <i class="fa fa-spinner fa-spin loading-spinner"></i>
+    </div>
+    <div class="app-content">
+      <ng-view></ng-view>
+    </div>
+  </div>
+
+</div><!-- ~ .app -->
+<div ng-class="{true:'float-menu',false:'float-menu open'}[$hctrl.fm]" ng-init='$hctrl.fm=true' ng-click='$hctrl.togglefloatmenu($hctrl.fm)' drag-me>
+    <div class="plus"><div class="cross"></div></div>
+    <div class="menu-list">
+      <a  class="link-home"><i class="fa fa-angle-double-up" style='display:block;position:absolute;font-size:30px;left:31%'aria-hidden="true" ng-click='$hctrl.gotop()'></i><p style='position:absolute;top:200%;left:3%'>返回顶部</p></a>
+      <a href="#/new"  class='link-my'><i class="fa fa-check-circle-o " style='display:block;position:absolute;font-size:30px;' aria-hidden="true"></i><p style='position:absolute;top:220%;left:3%'>新投票</p></a>
+      <div ui-yield-to="sharepage"></div>
+      <!-- <a  class="link-cart"><i class="fa fa-paper-plane"  style='display:block;position:absolute;font-size:25px;left:8%'aria-hidden="true" ui-turn-on="qrimg"></i><p style='position:absolute;top:200%;left:-10%'>分享投票</p></a> -->
+    </div>
+  </div>
+<!-- <div ui-yield-to='floatmenu'  ></div> -->
+<div ui-yield-to="modals"></div>
+<div ui-yield-to="itmodals"></div>

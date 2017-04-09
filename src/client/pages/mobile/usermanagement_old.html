@@ -1,0 +1,148 @@
+<div ui-content-for="title" >
+  <span>我</span>
+</div>
+
+<div class="scrollable"ng-controller='UserController'>
+  islogin{{islogin}}
+  <div class="scrollable-content " ng-show="islogin">
+
+    <div class='profile '>
+      hello
+    </div>
+    <div class='profile '>
+      <div class="head_pic">
+        <chsheadimg></chsheadimg>
+       </div>
+      <div class="head_name" ng-show='islogin'>{{curruser.account}}</div>
+      <div class="head_name" ng-show='!islogin'>未登录</div>
+      <div class="head_sign">这位同学很懒，什么也没有留下</div>
+      <div class="head_detail">
+        <div class="head_item">
+          <div class="head_item_title">发起投票</div>
+          <div class="head_item_content">43</div>
+        </div>
+        <span class='vertical_space'></span>
+        <div class="head_item">
+          <div class="head_item_title">参与投票</div>
+          <div class="head_item_content">3</div>
+        </div>
+        <span class='vertical_space'></span>
+        <div class="head_item">
+          <div class="head_item_title">发帖</div>
+          <div class="head_item_content">3</div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-danger" ng-click='logout()'>退出登录</button>
+  </div>
+  <div class="scrollable-content section" ng-init='loginswitch=false'ng-hide="islogin">
+   <form role="form" ng-submit='login()' ng-show='loginswitch'>
+     <fieldset>
+       <legend>登录</legend>
+         <div class="form-group has-success has-feedback" ng-show="msg">
+           <div class="alert alert-danger" role="alert">
+             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+             <span class="sr-only">Error:</span>
+             {{msg}}
+           </div>
+         </div>
+
+         <div class="form-group has-success has-feedback">
+           <label>用户名/手机/邮箱</label>
+           <input type="text" ng-model="user.account" class="form-control" placeholder="UserName/Phone/Email">
+         </div>
+
+         <div class="form-group">
+           <label>密码</label>
+           <input type="password" ng-model="user.password" class="form-control" placeholder="Password">
+         </div>
+
+         <div class="form-group">
+           <label>记住我</label>
+           <ui-switch ng-model="rememberMe"></ui-switch>
+         </div>
+         <div class="form-group">
+           <label>没有账号？</label>
+           <a href="" ui-turn-on="modal1" class="btn btn-default" ng-click="loginswitch=false">去注册</a>
+         </div>
+     </fieldset>
+     <hr>
+
+     <button class="btn btn-primary btn-block">
+       登录
+     </button>
+   </form>
+   <form role="form" ng-submit='register()' ng-show='!loginswitch'>
+     <fieldset>
+       <legend>注册</legend>
+         <div class="alert alert-danger" role="alert" ng-show='msg'>
+           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+           <span class="sr-only">Error:</span>
+           {{msg}}
+         </div>
+
+         <div class="form-group has-success has-feedback">
+           <label>用户名/手机/邮箱</label>
+           <input type="text" ng-model="user.account" class="form-control" placeholder="UserName/Phone/Email">
+         </div>
+
+         <div class="form-group">
+           <label>密码</label>
+           <input type="password"  ng-model="user.password" class="form-control" placeholder="Password">
+         </div>
+
+         <div class="form-group">
+           <label>注册后自动登录</label>
+           <ui-switch ng-model="autologin"></ui-switch>
+         </div>
+         <div class="form-group">
+           <label>已有账号？</label>
+           <a href="" ui-turn-on="modal1" class="btn btn-default" ng-click="loginswitch=true">去登录</a>
+         </div>
+
+     </fieldset>
+     <hr>
+
+     <button class="btn btn-primary btn-block">
+       注册
+     </button>
+   </form>
+  </div>
+  <div class="scrollable-content section" ng-show="islogin">
+   <div class='profile '>
+     <div class="head_pic">
+       <chsheadimg></chsheadimg>
+      </div>
+     <div class="head_name" ng-show='islogin'>{{curruser.account}}</div>
+     <div class="head_name" ng-show='!islogin'>未登录</div>
+     <div class="head_sign">这位同学很懒，什么也没有留下</div>
+     <div class="head_detail">
+       <div class="head_item">
+         <div class="head_item_title">发起投票</div>
+         <div class="head_item_content">43</div>
+       </div>
+       <span class='vertical_space'></span>
+       <div class="head_item">
+         <div class="head_item_title">参与投票</div>
+         <div class="head_item_content">3</div>
+       </div>
+       <span class='vertical_space'></span>
+       <div class="head_item">
+         <div class="head_item_title">发帖</div>
+         <div class="head_item_content">3</div>
+       </div>
+     </div>
+   </div>
+  </div>
+  <div class="scrollable-content section" ng-init='loginswitch=false' ng-show="islogin">
+     <button type="button" class="btn btn-danger" ng-click='logout()'>退出登录</button>
+     <h1>您已登录！</h1>
+
+     <label  for='ff'>
+       <img src="pollcomponent/theme_pic/15.jpg" alt="" ng-click='presibling($event)'>
+     </label>
+     <input id='ff' type='file'>
+     <div class="panel panel-default">dfasdfasf</div>
+     <input type="text" ng-model="hello">
+  </div>
+</div>

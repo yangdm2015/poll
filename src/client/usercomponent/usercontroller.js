@@ -70,8 +70,7 @@ polls1.controller('UserCtrl',['$scope','$http','userservice','$location',functio
     $scope.error = false;
     $scope.disabled = true;
     var account = $scope.user.account;
-    var password = $scope.u
-    ser.password
+    var password = $scope.user.password
     userservice.signup({account:account,password:password})
     .then(function(re){
       var result =re.data;

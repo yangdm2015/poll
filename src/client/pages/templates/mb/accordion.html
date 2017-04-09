@@ -1,0 +1,49 @@
+<div ui-content-for="title">
+  <span>Accordion11</span>
+</div>
+
+<div class="scrollable">
+  <div class="scrollable-content">
+    <div class="section">
+      <div class="panel-group"ui-shared-state="myAccordion"ui-default='2'>
+
+        <div class="panel panel-default" ng-repeat="i in [1,2,3]">
+          <div class="panel-heading" ui-set="{'myAccordion': i}">
+            <h4 class="panel-title">
+                Collapsible Group Item #{{i}}
+            </h4>
+          </div>
+          <div ui-if="myAccordion == {{i}}">
+            <div class="panel-body">
+              {{i}}
+            </div>
+          </div>
+        </div>
+        <!-- <div class="panel panel-default" ng-repeat="i in array">
+          <div class="panel-heading" ui-set="{'myAccordion': i.idx}">
+            <h4 class="panel-title">
+                Collapsible Group Item #{{i.idx}}
+            </h4>
+          </div>
+          <div ui-if="myAccordion == {{i.idx}}">
+            <div class="panel-body">
+              {{i.idx}}
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="panel panel-default" ng-repeat="i in polls">
+          <div class="panel-heading" ui-set="{'myAccordion': i.order}">
+            <h4 class="panel-title">
+                Collapsible Group Item #{{i.order}}
+            </h4>
+          </div>
+          <div ui-if="myAccordion == {{i.order}}">
+            <div class="panel-body">
+              {{i.order}}
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,184 @@
+<div ui-content-for="title">
+  <span>投票详情</span>
+</div>
+<div class="scrollable">
+  <div class="scrollable-content" id>
+
+    <div class="list-group">
+      <div class="list-group-item list-group-item-home" ng-style='headerstyle'id='item_header' >
+        <div class="favorwrap"  ng-click='addtomyfavor()'  id='abtop'>
+          <i class="fa fa-star-o fa-2x pull-right favorornot" aria-hidden="true" ng-hide="favor"></i>
+          <i class="fa fa-star fa-2x pull-right favorornot" style='color:#faaf3a'aria-hidden="true" ng-show="favor"></i>
+        </div>
+        <!-- <div class="shoucang pull-right" style='color:#feee91'>收藏</div> -->
+        <div id="headwrap" class='text-center'>
+          <h2>{{poll.question}}</h2>
+          <hr>
+          <p ng-bind = 'poll.description'></p>
+        </div>
+      </div>
+
+      <div class="list-group-item list-group-item-home"  ng-hide="poll.userVoted">
+        <p class="lead">请选择<label for="" ng-show="!poll.allow_muti_choice">一个</label><label for="" ng-show="poll.allow_muti_choice">{{poll.max_chosen_num}}个或以下的</label>选项：</p>
+      </div>
+
+      <div class="list-group-item list-group-item-home choicelistitem" ng-hide="poll.userVoted" ng-repeat="choice in poll.choices"  >
+        <div  ng-hide = "poll.allow_img_choice" ng-click="updateSelection($event,choice._id)"  class="choicewrap" name ="{{choice._id}}">
+          <label class='choicelable '  ng-show='!poll.allow_muti_choice' >
+            <input type="radio" name = "choice" ng-model='poll.nobodycares' value="{{choice._id}}" ng-change="updateRadio(choice._id)"style='visibility:hidden'>
+           {{choice.text}}
+          </label>
+          <label class='choicelable'  ng-show='poll.allow_muti_choice' >
+            <input type="checkbox"   value="{{choice._id}}" >
+            {{choice.text}}
+          </label>
+        </div>
+        <div  ng-show = "poll.allow_img_choice" ng-click="updateSelection($event,choice._id)" class="choicewrap"name ="{{choice._id}}">
+          <label class='choicelable ' ng-show='!poll.allow_muti_choice' >
+            <input type="radio" ng-model='poll.nobodycares' value="{{choice._id}}"ng-change="updateRadio(choice._id)"  id="{{choice._id}}" style='visibility:hidden'>
+            <label class="chsimgwrap" for='{{choice._id}}'>
+              <img ng-src="{{choice.img_Url}}" alt="" >
+            </label>
+            <label class='imgchstext' for='{{choice._id}}'>
+              {{choice.text}}
+            </label>
+          </label>
+          <label class='choicelable '  ng-show='poll.allow_muti_choice'>
+            <span class = 'imgchsipt' ng-hide="true"><input type="checkbox"   value="{{choice._id}}" ></span>
+            <div class="chsimgwrap">
+              <img ng-src="{{choice.img_Url}}" alt="">
+            </div>
+            <span class='imgchstext'>{{choice.text}}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="list-group-item list-group-item-home poll_item" ng-show="poll.userVoted">
+        <div class="ttt"><h2>投票结果</h2></div>
+        <p><hr></p>
+        <div class="barswrap">
+          <div class="barwrap"ng-repeat="choice in poll.choices" >
+            <div class="chsimgwrap" ng-show='poll.allow_img_choice'>
+              <img ng-src="{{choice.img_Url}}" alt="">
+            </div>
+            <div class="choicename">{{choice.text}}</div>
+            <div class="barspace">:</div>
+            <div style="width:100%">
+              <div class="bar" ng-style="choice.mystyle">     {{choice.votes.length}}    </div>{{choice.votes.length/poll.totalVotes*100| number:1}}%
+            </div>
+          </div>
+        </div>
+        <p>
+          <hr>
+          <em>
+            {{poll.totalVotedpeople}} 个人参与了投票.
+            <span ng-show="poll.userVoted">你的选择是 <strong ng-repeat="text in poll.userChoice.text">{{text}} <label
+              ng-show="$index!=poll.userChoice._id.length-1"for="">,</label> </strong>.</span>
+          </em>
+        </p>
+      </div>
+      <div class="list-group-item list-group-item-home" ng-hide="poll.userVoted">
+        <div class="form-group createpoll">
+          <a href="#/polllist" class="btn btn-default oull-left" role="button"><span class="glyphicon glyphicon-arrow-left"></span> 返回投票列表</a>
+          <button class="btn btn-primary pull-right" ng-show='islogin&&!overvoted' ng-click='vote()' >投票 &raquo;</button>
+        </div>
+        <div class="alert alert-danger" role="alert" ng-show='overvoted'>
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">warning:</span>
+          你最多只能选择 {{poll.max_chosen_num}}个选项!
+        </div>
+        <div class="alert alert-danger" role="alert" ng-show='!islogin'>
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">warning:</span>
+          请先登录再投票!
+        </div>
+      </div>
+      <div class="list-group-item list-group-item-home" ng-show="poll.userVoted">
+        <div class="form-group createpoll">
+          <a href="#/polllist" class="btn btn-default oull-left" role="button"><span class="glyphicon glyphicon-arrow-left"></span> 返回投票列表</a>
+        </div>
+      </div>
+
+<!-- <a href="" ng-click="anchor()" class="btn btn-default">测试锚点</a> -->
+<!-- <a href="" ng-click="goback()" class="btn btn-default">测试锚点</a> -->
+
+      <div class="list-group-item list-group-item-home">
+        <!-- <div class="panel panel-default" ui-shared-state="share">
+          <div class="panel-heading" ui-toggle="share">
+
+            <strong>分享本投票给好友：</strong>
+            <i class="fa fa-chevron-right pull-right" ui-hide="share"> </i>
+            <i class="fa fa-chevron-down pull-right" ui-show="share"> </i>
+          </div>
+          <div class="panel-body"ui-show="share">
+            <div >
+              <img src="http://qr.topscan.com/api.php?text={{qrsrc}}"  style="width:17rem;height:17rem;"/>
+            </div>
+          </div>
+        </div> -->
+        <div class="panel panel-default" >
+          <div class="panel-heading" ng-click='toggle_c_show()'>
+            <strong>评论区：</strong>
+            <i class="fa fa-chevron-right pull-right" ng-hide="commentshow"> </i>
+            <i class="fa fa-chevron-down pull-right" ng-show="commentshow"> </i>
+          </div>
+          <div class="panel-body"ng-show="commentshow">
+            <!-- 11{{poll.comments[0]}} -->
+            <ul class="media-list">
+              <li class="media" ng-repeat="c in poll.comments">
+                <div class="pull-left">
+                  <a href="" class="comment" ng-click="replytocomment(c.from._id,c.from.account,c)">
+                    <img ng-src="{{c.from.img_Url}}" style="width:64px;height:64px;" class="media-object">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 id="{{c._id}}">{{c.from.nickname?c.from.nickname:c.from.account}} <i for="" class="pull-right" style="font-size:14px;margin-right:10px">{{c.meta.createAt|date:'yyyy-MM-dd'}}</i></h4>
+                  <p >{{c.content}}</p>
+                  <div class="media" ng-repeat="rc in c.reply">
+                    <div class="pull-left">
+                      <a href="" class="comment" ng-click="replytocomment(rc.from,rc.account,c)">
+                        <img ng-src="{{rc.img_Url}}" style="width:64px;height:64px;" class="media-object">
+                      </a>
+                    </div>
+                    <div class="media-body">
+                      <h4 id="{{rc._id}}">{{rc.nickname?rc.nickname:rc.account}} <i for="" class="pull-right" style="font-size:14px;margin-right:10px">{{rc.createAt|date:'yyyy-MM-dd'}}</i></h4>
+                      <p >{{rc.content}}</p>
+                    </div>
+                  </div>
+
+                </div>
+                <hr>
+              </li>
+            </ul>
+            <hr>
+            <div id="comments">{{focus}}
+              <div class="form-group">
+                <textarea name="commentarea" id="commentarea" cols="30" rows="5" class="form-control" ng-model="curcomment" placeholder="{{curcomment_ph}}" ></textarea>
+              </div>
+              <button type='button' class="btn btn-primary" ng-click="createcomment()">提交</button>
+              <button type='button' class="btn btn-primary" ng-click="gotop()">返回顶部</button>
+              <back-to-top class="back_top" title="返回顶部">
+                <button type='button' class="btn btn-primary" > <i class="fa fa-angle-up"></i>返回顶部</button>
+
+              </back-to-top>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ui-content-for="sharepage">
+  <!-- <div ng-class="{true:'float-menu',false:'float-menu open'}[fm]" ng-init='fm=true' ng-click='$hctrl.togglefloatmenu(fm)' drag-me>
+    <div class="plus"><div class="cross"></div></div>
+    <div class="menu-list">
+      <a  class="link-home"><i class="fa fa-angle-double-up" style='display:block;position:absolute;font-size:30px;left:31%'aria-hidden="true" ng-click='$hctrl.gotop()'></i><p style='position:absolute;top:200%;left:3%'>返回顶部</p></a>
+      <a href="#/new"  class='link-my'><i class="fa fa-check-circle-o " style='display:block;position:absolute;font-size:30px;' aria-hidden="true"></i><p style='position:absolute;top:220%;left:3%'>新投票</p></a> -->
+      <a  class="link-cart"><i class="fa fa-paper-plane"  style='display:block;position:absolute;font-size:25px;left:8%'aria-hidden="true" ui-turn-on="qrimg"></i><p style='position:absolute;top:200%;left:-10%'>分享投票</p></a>
+    <!-- </div>
+      </div> -->
+
+</div>
+<div ui-content-for="modals">
+  <div ng-include="'pages/mobile/qrimg.html'"></div>
+</div>

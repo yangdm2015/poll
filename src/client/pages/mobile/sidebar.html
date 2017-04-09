@@ -1,0 +1,51 @@
+<div class="scrollable"  ng-controller='sidebarcontroller'>
+  <!-- <h1 class="scrollable-header app-name">Mobile Angular UI <small>1.3</small></h1> -->
+  <div class="scrollable-header app-name">
+    <div class='profile '>
+      <div class="head_pic"> </div>
+      <div class="head_name" ng-show='islogin'>{{account}}</div>
+      <div class="head_name" ng-show='!islogin'>未登录</div>
+      <div class="head_sign">这位同学很懒，什么也没有留下</div>
+      <div class="head_detail">
+        <div class="head_item">
+          <div class="head_item_title">发起投票</div>
+          <div class="head_item_content">43</div>
+        </div>
+        <span class='vertical_space'></span>
+        <div class="head_item">
+          <div class="head_item_title">参与投票</div>
+          <div class="head_item_content">3</div>
+        </div>
+        <span class='vertical_space'></span>
+        <div class="head_item">
+          <div class="head_item_title">发帖</div>
+          <div class="head_item_content">3</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="scrollable-content">
+    <div class="list-group" ui-turn-off="uiSidebarLeft">
+      <a class="list-group-item" href="#/">首页 <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/polllist">polllist <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/newlist">newlist <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/scroll">Scroll <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/toggle">Toggle <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/tabs">Tabs <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/accordion">Accordion <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/overlay">Overlay <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/forms">Forms <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/dropdown">Dropdown <i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/touch">Touch<i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/swipe">Swipe<i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/drag">Drag 1<i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/drag2">Drag 2<i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/carousel">Drag 3<i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/test">test<i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/sidebarRight">sidebarRight<i class="fa fa-chevron-right pull-right"></i></a>
+      <a class="list-group-item" href="#/testscroll">testscroll<i class="fa fa-chevron-right pull-right"></i></a>
+    </div>
+  </div>
+  <div class="scrollable-footer"><h2>Scrollable end</h2></div>
+</div>

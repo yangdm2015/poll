@@ -1,0 +1,36 @@
+<div ui-content-for="title">
+  <span>全部投票</span>
+</div>
+
+<div class="scrollable" ui-shared-state="searchBar">
+  <input ng-if="Ui.active('searchBar')" type="search" class="form-control scrollable-header" placeholder="Search.." />
+  <div class="scrollable-content" ui-scroll-bottom="bottomReached()">
+    <div class="section">
+    <!-- <div class="list-group"ui-shared-state="myAccordion"ui-default='2'> -->
+      <div class="panel-group" ui-shared-state="myAccordion"ui-default='2'>
+        <div class="panel panel-default"  ng-repeat="poll in polls" style="order:{{poll.order}} " >
+          <div class="panel-heading" >
+            <h4 class="panel-title">
+                {{poll.question}}  <!-- <i class="fa fa-chevron-right pull-right" ui-set="{'myAccordion': poll.order}"></i> -->
+            </h4>
+            <i class="fa fa-chevron-right pull-right" ng-click='togglemad(poll.order)' ></i>
+          </div>
+         <!-- <div ui-if="myAccordion == {{poll.order}}"> -->
+          <div ng-class="uiif[poll.order]">
+            <div class="panel-body">
+               {{poll.description}}     <a type="button" class="btn btn-primary pull-right" ng-click="showItemdetail(poll._id)">查看详情</a>
+            </div>
+          </div>
+         </div>
+        </div>
+      </div>
+    </div>
+
+    <a class="btn btn-block btn-lg btn-primary scrollable-footer" ui-toggle="searchBar">
+      <i class="fa fa-search"></i>
+      <span ui-hide="searchBar">Show</span>
+      <span ui-show="searchBar">Hide</span>
+      Search Bar
+    </a>
+  </div>
+</div>

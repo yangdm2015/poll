@@ -1,0 +1,26 @@
+<div class="fixed-header" >
+  <a href="" ng-click="gotoAnchor(x)" ng-repeat="x in [1,2,3,4,5,6,7,8,9,10,11,12,13]">
+  Go to anchor {{x}}
+  </a>
+</div>
+<div id="anchor{{x}}" class="anchor" ng-repeat="x in [1,2,3,4,5,6,7,8,9,10,11,12,13]">
+  Anchor {{x}} of 13
+</div>
+<style>
+  .anchor {
+  border: 2px dashed DarkOrchid;
+  padding: 10px 10px 200px 10px;
+}
+
+.fixed-header {
+  background-color: rgba(0, 0, 0, 0.2);
+  height: 150px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+}
+
+.fixed-header > a {
+  display: inline-block;
+  margin: 5px 15px;
+}
+</style>

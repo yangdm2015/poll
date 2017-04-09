@@ -1,13 +1,24 @@
 doctype
-html(lang='en', ng-app='polls')
+html(lang='en')
   head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no')
     title 轻松投
-    include ./includes/cssrefer
-  body(ng-controller="HomeCtrl" )
+    if isPC
+      include ./includes/cssrefer.jade
+    else
+      include ./mobile/mbcssrefer.jade
+    //- include ./includes/switchcss.html
+    //- include .
+  body(ng-app='polls' ng-controller="HomeCtrl as $hctrl" ui-prevent-touchmove-defaults)
+  if isPC
     include ./includes/header
     block content
-    include ./includes/jsrefer
+    include ./includes/jsrefer.jade
+  else
+    include ./mobile/mbheader
+    include ./mobile/mbjsrefer.jade
+    //- include ./includes/switchjs.html
+    //- include ./includes/jsrefer
     //- include ./includes/header
     //- h1 #{title}

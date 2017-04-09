@@ -34,6 +34,7 @@ polls1.controller('MyPollListCtrl',['$timeout','$scope','$location','$route','po
     .then(function(re){
       var result=re.data
       var name = result.account;
+      name = result.user_id;
      /* $scope.polls =MyPolls.query({cuser:username})*/
       return pollservice.getmypoll(name,query)
     })
@@ -45,10 +46,7 @@ polls1.controller('MyPollListCtrl',['$timeout','$scope','$location','$route','po
     });
   }
   getmypoll()
-  $scope.showItemdetail = function(itemId){
-    window.location.href='#/poll/'+itemId
-    return false;
-  };
+  $scope.showItemdetail = pollservice.showItemdetail;
 
 
 }])
@@ -62,6 +60,7 @@ polls1.controller('MyVoteListCtrl',['$timeout','$scope','$location','$route','po
     .then(function(re){
       var result=re.data
       var username = result.account;
+      username = result.user_id;
       return pollservice.getmyvote(username,query)
       /*$scope.polls =MyVotes.query({cuser:username})*/
     })
@@ -73,20 +72,14 @@ polls1.controller('MyVoteListCtrl',['$timeout','$scope','$location','$route','po
     });
   }
   getmyvote()
-  $scope.showItemdetail = function(itemId){
-    window.location.href='#/poll/'+itemId
-    return false;
-  };
+  $scope.showItemdetail = pollservice.showItemdetail;
 }])
 
 
 
-polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice','messageService',function PollListCtrl($timeout,$scope,$location,pollservice,messageService) {
+polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice','messageService',function ($timeout,$scope,$location,pollservice,messageService) {
   console.log('PollListCtrl')
-  $scope.showItemdetail = function(itemId){
-    window.location.href='#/poll/'+itemId
-    return false;
-  };
+  $scope.showItemdetail = pollservice.showItemdetail;
   function genorder(polls){
     var ps = polls
     for(var p in ps){
@@ -114,7 +107,7 @@ polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice',
 
 
 /*polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, socket, pollservice,userservice) {*/
-polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socket','userservice','$rootScope',function PollItemCtrl($scope, $routeParams, pollservice,socket,userservice,$rootScope) {
+polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socket','userservice','$rootScope',function ($scope, $routeParams, pollservice,socket,userservice,$rootScope) {
 
   socket.on('userchangeclient', function(accountinfo) {
     $scope.islogin = accountinfo.islogin;
@@ -155,6 +148,7 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       $scope.currusername = poll.current_user;
       $scope.islogin = poll.islogin;
   });
+
   var updateSelected = function(action,id){
     if(action == 'add' && $scope.poll.userVote.indexOf(id) == -1){
         $scope.poll.userVote.push(id);
@@ -168,13 +162,24 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       if($scope.poll.max_chosen_num >= $scope.poll.userVote.length){$scope.overvoted = false;}
     }
   }
+  var updateRadio = function(action,id,dom){
+    if(action == 'add' && $scope.poll.userVote.indexOf(id) == -1){
+        $scope.poll.userVote.pop();
+        $scope.poll.userVote.push(id);
+        dom.className=dom.className+' choicewrapactive';
+    }
+    if(action == 'remove' && $scope.poll.userVote.indexOf(id)!=-1){
+      $scope.poll.userVote.pop();
+      dom.className=dom.className.split('choicewrapactive')[0].split(' ')[0];
+    }
+  }
   $scope.updateSelection = function($event, id){
     var checkbox = $event.target;
     var action = (checkbox.checked?'add':'remove');
     if($scope.poll.allow_muti_choice){
       updateSelected(action,id);
     }else{
-
+      updateRadio(action,id,$event.currentTarget);
     }
   }
   $scope.vote = function() {
@@ -185,7 +190,8 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       if(result.islogin){
         var pollId = $scope.poll._id,
             choiceIds = $scope.poll.allow_muti_choice?$scope.poll.userVote:[$scope.poll.nobodycares];
-            useraccount = result.account,
+            /*useraccount = result.account,*/
+            useraccount = result.user_id,
             poll=$scope.poll;
         if(poll.userVote.length<=poll.max_chosen_num){
           if(choiceIds) {
@@ -202,10 +208,7 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       }
     })
   };
-
-/*var socket = io.connect();*/
   socket.on('vote', function(data) {
-    /*console.dir(data);*/
     if(data._id === $routeParams.pollId) {
       choicesvotepercent(data);
       $scope.poll.choices = data.choices;
@@ -216,6 +219,18 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       /*choicesvotepercent($scope.poll)*/
     }
   });
+  function choicesvotepercent(poll){
+    for(var i=0,len=poll.choices.length;i<len;i++){
+      var pc = poll.choices[i];
+      var vl = (pc.votes.length/poll.totalVotes*100).toFixed(2)*0.9+'%';
+      poll.choices[i].choicesvotepercent = vl;
+      poll.choices[i].mystyle = {
+        "background-color":"lightblue",
+        "width":vl,
+        "text-align":'left'
+      }
+    }
+  }
 
 }])
 
@@ -271,7 +286,7 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
       var result=re.data
       var file = $scope.fileread.file?$scope.fileread.file:$scope.theme_pic_location;
       var poll = $scope.poll;
-      poll.created_user=result.account;
+      poll.created_user=result.user_id;
       if(poll.allow_img_choice){
         for(var i=0,len=poll.choices.length;i<len;i++){
           var c = poll.choices[i];
@@ -368,15 +383,3 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
 })
 
 
-function choicesvotepercent(poll){
-  for(var i=0,len=poll.choices.length;i<len;i++){
-    var pc = poll.choices[i];
-    var vl = (pc.votes.length/poll.totalVotes*100).toFixed(2)*0.9+'%';
-    poll.choices[i].choicesvotepercent = vl;
-    poll.choices[i].mystyle = {
-      "background-color":"lightblue",
-      "width":vl,
-      "text-align":'left'
-    }
-  }
-}

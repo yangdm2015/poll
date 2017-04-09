@@ -81,13 +81,13 @@ module.exports = function(grunt) {
                 }
             },
             css:{
-                files:['src/client/routercomponent/stylesheets/*.css'],
+                files:['src/client/routercomponent/stylesheets/**/*.css'],
                 options:{
                   livereload: "<%= connect.options.livereload %>"
                 }
             },
             less: {
-                files: ['*src/client/routercomponent/stylesheets/*.less'],
+                files: ['*src/client/routercomponent/stylesheets/**/*.less'],
                 tasks: ['less']
             }
         },
@@ -112,6 +112,11 @@ module.exports = function(grunt) {
             compile: {
                 files: {
                     'src/client/routercomponent/stylesheets/polles.css': 'src/client/routercomponent/stylesheets/polles.less'
+                }
+            },
+            compilemb: {
+                files: {
+                    'src/client/routercomponent/stylesheets/mobile/pollesmb.css': 'src/client/routercomponent/stylesheets/mobile/pollesmb.less'
                 }
             }
         },

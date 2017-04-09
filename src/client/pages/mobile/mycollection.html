@@ -1,0 +1,32 @@
+<div ui-content-for="title">
+  <span>我的收藏</span>
+</div>
+
+<div class="scrollable">
+  <div class="scrollable-header alert alert-info" ng-click="testsockit()">
+    左滑取消收藏
+  </div>
+  <div class="scrollable-content">
+    <div style='float:left;margin-left:-1000px'  id="abtop">sdf</div>
+    <div class="container-fluid">
+      <!-- <div class="notices-container" ng-show="islogin"> -->
+      <div class="notices-container" ui-shared-state="myfavor">
+        <div ng-repeat="f in user.favor" drag-to-dismiss="deletefavor(f)" class="section section-break noticecontainer" ng-click='togglemyfavor($index)'>
+          <i class="fa fa-star  " style='color:#faaf3a'></i>
+          <strong>{{f.question}}</strong>
+          <!-- <p>{{notice.content}}</p> -->
+          <div class="warn-delete" ng-touchstart="deletefavor(f)">取消收藏</div>
+          <div ui-if="myfavor == {{$index}}">
+            <hr>
+              {{f.description}}
+            <div >
+              <label for="">{{f.createAt|date:'MM/dd HH:mm'}}</label>
+              <a type="button" class="btn btn-primary pull-right" ng-click='gopolldetail(f)'>查看详情</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+</div>

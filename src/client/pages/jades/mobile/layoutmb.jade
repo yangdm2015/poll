@@ -1,0 +1,15 @@
+doctype
+html(lang='en', ng-app='polls')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, user-scalable=no')
+    title 轻松投
+    include ./includes/switchcss.html
+    //- include ./includes/cssrefer
+  body(ng-controller="HomeCtrl" ui-prevent-touchmove-defaults)
+    include ./includes/header
+    block content
+    include ./includes/switchjs.html
+    //- include ./includes/jsrefer
+    //- include ./includes/header
+    //- h1 #{title}

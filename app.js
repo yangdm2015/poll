@@ -12,7 +12,7 @@ var path = require('path');
 var mongoset = require('./src/server/db/mongoset')
 var testRedis = require('./src/server/db/redisset')
 
-var COOKIE_SECRET = 'keyboard cat';
+var COOKIE_SECRET = 'keyboard cataa';
 var COOKIE_NAME = 'sid';
 
 var app = express();
@@ -29,8 +29,7 @@ var rstore=new RedisStore({
     /*host: ""127.0.0.1"",
     port: 6379*/
 })
-
-app.use(session({
+var sessionMiddleware = session({
     name: COOKIE_NAME,
     store: mgstore,
     secret: COOKIE_SECRET,
@@ -42,7 +41,9 @@ app.use(session({
         secure: false,
         maxAge: 1000*60*60*24
     }
-}));
+})
+
+app.use(sessionMiddleware);
 app.set('port', process.env.VCAP_APP_PORT || 18080);
 app.set('views', path.join(__dirname, 'src/client/pages/jades'));
 app.use(express.static(path.join(__dirname, 'src/client')));
@@ -57,16 +58,22 @@ app.use(function(err, req, res, next) {
   res.json({error: true});
 });
 
-routes(app)
 
-/*var server = app.listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
-var io = require('socket.io').listen(server);
-io.sockets.on('connection', pollctrl.vote);*/
+
+
 var server = http.createServer(app);
+
+var io = require('socket.io')(server);
+
+
+io.use(function(socket, next) {
+  sessionMiddleware(socket.request, socket.request.res, next);
+});
+
+io.sockets.on('connection', pollctrl.vote);
+routes(app,io)
+
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-var io = require('socket.io')(server);
-io.sockets.on('connection', pollctrl.vote);
+

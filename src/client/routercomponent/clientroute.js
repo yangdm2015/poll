@@ -1,7 +1,7 @@
 // Angular module, defining routes for the app
 /*var polls1 = angular.module('polls', ['ngRoute','pollServices']).*/
-var polls1 = angular.module('polls', ['ngRoute','ngAnimate', 'ngSanitize', 'ui.bootstrap']).
-  config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
+var polls1 = angular.module('polls', ['ngRoute','ngAnimate', 'ngSanitize', 'ui.bootstrap'])
+  polls1.config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
     .when('/polls', { templateUrl: 'pages/partials/list.html', controller: 'PollListCtrl',access:{restricted:false} })
@@ -18,8 +18,7 @@ polls1.run(function ($rootScope, $location, $route, userservice) {
   $rootScope.$on('$routeChangeStart',
     function (event, next, current) {
       userservice.getUserStatus()
-      .then(function(re){
-        var result =re.data
+      .then(function(result){
         if(next.access!=null){
           if (next.access.restricted && !result.islogin){
             console.log("reload!!!!!!!!!!!!!!")
@@ -30,6 +29,8 @@ polls1.run(function ($rootScope, $location, $route, userservice) {
       });
   });
 });
+
+
 
 polls1.service('messageService', ['$rootScope', function($rootScope) {
   return {

@@ -1,0 +1,135 @@
+<div ui-content-for="title" >
+  <span>我</span>
+</div>
+
+<div class="scrollable"ng-controller='UserController'>
+  <div class="scrollable-content umwrap" ng-show="islogin"> <!-- 已登陆界面 -->
+
+    <div class='profile ' >
+      <!-- <div class="hh" ui-if="modal15" ui-shared-state="modal15">hh</div> -->
+      <!-- <a href="" ui-turn-on="modal15" class="btn btn-default">Show Modal</a> -->
+      <a href="" ui-turn-on="modal15" class="" style="align-self:flex-end;margin-right:20px;color:#fff"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a>
+      <!-- <a href="" ui-turn-on="modal15" class="" style="float:right;position:absolute;left:250px;color:#fff"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></a> -->
+      <!-- <div ng-class='{true:"img-zoomout",false:"head_pic"}[img_zoom]' ng-click="zommout($event)" ng-init="img_zoom=false"> -->
+      <div class='head_pic' >
+        <img  ui-turn-on="modal_img" style="height:100%;width:100%;" ng-src="{{user.headpicsrc}}"/>
+      </div>
+      <div class="head_name" ng-show='islogin'>{{user.nickname?user.nickname:user.account}}</div>
+      <div class="head_name" ng-show='!islogin'>未登录</div>
+      <div class="head_sign">{{user.signature?user.signature:"该用户很懒，什么也没有留下"}}</div>
+      <div class="head_detail">
+        <div class="head_item">
+          <div class="head_item_title">发起投票</div>
+          <div class="head_item_content">{{user.created_v_num?user.created_v_num:0}}</div>
+        </div>
+        <span class='vertical_space'></span>
+        <div class="head_item">
+          <div class="head_item_title">参与投票</div>
+          <div class="head_item_content">{{user.attended_v_num?user.attended_v_num:0}}</div>
+        </div>
+        <span class='vertical_space'></span>
+        <div class="head_item">
+          <div class="head_item_title">发帖</div>
+          <div class="head_item_content">{{user.replynum?user.replynum:0}}</div>
+        </div>
+      </div>
+    </div>
+    <img class="pfbg blur" ng-src="{{user.headpicsrc}}" ></img>
+    <div class="section usermenu">
+      <div class="user_panel">
+        <div class="user_panel_item">
+          <i class="fa fa-folder fa-3x" style="color:#fb7977"aria-hidden="true" ng-click='myfavor()'></i>
+          我收藏的投票
+        </div>
+        <div class="user_panel_item">
+          <i class="fa fa-commenting fa-3x" style="color:#27baff"aria-hidden="true"ng-click='mylatestmsg()'>
+            <!-- <div id='msgrem' ng-show="msgrem" ng-init="msgrem=false">1</div> -->
+            <span id="msg-cart" ng-show="msgrem" ng-init="msgrem=false">{{msgsnum}}</span>
+          </i>
+          最新回复
+        </div>
+      </div>
+      <div class="user_panel_bottom">
+        <button type="button" class="btn btn-danger" style="width:100%" ng-click='logout()'>退出登录</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="scrollable-content section" ng-show="!islogin"> <!-- 未登陆界面 -->
+    <form role="form" ng-submit='login()' ng-show='loginswitch'> <!-- 登陆界面 -->
+      <fieldset>
+        <legend>登录</legend>
+        <div class="form-group has-success has-feedback" ng-show="msg">
+          <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+           {{msg}}
+          </div>
+        </div>
+
+        <div class="form-group has-success has-feedback">
+          <label>用户名/手机/邮箱</label>
+          <input type="text" ng-model="user.account" class="form-control" placeholder="UserName/Phone/Email" ng-focus="msg=''">
+        </div>
+
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password" ng-model="user.password" class="form-control" placeholder="Password"ng-focus="msg=''">
+        </div>
+
+        <div class="form-group">
+          <label>记住我</label>
+          <ui-switch ng-model="rememberMe"></ui-switch>
+        </div>
+        <div class="form-group">
+        <label>没有账号？</label>
+          <a href=""  class="btn btn-default" ng-click="loginswitch=false">去注册</a>
+        </div>
+      </fieldset>
+      <hr>
+
+      <button class="btn btn-primary btn-block">
+        登录
+      </button>
+    </form>
+    <form role="form" ng-submit='register()' ng-show='!loginswitch'><!-- 注册界面 -->
+      <fieldset>
+        <legend>注册</legend>
+        <div class="alert alert-danger" role="alert" ng-show='msg'>
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">Error:</span>
+          {{msg}}
+        </div>
+
+        <div class="form-group has-success has-feedback">
+          <label>用户名/手机/邮箱</label>
+          <input type="text" ng-model="user.account" class="form-control" placeholder="UserName/Phone/Email"ng-focus="msg=''">
+        </div>
+
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password"  ng-model="user.password" class="form-control" placeholder="Password"ng-focus="msg=''">
+        </div>
+
+        <div class="form-group">
+          <label>注册后自动登录</label>
+          <ui-switch ng-model="autologin"></ui-switch>
+        </div>
+        <div class="form-group">
+          <label>已有账号？</label>
+          <a href=""  class="btn btn-default" ng-click="loginswitch=true">去登录</a>
+        </div>
+      </fieldset>
+      <hr>
+
+      <button class="btn btn-primary btn-block">
+      注册
+      </button>
+    </form>
+  </div>
+  <div ui-content-for="itmodals">
+    <div ng-include="'pages/mobile/settingmodal.html'"></div>
+    <div ng-include="'pages/mobile/img_overlay.html'"></div>
+  </div>
+</div>
+<div ui-yield-to="itmodals"></div>

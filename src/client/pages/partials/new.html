@@ -7,8 +7,6 @@
     <div id="poll_theme_pic">
       <img id='output' src = '{{theme_pic_location}}' ng-click='trigger_input()'>
     </div>
-
-
   </div>
   <div class="form-group">
     <label for="pollQuestion"class="itemlabel">主题</label>
@@ -36,8 +34,8 @@
     <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong>
   </div>
   <div class="form-group">
-    <label for="muti_choice"class="itemlabel">是否为图片选择 </label>
-    <label for="muti_choice"class="checkcontext">
+    <label for="allow_img_choice"class="itemlabel">是否为图片选择 </label>
+    <label for="allow_img_choice"class="checkcontext">
       <input type="checkbox" class="itemcontext" id = 'allow_img_choice'name = 'allow_img_choice'ng-model="poll.allow_img_choice" ng-init='poll.allow_img_choice=true'value="{{poll.allow_img_choice}}">
     </label>
     <!-- <input type="checkbox" ng-model="poll.allow_muti_choice" class="form-control" id="pollAmc" > -->

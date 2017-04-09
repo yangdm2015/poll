@@ -515,7 +515,7 @@ header .main .header_search .sbtn {
   align-items: center;
 }
 .imgchstext {
-  flex: 0 1 5rem;
+  flex: 1 1 5rem;
   margin-left: 2rem;
   display: flex;
   justify-content: center;

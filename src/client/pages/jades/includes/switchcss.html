@@ -1,0 +1,31 @@
+<script>
+
+function IsPC() {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone",
+                "iPad", "iPod"];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
+var flag = IsPC();
+document.write("\<link rel=\'stylesheet\' href=\'module\/bootstrap\/css\/bootstrap.min.css\'\>")
+if(flag){
+document.write("\<link rel=\'stylesheet\' href=\'routercomponent\/stylesheets\/polles.css\'\>")
+
+//- link(rel='stylesheet' href='//cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css')
+//- link(rel='stylesheet' href='routercomponent/stylesheets/polles.min.css')
+}else{
+document.write("\<link rel=\'stylesheet\' href=\'routercomponent\/stylesheets\/mobile\/mobile-angular-ui-base.min.css\'\>")
+/*document.write("\<link rel=\'stylesheet\' href=\'routercomponent\/stylesheets\/mobile\/mobile-angular-ui-desktop.min.css\'\>")*/
+document.write("\<link rel=\'stylesheet\' href=\'routercomponent\/stylesheets\/mobile\/mobile-angular-ui-hover.min.css\'\>")
+document.write("\<link rel=\'stylesheet\' href=\'routercomponent\/stylesheets\/pollesmb.css\'\>")
+}
+
+</script>

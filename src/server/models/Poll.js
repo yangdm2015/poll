@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var ObjectId = mongoose.Schema.Types.ObjectId;
 var voteSchema = new mongoose.Schema({ ip: 'String' });
 var mongoset = require('../db/mongoset')
 var choiceSchema = new mongoose.Schema({
@@ -11,7 +12,7 @@ PollSchema = new mongoose.Schema({
   description:String,
   img_Url:String,
   allow_img_choice:Boolean,
-  created_user:String,
+  created_user:{type:ObjectId,ref:'Users'},
   created_time:Date,
   begin_time:Date,
   end_time:Date,
@@ -19,6 +20,9 @@ PollSchema = new mongoose.Schema({
   max_chosen_num:Number,
   serial:Number,
   key_required:Boolean,
+  poll_key:String,
+  totalVotedpeople:Number,
+  totalVotes:Number,
   choices: [choiceSchema],
   meta:{
     createAt:{

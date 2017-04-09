@@ -1,0 +1,33 @@
+<div class="modal" ui-if="modal15" ui-shared-state="modal15">
+  <div class="modal-backdrop in"></div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="close" ui-turn-off="modal15">&times;</button>
+        <h4 class="modal-title">用户设置for  {{user.account}} </h4>
+      </div>
+      <div class="modal-body">
+        <div class="formgroup horizontal">
+          <label for="">头像</label>
+          <div class="head_pic" style="color:#ddd">
+            <chsheadimg u='user' headpicsrc='user.headpicsrc'></chsheadimg>
+          </div>
+          <a href="" ng-click="getheadpic()">换一换</a>
+        </div>
+        <div class="formgroup">
+          <label for="">昵称</label><em style="font-weight:lighter;color:#aaa"> 最多10个字</em></label>
+          <input type="text" ng-model="user.nickname" class="form-control" maxlength="10" >
+        </div>
+        <div class="formgroup">
+          <label for="">签名</label><em style="font-weight:lighter;color:#aaa"> 最多32个字</em></label>
+          <input type="text" ng-model="user.signature" class="form-control"maxlength="32">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ui-turn-off="modal15" class="btn btn-default">取消</button>
+        <!-- <button ui-turn-off="modal15" ng-click="updateuser()" class="btn btn-primary">Save changes</button> -->
+        <button ng-click="updateuser()" class="btn btn-primary">保存</button>
+      </div>
+    </div>
+  </div>
+</div>

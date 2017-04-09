@@ -1,0 +1,96 @@
+<div ui-content-for="title">
+  <span>新投票</span>
+</div>
+
+<div class="scrollable">
+ <div class="scrollable-content section">
+  <form role="form" >
+    <fieldset>
+      <div class="form-group">
+        <label class="itemlabel">主题图片</label>
+        <div id="poll_theme_pic">
+          <filefrominput  fileread='fileread' tpl='theme_pic_location' ciu="changeimgurl()">
+           <!-- <img id="output" src = "{{theme_pic_location}}"> -->
+         </filefrominput>
+          <!-- <img id='output' src = '{{theme_pic_location}}'> -->
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="pollQuestion"class="itemlabel">主题 <strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong><em style="font-weight:lighter;color:#aaa"> 最多32个字</em></label>
+        <input type="text" ng-model="poll.question" class=" form-control itemcontext" id="pollQuestion"required="required" placeholder="输入投票主题" name='pollQuestion' maxlength="32">
+
+      </div>
+      <div class="form-group">
+        <label for="pollDsp"class="itemlabel">描述<strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong><em style="font-weight:lighter;color:#aaa">最多50个字</em></label>
+        <textarea class="form-control itemcontext" ng-model="poll.description" rows="3"id="pollDsp"required="required" placeholder="输入投票描述"name='pollDsp'maxlength="48"></textarea>
+
+      </div>
+
+      <div class="form-group">
+        <label for="muti_choice"class="itemlabel">是否允许多选</label>{{max_chosen_num}}
+        <label for="muti_choice"class="checkcontext">
+          <input type="checkbox" class="itemcontext" id = 'muti_choice'name = 'muti_choice'ng-model="poll.allow_muti_choice">
+        </label>
+      </div>
+      <div class="form-group" ng-show="poll.allow_muti_choice">
+        <label for="max_chosen_num"class="itemlabel" ng-init="choicenum=[1,2]">最多允许选择数<strong style='color:red;font-size:2rem;width:1.5rem;text-align:right'>*</strong></label>
+        <select ng-init="poll.max_chosen_num = choicenum[0]" id ='max_chosen_num' name='max_chosen_num'ng-model="poll.max_chosen_num" ng-options="x for x in choicenum" ng-required="poll.allow_muti_choice"  class="form-control">
+        </select>
+
+      </div>
+      <div class="form-group">
+        <label for="allow_img_choice"class="itemlabel">是否为图片选择 </label>
+        <label for="allow_img_choice"class="checkcontext">
+          <input type="checkbox" class="itemcontext" id = 'allow_img_choice'name = 'allow_img_choice'ng-model="poll.allow_img_choice" ng-init='poll.allow_img_choice=true'value="{{poll.allow_img_choice}}">
+        </label>
+      </div>
+      <div class="form-group top" ng-show = '!poll.allow_img_choice'>
+        <label class="choiceitemlabel itemlabel">选项</label>
+        <div class="newchoicewrap itemcontext">
+          <div ng-repeat="choice in poll.choices" class='choiceitem'>
+            <input type="text" ng-model="choice.text" class="form-control " ng-required="!poll.allow_img_choice" placeholder="最多50个字" name='chs' maxlength="50">
+          </div>
+        </div>
+      </div>
+      <div class="form-group top" ng-show = 'poll.allow_img_choice'>
+        <label class="choiceitemlabel itemlabel">图片选项（高清图片可能上传时间较长！）</label>
+        <div class="newchoicewrap itemcontext">
+          <div ng-repeat="choice in poll.choices" class='choiceitem img_wrap' multiimgup  idx='{{$index}}' chos='poll.choices'>
+            <input type="text" ng-model="choice.text" class="form-control "required="required" placeholder="最多50个字" name='imgctrl' maxlength="50"></input>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="itemlabel">
+        </div>
+        <div class="itemcontext">
+          <button type="button" class="addchoice btn btn-default" ng-click="addChoice()"><span class="glyphicon glyphicon-plus"></span> 新增选项</button>
+          <button type="button" class="removechoice btn btn-default" ng-click="popChoice()"><span class="glyphicon glyphicon-minus"></span> 删除选项</button>
+        </div>
+      </div>
+
+      <p><hr></p>
+
+      <div class="form-group createpoll" style='overflow:hidden'>
+          <a href="#/scroll" class="btn btn-default pull-left" role="button"><span class="glyphicon glyphicon-arrow-left"></span> 返回投票列表</a>
+          <button class="btn btn-primary pull-right" type="submit" ng-show='islogin' ng-click="createPoll()">发起投票 &raquo;</button>
+          <!-- <button type="button" class="btn btn-danger"ng-show='hover'>请先登录再创建!</button>
+          <button class="btn btn-primary pull-right" type="button" ng-mouseleave="hover = false" ng-mouseenter="hover = true" ng-hide='islogin'>发起投票 &raquo;</button> -->
+      </div>
+      <div class="form-group" >
+        <div class="alert alert-danger" role="alert" ng-show='!islogin'>
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span class="sr-only">warning:</span>
+          请先登录再创建!
+        </div>
+      </div>
+
+    </fieldset>
+    <hr>
+
+
+  </form>
+ </div>
+</div>

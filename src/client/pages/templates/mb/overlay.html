@@ -1,0 +1,55 @@
+<div ui-content-for="title">
+  <span>Overlays11</span>
+</div>
+
+<div class="scrollable">
+  <div class="scrollable-content">
+    <div class="section section-break">
+      <a href=""
+          ui-turn-on="modal13"
+          class="btn btn-default">Show Modal</a>
+     <a href=""
+          ui-turn-on="modal2"
+          class="btn btn-default">Show Overlay</a>
+     <a href=""
+          ui-turn-on="modal10"
+          class="btn btn-default">Show ImgOverlay</a>
+    </div>
+
+    <div class="section section-break">
+      <p>
+        {{lorem}}
+      </p>
+    </div>
+    <div class="img" ng-class="{true:'img-zoomout',false:'img-zoomin'}[img_zoom]" ng-click="zommout($event)">
+      <img src="pollcomponent/head_pic/12.jpg" alt="" >
+    </div>
+  </div>
+</div>
+
+<div ui-content-for="modals">
+  <div ng-include="'pages/templates/mb/modal2.html'"></div>
+  <!-- <div ng-include="'pages/mobile/img_overlay.html'"></div> -->
+
+
+  <div class="modal" ui-if="modal13" ui-shared-state="modal13">
+    <div class="modal-backdrop in"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button class="close"
+                  ui-turn-off="modal13">&times;</button>
+          <h4 class="modal-title">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{lorem}}</p>
+        </div>
+        <div class="modal-footer">
+          <button ui-turn-off="modal13" class="btn btn-default">Close</button>
+          <button ui-turn-off="modal13" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div ng-include="'pages/templates/mb/modal13.html'"></div> -->
+</div>

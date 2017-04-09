@@ -1,0 +1,33 @@
+<div ui-content-for="title">
+  <span>我的回复</span>
+</div>
+
+<div class="scrollable">
+  <div class="scrollable-header alert alert-info" ng-click="testsockit()">
+    左滑删除回复
+  </div>
+  <div class="scrollable-content">
+    <div style='float:left;margin-left:-1000px'  id="abtop">sdf</div>
+    <div class="container-fluid">
+      <!-- <div class="notices-container" ng-show="islogin"> -->
+      <div class="notices-container" ui-shared-state="myNotices">
+        <div ng-repeat="notice in user.msgs" drag-to-dismiss="deleteNotice(notice)" class="section section-break noticecontainer" ng-click='toggle($index)'>
+          <i class="fa fa-envelope"></i>
+          <strong>{{notice.nickname?notice.nickname:notice.account}}</strong>
+          <!-- <p>{{notice.content}}</p> -->
+          <div class="warn-delete" ng-touchstart="deleteNotice(notice)">删除</div>
+          <div id='noticerem' ng-show="!notice.read" ></div>
+          <div ui-if="myNotices == {{$index}}">
+            <hr>
+              {{notice.content}}
+            <div >
+              <label for="">{{notice.createAt|date:'MM/dd HH:mm'}}</label>
+              <a type="button" class="btn btn-primary pull-right" ng-click='gocommentdetail(notice)'>查看详情</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+</div>

@@ -14,8 +14,8 @@ function(){this.$get=function(){return{}}});n.directive("ngView",x);n.directive(
 //# sourceMappingURL=angular-route.min.js.map
 ;// Angular module, defining routes for the app
 /*var polls1 = angular.module('polls', ['ngRoute','pollServices']).*/
-var polls1 = angular.module('polls', ['ngRoute','ngAnimate', 'ngSanitize', 'ui.bootstrap']).
-  config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
+var polls1 = angular.module('polls', ['ngRoute','ngAnimate', 'ngSanitize', 'ui.bootstrap'])
+  polls1.config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
     .when('/polls', { templateUrl: 'pages/partials/list.html', controller: 'PollListCtrl',access:{restricted:false} })
@@ -32,8 +32,7 @@ polls1.run(function ($rootScope, $location, $route, userservice) {
   $rootScope.$on('$routeChangeStart',
     function (event, next, current) {
       userservice.getUserStatus()
-      .then(function(re){
-        var result =re.data
+      .then(function(result){
         if(next.access!=null){
           if (next.access.restricted && !result.islogin){
             console.log("reload!!!!!!!!!!!!!!")
@@ -44,6 +43,8 @@ polls1.run(function ($rootScope, $location, $route, userservice) {
       });
   });
 });
+
+
 
 polls1.service('messageService', ['$rootScope', function($rootScope) {
   return {
@@ -90,6 +91,7 @@ polls1.controller('MyPollListCtrl',['$timeout','$scope','$location','$route','po
     .then(function(re){
       var result=re.data
       var name = result.account;
+      name = result.user_id;
      /* $scope.polls =MyPolls.query({cuser:username})*/
       return pollservice.getmypoll(name,query)
     })
@@ -101,10 +103,7 @@ polls1.controller('MyPollListCtrl',['$timeout','$scope','$location','$route','po
     });
   }
   getmypoll()
-  $scope.showItemdetail = function(itemId){
-    window.location.href='#/poll/'+itemId
-    return false;
-  };
+  $scope.showItemdetail = pollservice.showItemdetail;
 
 
 }])
@@ -118,6 +117,7 @@ polls1.controller('MyVoteListCtrl',['$timeout','$scope','$location','$route','po
     .then(function(re){
       var result=re.data
       var username = result.account;
+      username = result.user_id;
       return pollservice.getmyvote(username,query)
       /*$scope.polls =MyVotes.query({cuser:username})*/
     })
@@ -129,20 +129,14 @@ polls1.controller('MyVoteListCtrl',['$timeout','$scope','$location','$route','po
     });
   }
   getmyvote()
-  $scope.showItemdetail = function(itemId){
-    window.location.href='#/poll/'+itemId
-    return false;
-  };
+  $scope.showItemdetail = pollservice.showItemdetail;
 }])
 
 
 
-polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice','messageService',function PollListCtrl($timeout,$scope,$location,pollservice,messageService) {
+polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice','messageService',function ($timeout,$scope,$location,pollservice,messageService) {
   console.log('PollListCtrl')
-  $scope.showItemdetail = function(itemId){
-    window.location.href='#/poll/'+itemId
-    return false;
-  };
+  $scope.showItemdetail = pollservice.showItemdetail;
   function genorder(polls){
     var ps = polls
     for(var p in ps){
@@ -170,7 +164,7 @@ polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice',
 
 
 /*polls1.controller('PollItemCtrl',function PollItemCtrl($scope, $routeParams, socket, pollservice,userservice) {*/
-polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socket','userservice','$rootScope',function PollItemCtrl($scope, $routeParams, pollservice,socket,userservice,$rootScope) {
+polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socket','userservice','$rootScope',function ($scope, $routeParams, pollservice,socket,userservice,$rootScope) {
 
   socket.on('userchangeclient', function(accountinfo) {
     $scope.islogin = accountinfo.islogin;
@@ -211,6 +205,7 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       $scope.currusername = poll.current_user;
       $scope.islogin = poll.islogin;
   });
+
   var updateSelected = function(action,id){
     if(action == 'add' && $scope.poll.userVote.indexOf(id) == -1){
         $scope.poll.userVote.push(id);
@@ -224,13 +219,24 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       if($scope.poll.max_chosen_num >= $scope.poll.userVote.length){$scope.overvoted = false;}
     }
   }
+  var updateRadio = function(action,id,dom){
+    if(action == 'add' && $scope.poll.userVote.indexOf(id) == -1){
+        $scope.poll.userVote.pop();
+        $scope.poll.userVote.push(id);
+        dom.className=dom.className+' choicewrapactive';
+    }
+    if(action == 'remove' && $scope.poll.userVote.indexOf(id)!=-1){
+      $scope.poll.userVote.pop();
+      dom.className=dom.className.split('choicewrapactive')[0].split(' ')[0];
+    }
+  }
   $scope.updateSelection = function($event, id){
     var checkbox = $event.target;
     var action = (checkbox.checked?'add':'remove');
     if($scope.poll.allow_muti_choice){
       updateSelected(action,id);
     }else{
-
+      updateRadio(action,id,$event.currentTarget);
     }
   }
   $scope.vote = function() {
@@ -241,7 +247,8 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       if(result.islogin){
         var pollId = $scope.poll._id,
             choiceIds = $scope.poll.allow_muti_choice?$scope.poll.userVote:[$scope.poll.nobodycares];
-            useraccount = result.account,
+            /*useraccount = result.account,*/
+            useraccount = result.user_id,
             poll=$scope.poll;
         if(poll.userVote.length<=poll.max_chosen_num){
           if(choiceIds) {
@@ -258,10 +265,7 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       }
     })
   };
-
-/*var socket = io.connect();*/
   socket.on('vote', function(data) {
-    /*console.dir(data);*/
     if(data._id === $routeParams.pollId) {
       choicesvotepercent(data);
       $scope.poll.choices = data.choices;
@@ -272,6 +276,18 @@ polls1.controller('PollItemCtrl',['$scope', '$routeParams', 'pollservice','socke
       /*choicesvotepercent($scope.poll)*/
     }
   });
+  function choicesvotepercent(poll){
+    for(var i=0,len=poll.choices.length;i<len;i++){
+      var pc = poll.choices[i];
+      var vl = (pc.votes.length/poll.totalVotes*100).toFixed(2)*0.9+'%';
+      poll.choices[i].choicesvotepercent = vl;
+      poll.choices[i].mystyle = {
+        "background-color":"lightblue",
+        "width":vl,
+        "text-align":'left'
+      }
+    }
+  }
 
 }])
 
@@ -327,7 +343,7 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
       var result=re.data
       var file = $scope.fileread.file?$scope.fileread.file:$scope.theme_pic_location;
       var poll = $scope.poll;
-      poll.created_user=result.account;
+      poll.created_user=result.user_id;
       if(poll.allow_img_choice){
         for(var i=0,len=poll.choices.length;i<len;i++){
           var c = poll.choices[i];
@@ -424,18 +440,7 @@ polls1.controller('PollNewCtrl',['$scope','$location','userservice','pollservice
 })
 
 
-function choicesvotepercent(poll){
-  for(var i=0,len=poll.choices.length;i<len;i++){
-    var pc = poll.choices[i];
-    var vl = (pc.votes.length/poll.totalVotes*100).toFixed(2)*0.9+'%';
-    poll.choices[i].choicesvotepercent = vl;
-    poll.choices[i].mystyle = {
-      "background-color":"lightblue",
-      "width":vl,
-      "text-align":'left'
-    }
-  }
-};polls1.controller('ModalHeaderCtrl', ['userservice','$uibModal','$rootScope','socket','messageService',function (userservice,$uibModal,$rootScope,socket,messageService) {
+;polls1.controller('ModalHeaderCtrl', ['userservice','$uibModal','$rootScope','socket','messageService',function (userservice,$uibModal,$rootScope,socket,messageService) {
   var $ctrl = this;
   $ctrl.animationsEnabled = true;
   userservice.getUserStatus()
@@ -599,16 +604,64 @@ polls1.controller('AlertDemoCtrl', function ($scope) {
   var getUserStatussync=function(){
     return accountinfo;
   }
+  var setUserStatussync=function(ainfo){
+     accountinfo=ainfo;
+  }
   var getUserStatus =function() {
     var deferred = $q.defer();
     var promise = deferred.promise;
     $http.get('/user/status')
-    .then(function (data) {
-      deferred.resolve(data)
+    .then(function (result) {
+      var data=result.data;
+      if(data.status){
+        setUserStatussync({islogin:data.islogin,account:data.account,user:data.user})
+      }
+      deferred.resolve(result)
     })
     .catch(function (err) {
       deferred.reject(err)
     });
+    return promise;
+  }
+
+  var getUserstatusfromdb = function(){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    $http.get('/user/statusfromdb')
+    .then(function (result) {
+      var data=result.data;
+      if(data.status){
+        setUserStatussync({islogin:data.islogin,account:data.account,user:data.user})
+      }
+      deferred.resolve(result)
+    })
+    .catch(function (err) {
+      deferred.reject(err)
+    });
+    return promise;
+  }
+
+
+  function user2fd(user){
+    var fd = new FormData();
+    for(var key in user){
+      fd.append(key,user[key]);
+    }
+    return fd;
+  }
+  var updateuser=function(user){
+    var fd = user2fd(user)
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    var option = {
+      method:'post',
+      url:'/user/update',
+      data:fd,
+      headers: {'Content-Type': undefined}
+    }
+    $http(option).then(function(data){
+      deferred.resolve(data);
+    })
     return promise;
   }
   var signin=function(user){
@@ -662,23 +715,80 @@ polls1.controller('AlertDemoCtrl', function ($scope) {
     });
     return promise;
   }
+  var setmsgreaded=function(index){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    var option = {
+      method:'get',
+      url:'/user/setmsgreaded',
+      params:{index:index}
+    }
+    $http(option).then(function(data){
+      deferred.resolve(data);
+    })
+    return promise;
+  }
+  var addtomyfavor = function(pollid,url){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    var option = {
+      method:'get',
+      url:'/user/addtomyfavor',
+      params:{pollid:pollid,url:url}
+    }
+    $http(option).then(function(data){
+      deferred.resolve(data);
+    })
+    return promise;
+  }
+  var deletefrommyfavor = function(pollid){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    var option = {
+      method:'get',
+      url:'/user/deletefrommyfavor',
+      params:{pollid:pollid}
+    }
+    $http(option).then(function(data){
+      deferred.resolve(data);
+    })
+    return promise;
+  }
+
+
   return{
+    updateuser:updateuser,
+    setUserStatussync:setUserStatussync,
     getUserStatussync:getUserStatussync,
     signout:signout,
     signup:signup,
     signin:signin,
-    getUserStatus:getUserStatus
+    getUserStatus:getUserStatus,
+    getUserstatusfromdb:getUserstatusfromdb,
+    setmsgreaded:setmsgreaded,
+    addtomyfavor:addtomyfavor,
+    deletefrommyfavor:deletefrommyfavor
   }
 }])
 ;// Angular service module for connecting to JSON APIs
 /*angular.module('pollServices', ['ngResource'])*/
 polls1
 .factory('pollservice',['$q',"$http",function($q,$http){
-  var getallpolls = function(query){
+  var getallpolls = function(query,page){
     var deferred = $q.defer();
     var promise = deferred.promise;
     console.log('query=',query)
-    $http.get('/polls/polls?query='+query)
+    var url = "/polls/polls"
+    /*var url = query==undefined?"/polls/polls":('/polls/polls?query='+query)
+    if(query){
+      url=url+"&page="+page;
+    }else{
+      url=url+"?page"
+    }*/
+    $http({
+      url:url,method:'GET',
+      params:{query:query,page:page}
+    })
     .then(function(data){
       deferred.resolve(data);
     })
@@ -687,13 +797,15 @@ polls1
     });
     return promise;
   }
-  var getmypoll=function(username,query){
+  var getmypoll=function(username,query,page){
     var deferred = $q.defer();
     var promise = deferred.promise;
     if(username){
       var url = '/mypolls/'+username;
-      url = url+'?query='+query
-      $http.get(url)
+      $http({
+        url:url,method:'GET',
+        params:{query:query,page:page}
+      })
       .then(function(data){
         console.log('in getmypoll, return data=',data)
         deferred.resolve(data);
@@ -706,13 +818,15 @@ polls1
     }
     return promise;
   }
-  var getmyvote=function(username,query){
+  var getmyvote=function(account,query,page){
     var deferred = $q.defer();
     var promise = deferred.promise;
-    if(username){
-      var url = '/myvotes/'+username;
-      url = url+'?query='+query
-      $http.get(url)
+    if(account){
+      var url = '/myvotes/'+account;
+      $http({
+        url:url,method:'GET',
+        params:{query:query,page:page}
+      })
       .then(function(data){
         deferred.resolve(data);
       })
@@ -801,7 +915,44 @@ polls1
     var theme_pic_location = 'pollcomponent/theme_pic/'+Math.floor((Math.random()*21)+1)+'.jpg'
     return theme_pic_location;
   }
+  var getheadpic=function(){
+    var head_pic_location = 'pollcomponent/head_pic/'+Math.floor((Math.random()*24)+1)+'.jpg'
+    return head_pic_location;
+  }
+  var genorder=function(polls){
+    var ps = polls
+    var orders=[];
+    for(var p in ps){
+      /*$scope.uiif[p]='uiifopen'
+      $scope.uiif[p]='uiifclose'*/
+      var po = ps[p];
+      po.img_Url= po.img_Url?po.img_Url:'routercomponent/routerimg/logo.png'
+      var d = new Date(po.meta.updateAt);
+      d=(d.getTime()+"").slice(0,10);
+      po.order=d;
+      orders.push(d)
+    }
+
+    orders=orders.sort(sortNumberab);
+    for(var p in ps){
+      var po = ps[p];
+      po.order = orders.indexOf(po.order);
+    }
+    ps.sort(sortobjorderba);
+    return ps
+    function sortNumberba(a,b){return b - a} /*降序*/
+    function sortNumberab(a,b){return a - b} /*升序*/
+    function sortobjorderab(a,b){return a.order - b.order}
+    function sortobjorderba(a,b){return b.order - a.order}
+  }
+  var showItemdetail = function(itemId){
+    window.location.href='#/poll/'+itemId
+    return false;
+  };
   return {
+    getheadpic:getheadpic,
+    showItemdetail:showItemdetail,
+    genorder:genorder,
     getthemepic:getthemepic,
     getmypoll:getmypoll,
     getmyvote:getmyvote,
@@ -833,3 +984,76 @@ polls1
     }
   };
 });
+polls1.service('commentservice',['$q',"$http",function($q,$http){
+  var savecomment = function(comment){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    var url = "/comment/create"
+    $http({
+      url:url,method:'post',
+      data:{comment:comment}
+    })
+    .then(function(data){
+      deferred.resolve(data);
+    })
+    .catch(function (err) {
+      deferred.reject(err);
+    });
+    return promise;
+  }
+  var getcommentbytouser = function(touserid){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    var url = "/comment/getbytouserid"
+    $http({
+      url:url,method:'post',
+      data:{touserid:touserid}
+    })
+    .then(function(data){
+      deferred.resolve(data);
+    })
+    .catch(function (err) {
+      deferred.reject(err);
+    });
+    return promise;
+  }
+  var deleteusercomment = function(commentindex){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    var url = "/user/deleteusercomment"
+    $http({
+      url:url,method:'post',
+      data:{commentindex:commentindex}
+    })
+    .then(function(data){
+      deferred.resolve(data);
+    })
+    .catch(function (err) {
+      deferred.reject(err);
+    });
+    return promise;
+  }
+  var testsockit = function(str){
+    var deferred = $q.defer();
+    var promise = deferred.promise;
+    var url = "/comment/test"
+    $http({
+      url:url,method:'post',
+      data:{name:str}
+    })
+    .then(function(data){
+      deferred.resolve(data);
+    })
+    .catch(function (err) {
+      deferred.reject(err);
+    });
+    return promise;
+  }
+
+  return {
+    deleteusercomment:deleteusercomment,
+    testsockit:testsockit,
+    getcommentbytouser:getcommentbytouser,
+    savecomment:savecomment
+  }
+}])

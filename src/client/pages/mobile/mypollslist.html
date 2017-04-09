@@ -1,0 +1,52 @@
+<div ui-content-for="title">
+  <span>我发起的投票</span>
+</div>
+
+<div class="scrollable" >
+  <div ng-show="searchBar" class="searchbar">
+    <input  type="search" class="searchinput" ng-model='query'placeholder="Search.." /><button  class="btn btn-default"id='go'ng-click='queryquestion()'>go</button>
+  </div>
+  <div class="scrollable-content" ui-scroll-bottom="bottomReached()">
+    <div style='float:left;margin-left:-1000px'  id="abtop">sdf</div>
+    <div class="section" ng-show="polls.length>0">
+    <!-- <div class="list-group"ui-shared-state="myAccordion"ui-default='2'> -->
+      <div class="panel-group" ui-shared-state="myAccordion">
+        <div class="panel panel-default"  ng-repeat="poll in polls" style="order:{{poll.order}} " >
+          <div class="panel-heading"  ng-click='toggle(poll.order)'>
+            <h4 class="panel-title">
+                {{poll.question}}
+            </h4>
+            <h4 class="panel-title">
+                | by {{poll.created_user.nickname?poll.created_user.nickname:poll.created_user.account}}
+            </h4>
+              <i ng-class="{true:'fa fa-chevron-down pull-right',false:'fa fa-chevron-right pull-right'}[iarrow[poll.order]]" ng-init="iarrow[poll.order]=false"></i>
+          </div>
+          <div ui-if="myAccordion == {{poll.order}}">
+            <div class="panel-body abbr-choice-body">
+              <h4>{{poll.question}}</h4>
+              <p>{{poll.description}}</p>
+              <label>{{poll.meta.createAt|date:'MM/dd HH:mm'}} 创建</label><label class="pull-right">{{poll.meta.updateAt|date:'MM/dd HH:mm'}} 更新</label>
+              <div>
+                <a type="button" class="btn btn-primary pull-right" ng-click="showItemdetail(poll._id)">查看详情</a>
+              </div>
+            </div>
+          </div>
+         </div>
+        </div>
+      </div>
+    </div>
+
+    <a class="btn btn-block btn-lg btn-primary scrollable-footer" ng-click="searchBar=searchBar==true?false:true" ng-init="searchBar=false">
+      <i class="fa fa-search"></i>
+      <span ng-hide="searchBar">Show</span>
+      <span ng-show="searchBar">Hide</span>
+      Search Bar
+    </a>
+  </div>
+</div>
+<div ui-content-for="sharepage">
+      <a  class="link-cart"><i class="fa fa-paper-plane"  style='display:block;position:absolute;font-size:25px;left:8%'aria-hidden="true" ui-turn-on="qrimg"></i><p style='position:absolute;top:200%;left:-10%'>分享投票</p></a>
+</div>
+<div ui-content-for="modals">
+  <div ng-include="'pages/mobile/qrimg.html'"></div>
+</div>
