@@ -20,14 +20,14 @@ var limit = 15;
 exports.list = function(req, res) {
   var query = req.query.query=='undefined'?RegExp(undefined):RegExp(req.query.query)
   var page = req.query.page;
-  Poll.find({'question':query}, 'question description img_Url created_user meta')
+  console.log('page=',page,'  and query=',query)
+  Poll.find({'question':query})
   .sort({"meta.updateAt":-1})
   .skip((page-1)*limit)
   .limit(limit)
   .populate('created_user')
   .exec(function(error, polls) {
     console.log('polls found!!polls= ',polls)
-    console.log('投票已找到！ ',polls)
     if(polls){
       console.log('polls.length=',polls.length);
       res.json(polls);
