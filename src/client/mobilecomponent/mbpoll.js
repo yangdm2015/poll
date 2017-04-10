@@ -9,7 +9,6 @@ var polls1 = angular.module('polls', [
   // opening sidebars, turning switches on/off ..
   'mobile-angular-ui.gestures',
   'ngTouch',
-  'duScroll'
 ]);
 
 //
