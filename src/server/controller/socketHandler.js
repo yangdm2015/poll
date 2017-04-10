@@ -56,7 +56,7 @@ function getuserssocketarry(){
   return users2socket;
 }
 function sendMsg2UserById(user_id,msg){
-  console.log('将要给',user_id,"发消息！绝对路径是：",msg.abturl)
+  /*console.log('将要给',user_id,"发消息！绝对路径是：",msg.abturl)*/
   var toUserSocket = findUserByUserId(user_id).socket;
   toUserSocket.emit('newmsg',msg)
 }

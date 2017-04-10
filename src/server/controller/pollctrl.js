@@ -26,8 +26,12 @@ exports.list = function(req, res) {
   .limit(limit)
   .populate('created_user')
   .exec(function(error, polls) {
-    console.log('polls.length=',polls.length);
-    res.json(polls);
+    if(polls){
+      console.log('polls.length=',polls.length);
+      res.json(polls);
+    }else{
+      return {err:'no poll found!'}
+    }
   })
 }
 exports.mypolls = function(req, res) {
@@ -196,7 +200,7 @@ exports.create = function(req, res) {
   pollObj.img_Url=file_theme_path;
   /*var reqBody = req.body.poll,*/
 
-  console.log('pollObj=',pollObj)
+  /*console.log('pollObj=',pollObj)*/
   var poll = new Poll(pollObj);
   // Save poll to DB
   var savedpoll;
@@ -206,7 +210,7 @@ exports.create = function(req, res) {
     return Poll.populate(doc,{path:"created_user"})
   })
   .then(function(poll){
-    console.log('填充created_user字段后,poll=',poll)
+    /*console.log('填充created_user字段后,poll=',poll)*/
     savedpoll = poll;
     return User.findById(poll.created_user._id)
   })
@@ -252,9 +256,9 @@ exports.create = function(req, res) {
 
 exports.vote = function(socket) {
   /*console.log('这里仅仅检测cookie中与sid相关的内容！socket.request.headers.cookie=',socket.request.headers.cookie)*/
-  console.log('此时的用户socket库为：',socketHandler.getuserssocketarry())
+  /*console.log('此时的用户socket库为：',socketHandler.getuserssocketarry())*/
   var sessionId = socketHandler.getSessionId(socket.request.headers.cookie, 'sid');
-  console.log('在vote里，sessionId=',sessionId)
+  /*console.log('在vote里，sessionId=',sessionId)*/
   var user = socket.request.session.user;
   if(user){
   console.log('在vote里，user._id=',user._id)
@@ -262,7 +266,7 @@ exports.vote = function(socket) {
     var useraccount = user.account;
   }
   if(sessionId&&userid){
-    console.log('既有userid也有sessionId')
+    /*console.log('既有userid也有sessionId')*/
     socketHandler.addUser(userid,useraccount,sessionId)
     socketHandler.setUserSocket(sessionId, socket);
 
