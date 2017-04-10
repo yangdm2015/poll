@@ -18,7 +18,8 @@ var polls1 = angular.module('polls', [
 
 
 polls1.config(function($routeProvider) {
-  $routeProvider.when('/', {templateUrl: 'pages/templates/mb/home.html', reloadOnSearch: false});
+  /*$routeProvider.when('/', {templateUrl: 'pages/templates/mb/home.html', reloadOnSearch: false});*/
+  $routeProvider.when('/', {templateUrl: 'pages/mobile/polllist.html', reloadOnSearch: false,controller:'PolllistController'});
   $routeProvider.when('/scroll', {templateUrl: 'pages/templates/mb/scroll.html', reloadOnSearch: false});
   $routeProvider.when('/polllist', {templateUrl: 'pages/mobile/polllist.html', reloadOnSearch: false,controller:'PolllistController'});
   $routeProvider.when('/myvotelist', {templateUrl: 'pages/mobile/myvotelist.html', reloadOnSearch: false,controller:'MyVoteController'});
@@ -221,7 +222,9 @@ polls1.controller('PolllistController', ['userservice','pollservice','$rootScope
     $rootScope.loading = true;
     pollservice.getallpolls(query,page)
     .then(function(result){
-      $scope.polls=pollservice.genorder(result.data)
+      if(result.data&&result.data.length>0){
+        $scope.polls=pollservice.genorder(result.data)
+      }
       $rootScope.loading = false;
     });
   }

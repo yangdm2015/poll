@@ -17,7 +17,8 @@ if (process.env.SERVER_SOFTWARE == 'bae/3.0') {
     };
 } else {
     host = 'localhost';
-    database = 'remwords';
+    /*database = 'remwords';*/
+    database = 'testnew';
     port = 27017;
     /*port = 27019;*/
 }
