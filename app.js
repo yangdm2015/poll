@@ -22,7 +22,6 @@ app.use(cookieParser(COOKIE_SECRET));
 mongoset.init()
 
 var mgstore = new MongoStore({ mongooseConnection: mongoset.db })
-
 var rstore=new RedisStore({
     /*client:testRedis.returnclient()*/
     client:testRedis.returnclient()

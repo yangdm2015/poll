@@ -27,7 +27,6 @@ exports.list = function(req, res) {
   .limit(limit)
   .populate('created_user')
   .exec(function(error, polls) {
-    console.log('polls found!!polls= ',polls,'and err=',error)
     if(polls){
       console.log('polls.length=',polls.length);
       res.json(polls);
