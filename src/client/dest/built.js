@@ -11,7 +11,6 @@ d,m),(r.current=d)&&d.redirectTo&&(e.isString(d.redirectTo)?b.path(t(d.redirectT
 c,b=n.get(c,{cache:v}).then(function(a){return a.data})));e.isDefined(b)&&(a.$template=b);return f.all(a)}}).then(function(b){d==r.current&&(d&&(d.locals=b,e.copy(d.params,c)),a.$broadcast("$routeChangeSuccess",d,m))},function(b){d==r.current&&a.$broadcast("$routeChangeError",d,m,b)})}function p(){var a,c;e.forEach(k,function(f,k){var q;if(q=!c){var g=b.path();q=f.keys;var l={};if(f.regexp)if(g=f.regexp.exec(g)){for(var h=1,p=g.length;h<p;++h){var n=q[h-1],r="string"==typeof g[h]?decodeURIComponent(g[h]):
 g[h];n&&r&&(l[n.name]=r)}q=l}else q=null;else q=null;q=a=q}q&&(c=s(f,{params:e.extend({},b.search(),a),pathParams:a}),c.$$route=f)});return c||k[null]&&s(k[null],{params:{},pathParams:{}})}function t(a,b){var c=[];e.forEach((a||"").split(":"),function(a,d){if(0===d)c.push(a);else{var e=a.match(/(\w+)(.*)/),f=e[1];c.push(b[f]);c.push(e[2]||"");delete b[f]}});return c.join("")}var u=!1,r={routes:k,reload:function(){u=!0;a.$evalAsync(l)}};a.$on("$locationChangeSuccess",l);return r}]});n.provider("$routeParams",
 function(){this.$get=function(){return{}}});n.directive("ngView",x);n.directive("ngView",z);x.$inject=["$route","$anchorScroll","$animate"];z.$inject=["$compile","$controller","$route"]})(window,window.angular);
-//# sourceMappingURL=angular-route.min.js.map
 ;// Angular module, defining routes for the app
 /*var polls1 = angular.module('polls', ['ngRoute','pollServices']).*/
 var polls1 = angular.module('polls', ['ngRoute','ngAnimate', 'ngSanitize', 'ui.bootstrap'])
@@ -770,21 +769,13 @@ polls1.controller('AlertDemoCtrl', function ($scope) {
     deletefrommyfavor:deletefrommyfavor
   }
 }])
-;// Angular service module for connecting to JSON APIs
-/*angular.module('pollServices', ['ngResource'])*/
-polls1
+;polls1
 .factory('pollservice',['$q',"$http",function($q,$http){
   var getallpolls = function(query,page){
     var deferred = $q.defer();
     var promise = deferred.promise;
     console.log('query=',query)
     var url = "/polls/polls"
-    /*var url = query==undefined?"/polls/polls":('/polls/polls?query='+query)
-    if(query){
-      url=url+"&page="+page;
-    }else{
-      url=url+"?page"
-    }*/
     $http({
       url:url,method:'GET',
       params:{query:query,page:page}
@@ -859,7 +850,6 @@ polls1
           for(var i=0,len=val.length;i<len;i++){
             var filetmp = val[i].file;
             fd.append('poll_theme', filetmp);
-            /*delete val[i].file;*/
           }
         }
         fd.append(key, JSON.stringify(val))
@@ -890,9 +880,7 @@ polls1
           url:'polls',
           data:fd,
           headers: {'Content-Type': undefined},
-          /*headers: {'Content-Type': 'multipart/form-data'},*/
           transformRequest: angular.identity
-          /*data:{poll:poll}*/
         }
         $http(option).then(function(data){
           console.log("save successful");
@@ -923,8 +911,6 @@ polls1
     var ps = polls
     var orders=[];
     for(var p in ps){
-      /*$scope.uiif[p]='uiifopen'
-      $scope.uiif[p]='uiifclose'*/
       var po = ps[p];
       po.img_Url= po.img_Url?po.img_Url:'routercomponent/routerimg/logo.png'
       var d = new Date(po.meta.updateAt);
@@ -961,7 +947,7 @@ polls1
     savepoll:savepoll
   }
 }])
-.factory('socket', function($rootScope,$timeout) {
+.factory('socket',['$rootScope','$timeout',function($rootScope,$timeout) {
   var socket = io.connect();
   return {
     on: function (eventName, callback) {
@@ -983,7 +969,7 @@ polls1
       })
     }
   };
-});
+}]);
 polls1.service('commentservice',['$q',"$http",function($q,$http){
   var savecomment = function(comment){
     var deferred = $q.defer();

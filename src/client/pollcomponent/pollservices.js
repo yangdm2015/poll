@@ -1,5 +1,3 @@
-// Angular service module for connecting to JSON APIs
-/*angular.module('pollServices', ['ngResource'])*/
 polls1
 .factory('pollservice',['$q',"$http",function($q,$http){
   var getallpolls = function(query,page){
@@ -7,12 +5,6 @@ polls1
     var promise = deferred.promise;
     console.log('query=',query)
     var url = "/polls/polls"
-    /*var url = query==undefined?"/polls/polls":('/polls/polls?query='+query)
-    if(query){
-      url=url+"&page="+page;
-    }else{
-      url=url+"?page"
-    }*/
     $http({
       url:url,method:'GET',
       params:{query:query,page:page}
@@ -87,7 +79,6 @@ polls1
           for(var i=0,len=val.length;i<len;i++){
             var filetmp = val[i].file;
             fd.append('poll_theme', filetmp);
-            /*delete val[i].file;*/
           }
         }
         fd.append(key, JSON.stringify(val))
@@ -118,9 +109,7 @@ polls1
           url:'polls',
           data:fd,
           headers: {'Content-Type': undefined},
-          /*headers: {'Content-Type': 'multipart/form-data'},*/
           transformRequest: angular.identity
-          /*data:{poll:poll}*/
         }
         $http(option).then(function(data){
           console.log("save successful");
@@ -151,8 +140,6 @@ polls1
     var ps = polls
     var orders=[];
     for(var p in ps){
-      /*$scope.uiif[p]='uiifopen'
-      $scope.uiif[p]='uiifclose'*/
       var po = ps[p];
       po.img_Url= po.img_Url?po.img_Url:'routercomponent/routerimg/logo.png'
       var d = new Date(po.meta.updateAt);
@@ -189,7 +176,7 @@ polls1
     savepoll:savepoll
   }
 }])
-.factory('socket', function($rootScope,$timeout) {
+.factory('socket',['$rootScope','$timeout',function($rootScope,$timeout) {
   var socket = io.connect();
   return {
     on: function (eventName, callback) {
@@ -211,7 +198,7 @@ polls1
       })
     }
   };
-});
+}]);
 polls1.service('commentservice',['$q',"$http",function($q,$http){
   var savecomment = function(comment){
     var deferred = $q.defer();

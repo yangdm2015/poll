@@ -1,13 +1,20 @@
 script(src='/socket.io/socket.io.js')
 if isCPS
-  script(src='dest/built.js')
+  script(src='dest/builtmb.min.js')
 else
-  //- script(src='module/abt/angular.1.5.6.min.js')
-  script(src='module/abt/angular.1.5.6.js')
+  script(src='module/abt/angular.1.5.6.min.js')
   script(src='module/abt/angular-sanitize.1.5.6.min.js')
-  //- script(src='module/mobile/mobile-angular-ui.min.js')
-  script(src='module/mobile/mobile-angular-ui.js')
+  script(src='module/mobile/mobile-angular-ui.min.js')
   script(src='module/mobile/mobile-angular-ui.gestures.min.js')
+
+  script(src='module/angular-route.min.js')
+
+
+//- script(src='mobilecomponent/mbpoll.js')
+//- script(src='usercomponent/userservices.js')
+//- script(src='pollcomponent/pollservices.js')
+script(src='dest/builtmymb.min.js')
+//- script(src='mobilecomponent/sidebarcontroller.js')
 
 
 //- script(src='module/abt/angular-animate.min.js')
@@ -27,10 +34,4 @@ else
 
 
 
-script(src='module/angular-route.min.js')
-//- script(src='module/scroll/stroll.min.js')
 
-script(src='mobilecomponent/mbpoll.js')
-script(src='mobilecomponent/sidebarcontroller.js')
-script(src='usercomponent/userservices.js')
-script(src='pollcomponent/pollservices.js')

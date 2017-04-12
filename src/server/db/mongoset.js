@@ -20,6 +20,7 @@ if (isaly) {
     database = 'test';
     port = 27017;
     /*port = 27019;*/
+    /*var url=sprintf('mongodb://%s:%s@%s:%d/%s',username,pswd,host,port,database);*/
     var url=sprintf('mongodb://%s:%s@%s:%d/%s',username,pswd,host,port,database);
 }
 
@@ -30,9 +31,9 @@ module.exports = {
 
             console.log('url=',url);
             if(isaly){
-                db = mongoose.connect(url);
-            }else{
                 db = mongoose.connect(url,{replset:{rs_name:replSetName}});
+            }else{
+                db = mongoose.connect(url);
             }
        /* db.on('error', function(err) {
             console.log("connect error 连接错误！");
