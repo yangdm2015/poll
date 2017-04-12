@@ -83,7 +83,7 @@ module.exports = function(grunt) {
             },
             concatmbjs: { //所有JS文件全部合并成一份文件
                 src: [
-                    'src/client/module/abt/angular.1.5.6.min.js',
+                    /*'src/client/module/abt/angular.1.5.6.min.js',*/
                     'src/client/module/abt/angular-sanitize.1.5.6.min.js',
                     'src/client/module/mobile/mobile-angular-ui.js',
                     'src/client/module/mobile/mobile-angular-ui.gestures.min.js',
