@@ -1,4 +1,6 @@
 polls1.controller('HomeCtrl',['$timeout','$scope','$location','$route','userservice',function ($timeout,$scope,$location,$route,userservice) {
+  $scope.loadMore = function() {
+    console.log('hello')}
  /* $scope.$on('userchange',function(event,data){
     $scope.$broadcast('userchange',data)
   })*/
@@ -77,7 +79,9 @@ polls1.controller('MyVoteListCtrl',['$timeout','$scope','$location','$route','po
 
 
 
-polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice','messageService',function ($timeout,$scope,$location,pollservice,messageService) {
+polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice','messageService','$timeout',function ($timeout,$scope,$location,pollservice,messageService,$timeout) {
+  var page,nomore=false,limit=15;
+  $scope.query = ""
   console.log('PollListCtrl')
   $scope.showItemdetail = pollservice.showItemdetail;
   function genorder(polls){
@@ -91,17 +95,45 @@ polls1.controller('PollListCtrl',['$timeout','$scope','$location','pollservice',
     }
     return ps
   }
+
   messageService.subscribe('query4question', function(event, data) {
     console.log(data.query)
+    $scope.query=data.query
     pollservice.getallpolls(data.query)
     .then(function(result){
       $scope.polls=genorder(result.data)
     });
   })
-  pollservice.getallpolls()
+  /*pollservice.getallpolls()
   .then(function(result){
     $scope.polls=genorder(result.data)
-  });
+  });*/
+  var timeout;
+  $scope.loadMore = function() {
+    $timeout.cancel(timeout)
+    timeout= $timeout(function(){
+      if(pollservice.getalreadyloaded()){
+        pollservice.setalreadyloaded(false)
+        if($scope.polls){
+          page=(Math.floor($scope.polls.length/10)+1);
+        }else{page=1}
+        if(!nomore){
+          pollservice.getallpolls($scope.query,page)
+          .then(function(result){
+            console.log('page=',page)
+            nomore=result.data.length<limit?true:false;
+            $scope.polls = $scope.polls?$scope.polls.concat(result.data):result.data
+            one=true;
+            pollservice.setalreadyloaded(true)
+            /*$scope.polls= $scope.polls.concat(result.data)*/
+          })
+        }
+      }
+    },50)
+
+
+
+  };
 }])
 
 

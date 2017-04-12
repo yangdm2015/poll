@@ -1,14 +1,22 @@
 script(src='/socket.io/socket.io.js')
 
+if isCDN
+  script(src='https://cdn.bootcss.com/angular.js/1.6.3/angular.min.js')
+  script(src='https://cdn.bootcss.com/angular.js/1.3.0/angular-route.min.js')
+  script(src='https://cdn.bootcss.com/angular.js/1.6.3/angular-sanitize.min.js')
+  script(src='https://cdn.bootcss.com/angular.js/1.6.3/angular-animate.min.js')
+  script(src='https://cdn.bootcss.com/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js')
+  script(src='module/abt/ng-infinite-scroll.min.js')
+else
+  script(src='module/abt/angular.1.6.3.min.js')
+  script(src='module/angular-route.min.js')
+  script(src='module/abt/angular-sanitize.1.6.3.min.js')
+  script(src='module/abt/angular-animate.1.6.3.min.js')
+  script(src='module/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js')
+  script(src='module/abt/ng-infinite-scroll.js')
 
-script(src='module/abt/angular.1.6.3.min.js')
 //- script(src='module/abt/angular.1.5.6.min.js')
-script(src='module/angular-route.min.js')
-script(src='module/abt/angular-sanitize.1.6.3.min.js')
-script(src='module/abt/angular-animate.1.6.3.min.js')
 //- script(src='module/abt/angular-sanitize.1.5.6.min.js')
-script(src='module/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js')
-
 //- script(src='module/mobile/mobile-angular-ui.gestures.min.js')
 //- script(src='module/mobile/mobile-angular-ui.min.js')
 
@@ -20,7 +28,7 @@ script(src='module/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js')
 
 
 if isCPS
-  script(src='dest/built.js')
+  script(src='dest/built.min.js')
 else
   script(src='routercomponent/clientroute.js')
   script(src='usercomponent/Headermodule.js')

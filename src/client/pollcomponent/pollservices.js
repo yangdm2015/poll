@@ -164,7 +164,19 @@ polls1
     window.location.href='#/poll/'+itemId
     return false;
   };
+  var alreadyloaded=false
+  var getalreadyloaded=function(){
+    if(!alreadyloaded){
+      alreadyloaded=true;
+    }
+    return alreadyloaded;
+  }
+  var setalreadyloaded=function(b){
+    alreadyloaded=b;
+  }
   return {
+    getalreadyloaded:getalreadyloaded,
+    setalreadyloaded:setalreadyloaded,
     getheadpic:getheadpic,
     showItemdetail:showItemdetail,
     genorder:genorder,

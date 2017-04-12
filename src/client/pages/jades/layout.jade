@@ -10,7 +10,7 @@ html(lang='en')
       include ./mobile/mbcssrefer.jade
     //- include ./includes/switchcss.html
     //- include .
-  body(ng-app='polls' ng-controller="HomeCtrl as $hctrl" ui-prevent-touchmove-defaults)
+  body(ng-app='polls' ng-controller="HomeCtrl as $hctrl"  )
   if isPC
     include ./includes/header
     block content

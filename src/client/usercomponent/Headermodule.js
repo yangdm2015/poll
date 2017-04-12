@@ -154,6 +154,3 @@ polls1.controller('LoginModalInstanceCtrl', ['$uibModalInstance','userservice',f
   };
 }]);
 
-polls1.controller('AlertDemoCtrl', function ($scope) {
-})
-

@@ -1,6 +1,6 @@
 // Angular module, defining routes for the app
 /*var polls1 = angular.module('polls', ['ngRoute','pollServices']).*/
-var polls1 = angular.module('polls', ['ngRoute','ngAnimate', 'ngSanitize', 'ui.bootstrap'])
+var polls1 = angular.module('polls', ['ngRoute','ngAnimate', 'ngSanitize', 'ui.bootstrap','infinite-scroll'])
   polls1.config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
@@ -14,7 +14,7 @@ var polls1 = angular.module('polls', ['ngRoute','ngAnimate', 'ngSanitize', 'ui.b
     .otherwise({ redirectTo: '/polls' });
   }]);
 
-polls1.run(function ($rootScope, $location, $route, userservice) {
+polls1.run(['$rootScope','$location','$route','userservice',function ($rootScope, $location, $route, userservice) {
   $rootScope.$on('$routeChangeStart',
     function (event, next, current) {
       userservice.getUserStatus()
@@ -28,7 +28,7 @@ polls1.run(function ($rootScope, $location, $route, userservice) {
         }
       });
   });
-});
+}]);
 
 
 

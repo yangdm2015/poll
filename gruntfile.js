@@ -72,10 +72,9 @@ module.exports = function(grunt) {
             },
             concatjs: { //所有JS文件全部合并成一份文件
                 src: [
-                    'src/client/module/angular-route.min.js',
                     'src/client/routercomponent/clientroute.js',
-                    'src/client/pollcomponent/pollcontrollers.js',
                     'src/client/usercomponent/Headermodule.js',
+                    'src/client/pollcomponent/pollcontrollers.js',
                     'src/client/usercomponent/userservices.js',
                     'src/client/pollcomponent/pollservices.js',
                 ],

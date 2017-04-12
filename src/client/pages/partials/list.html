@@ -1,4 +1,4 @@
-<div  ng-switch on="polls.length">
+<div  ng-switch on="polls.length" infinite-scroll='loadMore()'>
   <ul ng-switch-when="0">
     <li><em>没有正在进行的投票，你想<a href="#/new">新建</a>一个吗？</li>
   </ul>
