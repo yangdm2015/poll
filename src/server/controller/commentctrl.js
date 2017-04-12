@@ -24,7 +24,6 @@ exports.create = function(io){
     var newcomment = new Comment(req.body.comment)
     var aburl = req.body.comment.aburl,replyid,msg;
 
-    console.log('前端传来的绝对路径是：',aburl)
     var commentreg_tosend,fromuser_id=newcomment.from,touser_id=newcomment.to,
     tocreateuser_id=req.body.comment.tocreateuser,pollcreateuser,commentuser;
 
@@ -91,67 +90,98 @@ exports.create = function(io){
       commentreg_tosend = orgcomment
       adduserreplynumandjsonback(fromuser_id,tocreateuser_id,touser_id,commentreg_tosend,newcomment,msg,req,res,io)
     })
-  }
-  function adduserreplynumandjsonback(fromuser_id,tocreateuser_id,touser_id,commentreg_tosend,newcomment,msg,req,res,io){
-    var commentuser,pollcreateuser;
-    User.findById(fromuser_id)
-    .then(function(user){
-      user.replynum = user.replynum?user.replynum:0;
-      user.replynum ++;
-      return user.save();
-    })
-   .then(function(data){ /*给投票的创建者发消息*/
-      req.session.user = data;
-      commentuser = data;
+    function adduserreplynumandjsonback(fromuser_id,tocreateuser_id,touser_id,commentreg_tosend,newcomment,msg,req,res,io){
+      var commentuser,pollcreateuser;
+      User.findById(fromuser_id)
+      .then(function(user){
+        user.replynum = user.replynum?user.replynum:0;
+        user.replynum ++;
+        return user.save();
+      })
+     .then(function(data){ /*给投票的创建者发消息*/
+        req.session.user = data;
+        commentuser = data;
 
-      if(newcomment.to){
-        if(newcomment.to._id==tocreateuser_id){
-          console.log('此时投票发起人和直接回复人一致，id为',tocreateuser_id)
-          socketHandler.sendMsg2UserById(tocreateuser_id.toString(),msg)
-          return addmsgtouser(tocreateuser_id,msg);
+        if(newcomment.to){
+          if(newcomment.to._id==tocreateuser_id){
+            console.log('此时投票发起人和直接回复人一致，id为',tocreateuser_id)
+            msg.num = hasunread(req.session.user.msgs);
+            socketHandler.sendMsg2UserById(tocreateuser_id.toString(),msg)
+            return addmsgtouser(tocreateuser_id,msg);
+          }else{
+            console.log('马上要进行两度回复了！tocreateuser_id=',tocreateuser_id,"  同时newcomment.to._id=",newcomment.to._id)
+
+            return addmsgtobothuser(newcomment.to._id,tocreateuser_id,msg);
+          }
         }else{
-          console.log('马上要进行两度回复了！tocreateuser_id=',tocreateuser_id,"  同时newcomment.to._id=",newcomment.to._id)
-          socketHandler.sendMsg2UserById(tocreateuser_id.toString(),msg)
-          socketHandler.sendMsg2UserById(newcomment.to._id.toString(),msg)
-          return addmsgtobothuser(newcomment.to._id,tocreateuser_id,msg);
+
+          return addmsgtouser(tocreateuser_id,msg);
         }
-      }else{
+      })
+      .then(function(user){
+        io.emit('newcomment',{})
+        console.log('快要返回啦！')
+        res.json({comment:commentreg_tosend,user:user});
+      })
+    }
+    function addmsgtobothuser(uid1,uid2,msg){
+      console.log('马上要进行两度回复了！')
+      User.findById(uid1)
+      .then(function(user){
+        user.msgs.push(msg);
+        user.msgs.sort(sortNumberba);
+        updatesession(user);
+        msg.num = hasunread(user.msgs);
+        socketHandler.sendMsg2UserById(newcomment.to._id.toString(),msg)
+
+        console.log('此时的fromuser_id为：',fromuser_id,'而tocreateuser_id为',tocreateuser_id,'同时newcomment.to._id=',newcomment.to._id)
+        return user.save()
+      })
+      .then(function(user){
+        return User.findById(uid2)
+      })
+      .then(function(user){
+        user.msgs.push(msg);
+        user.msgs.sort(sortNumberba)
+        msg.num = hasunread(user.msgs);
         socketHandler.sendMsg2UserById(tocreateuser_id.toString(),msg)
-        return addmsgtouser(tocreateuser_id,msg);
+        updatesession(user)
+        return user.save()
+      })
+    }
+    function addmsgtouser(userid,msg){
+      console.log('进入一度回复了！')
+      console.log('此时的tocreateuser_id为：',tocreateuser_id)
+      User.findById(userid)
+      .then(function(user){
+        user.msgs.push(msg);
+        user.msgs.sort(sortNumberba)
+        updatesession(user)
+        msg.num = hasunread(user.msgs);
+        socketHandler.sendMsg2UserById(tocreateuser_id.toString(),msg)
+        return user.save()
+      })
+    }
+    function sortNumberba(a,b){return b.createAt - a.createAt} /*降序*/
+    function updatesession(user){
+      var userinsession = req.session.user;
+      if(user._id.toString()==userinsession._id.toString()){
+        req.session.user=user;
       }
-    })
-    .then(function(user){
-      io.emit('newcomment',{})
-      console.log('快要返回啦！')
-      res.json({comment:commentreg_tosend,user:user});
-    })
+    }
+    function hasunread(arr){
+      var hasunread =false,num=0;
+      for(var i=0,len=arr.length;i<len;i++){
+        var item = arr[i];
+        if(!item.read){
+          hasunread=true;
+          num++
+        }
+      }
+      console.log('未读消息数为：',num)
+      return num;
+    }
   }
-  function addmsgtobothuser(uid1,uid2,msg){
-    console.log('马上要进行两度回复了！')
-    User.findById(uid1)
-    .then(function(user){
-      user.msgs.push(msg);
-      user.msgs.sort(sortNumberba)
-      return user.save()
-    })
-    .then(function(user){
-      return User.findById(uid2)
-    })
-    .then(function(user){
-      user.msgs.push(msg);
-      user.msgs.sort(sortNumberba)
-      return user.save()
-    })
-  }
-  function addmsgtouser(userid,msg){
-    User.findById(userid)
-    .then(function(user){
-      user.msgs.push(msg);
-      user.msgs.sort(sortNumberba)
-      return user.save()
-    })
-  }
-  function sortNumberba(a,b){return b.createAt - a.createAt} /*降序*/
 }
 exports.getbytouserid=function(req,res){
   var touserid = req.body.touserid;

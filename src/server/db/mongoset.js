@@ -4,7 +4,7 @@ var sprintf = require("sprintf-js").sprintf;
 
 
 var host, database, port, options;
-var username='', pswd = '';
+var username='test', pswd = 'test';
 var isaly = false
 if (isaly) {
     var host1="dds-m5e36f2073adceb41.mongodb.rds.aliyuncs.com"

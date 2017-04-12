@@ -43,7 +43,7 @@ var sessionMiddleware = session({
 })
 
 app.use(sessionMiddleware);
-app.set('port', process.env.VCAP_APP_PORT || 18080);
+app.set('port', process.env.VCAP_APP_PORT || 80);
 app.set('views', path.join(__dirname, 'src/client/pages/jades'));
 app.use(express.static(path.join(__dirname, 'src/client')));
 app.set('view engine', 'jade');

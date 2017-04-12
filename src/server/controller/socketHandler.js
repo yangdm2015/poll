@@ -31,8 +31,10 @@ function findInUsers(session_id) {//通过session_id查找
 function findInUsersByName(name) {//通过session_id查找
   var index = -1;
   for (var j = 0, len = users2socket.length; j < len; j++) {
-    if (users2socket[j].name === name)
-        index = j;
+    console.log('此时name=',name,' 而users2socket[j].name=',users2socket[j].name)
+    console.log('typeof name=',typeof name)
+    if (users2socket[j].name === name)index = j;
+    console.log('比较结果是users2socket[j].name === name：',users2socket[j].name === name,'index=',index)
   }
   return index;
 }
@@ -57,6 +59,16 @@ function getuserssocketarry(){
 }
 function sendMsg2UserById(user_id,msg){
   /*console.log('将要给',user_id,"发消息！绝对路径是：",msg.abturl)*/
-  var toUserSocket = findUserByUserId(user_id).socket;
-  toUserSocket.emit('newmsg',msg)
+  /*console.log('进入了发送消息的函数此时的user_id是',user_id,' 而users2socket池为：',users2socket)*/
+  var users2socketobj = findUserByUserId(user_id)
+  if(users2socketobj){
+    var toUserSocket = users2socketobj.socket;
+    console.log('将要发送消息！')
+    toUserSocket.emit('newmsg',msg)
+    console.log('发送消息成功！')
+  }else{
+    console.log('消息发送对象不在线。')
+
+  }
+
 }

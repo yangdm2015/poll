@@ -76,7 +76,7 @@ module.exports = function(grunt) {
                 src: [
                     'src/client/module/abt/angular.1.5.6.min.js',
                     'src/client/module/abt/angular-sanitize.1.5.6.min.js',
-                    'src/client/module/mobile/mobile-angular-ui.min.js',
+                    'src/client/module/mobile/mobile-angular-ui.js',
                     'src/client/module/mobile/mobile-angular-ui.gestures.min.js',
                     'src/client/module/angular-route.min.js',
                     /*'src/client/mobilecomponent/mbpoll.js',
