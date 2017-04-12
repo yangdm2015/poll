@@ -55,6 +55,15 @@ module.exports = function(grunt) {
                     ext: '.min.css',
                     extDot: 'first'
                 }]
+            },
+            buildmb: {
+                files: [{
+                    expand: true,
+                    src: 'src/client/dest/builtmb.css',
+                    //dest: 'min/',
+                    ext: '.min.css',
+                    extDot: 'first'
+                }]
             }
         },
         concat: {

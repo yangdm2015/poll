@@ -527,7 +527,7 @@ polls1.controller('UserController', ['userservice','messageService','$scope','Sh
 
   socket.on('newmsg',function(data){
     $scope.msgrem=true;
-    $scope.msgsnum=data.num
+    $scope.msgsnum=data
    /* hasunread($scope.user.msgs).num+1;*/
   })
 
