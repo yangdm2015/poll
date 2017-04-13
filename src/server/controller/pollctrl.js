@@ -8,7 +8,7 @@ exports.index = function(req, res) {
   console.log("index_index")
   /*res.render('pollindex');*/
   console.log("isPC = ",req.session.isPC)
-    res.render('boindex',{isPC:req.session.isPC,isCPS:true,isCDN:false});
+    res.render('boindex',{isPC:req.session.isPC,isCPS:true,isCDN:true});
     /*res.render('boindex',{isPC:true,isCPS:false});*/
 /*  if(req.session.isPC){
     res.render('boindex',{});

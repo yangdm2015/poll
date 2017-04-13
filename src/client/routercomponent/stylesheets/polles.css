@@ -39,43 +39,121 @@ header {
   margin: 0 0 2rem;
   padding: 0;
 }
-header .header_main_top {
-  margin: 0;
-  background: #eee;
+header nav.navbar1.navbar-default1 {
+  height: 20px;
 }
-header .header_main_center {
-  margin: 0;
-  background-color: #3d445c;
-}
-header .top {
-  line-height: 2rem;
-  padding: 0 1.5rem;
-  color: #555;
-  max-width: 1190px;
-  margin: 0 auto;
-}
-header .top .notice {
-  float: left;
-}
-header .top ul {
-  text-align: right;
-}
-header .top ul li {
-  display: inline-block;
-  /*所有元素在一行显示*/
-  padding: 0;
-}
-header .top ul li a {
-  display: inline-block;
-  /*如果不设置inline-block，则设定宽度没用*/
-  padding: 0 0.3rem;
-  -webkit-transform: scale(1, 1);
-}
-header .top ul li span {
+header nav.navbar1.navbar-default1 li span {
   border-left: 1px solid #999;
   padding: 1px 6px 1px 6px;
   margin-left: 9px;
   font-size: 0.9rem;
+}
+header nav.navbar1.navbar-default1 li .notice {
+  border: none;
+  padding: 0 0 0 10px;
+  font-size: 1.2rem;
+}
+header li {
+  list-style: none;
+  float: left;
+  cursor: pointer;
+}
+header .navbar-left1 {
+  float: left;
+}
+header .navbar-right1 {
+  float: right;
+  margin-right: 10px;
+}
+header .header_main {
+  margin: 0;
+  min-width: 800px;
+  background-color: #3d445c;
+  overflow: hidden;
+  height: 42px;
+}
+header .header_main ul,
+header .header_main div {
+  display: inline-block;
+}
+header .header_main .header_left {
+  width: 20%;
+  overflow: hidden;
+  min-width: 130px;
+}
+header .header_main .header_left .brand {
+  display: inline-block;
+  line-height: 42px;
+}
+header .header_main .header_center {
+  width: 25%;
+  overflow: hidden;
+  min-width: 234px;
+  height: 42px;
+}
+header .header_main .header_center .header_search {
+  width: 100%;
+  color: #fff;
+  margin: 4px auto;
+  line-height: 34px;
+  text-align: center;
+}
+header .header_main .header_center .header_search span {
+  width: 47px;
+}
+header .header_main .header_center .header_search input {
+  width: 200px;
+  height: 34px;
+  padding-left: 10px;
+  background-color: #fff;
+  font-size: 1.4rem;
+  color: #3d445c;
+  border: 0px solid #fff;
+  /* outline:none;
+          border-top-left-radius:@border-radiusinormal @border-radiusinormal;
+          border-bottom-left-radius:@border-radiusinormal @border-radiusinormal; */
+}
+header .header_main .header_center .header_search .sbtn {
+  display: inline-block;
+  padding-right: 5px;
+  height: 34px;
+  line-height: 32px;
+  /* text-align: center; */
+  font-weight: bold;
+  cursor: pointer;
+  color: #3d445c;
+  background-color: #fff;
+  border-top-right-radius: 4px 4px;
+  border-bottom-right-radius: 4px 4px;
+}
+header .header_main .header_right {
+  overflow: hidden;
+  height: 42px;
+  line-height: 42px;
+  min-width: 390px;
+}
+header .header_main .header_right ul {
+  height: 38px;
+  display: inline-block;
+}
+header .header_main .header_right ul li a {
+  display: inline-block;
+  padding: 0 0.5rem;
+  line-height: 38px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  margin: 0 5px;
+}
+header .header_main .header_right ul li a:hover {
+  background-color: #343c4e;
+}
+header .header_main .header_right ul li a #newpoll {
+  color: #666;
+  line-height: 30px;
+  border-radius: 3px;
+  background-color: #fff;
 }
 header .main {
   overflow: hidden;

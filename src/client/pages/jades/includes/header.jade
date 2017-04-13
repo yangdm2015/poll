@@ -1,39 +1,45 @@
 header(ng-controller="ModalHeaderCtrl as $ctrl")
-  .header_main_top
-    nav.top
-      span.notice 公告：新用户发布投票须知
+  nav.navbar1.navbar-default1
+    ul.nav1.navbar-left1
+      li
+        span.notice 公告：新用户发布投票须知
+    ul.nav1.navbar-right1
+      li
+        a(href='#') 联系我们
+        span
+      li
+        a(href='#') 帮助中心
+        span
+      li(ng-hide='$ctrl.islogin')
+        a(ng-click="$ctrl.loginmodalopen()" ng-hide='$ctrl.islogin' ) 登录
+        span
+      li(ng-hide='$ctrl.islogin')
+        a(ng-click="$ctrl.registermodalopen()"  href='#' ng-hide='$ctrl.islogin') 注册
+      li(ng-show='$ctrl.islogin' ) 欢迎您，{{$ctrl.curraccount}}
+        span
+        a(href='#' ng-click='$ctrl.logout()') 登出
+    include modaltemplate.html
+  nav.header_main
+    .header_left
+      a(href='#').brand
+        img(src='routercomponent/routerimg/logo_nowords.png' alt='回到首页')
+    .header_center
+      .header_search.input-group
+        input.form-control(ng-model="$ctrl.query"  placeholder="输入关键字查询")
+        span.input-group-btn
+          button.btn.btn-default(ng-click="$ctrl.select()") GO
+        //- button(ng-click="$ctrl.select()") GO
+        //- input(ng-model="$ctrl.query"  placeholder="输入关键字查询")
+    .header_right
       ul
         li
-          a(href='#') 联系我们
-          span
+          a(href="#")#mainpage 首页
         li
-          a(href='#') 帮助中心
-          span
-        li(ng-hide='$ctrl.islogin')
-          a(ng-click="$ctrl.loginmodalopen()" ng-hide='$ctrl.islogin' ) 登录
-          a(ng-click="$ctrl.registermodalopen()"  href='#' ng-hide='$ctrl.islogin') 注册
-        li(ng-show='$ctrl.islogin' ) 欢迎您，{{$ctrl.curraccount}}
-          span
-          a(href='#' ng-click='$ctrl.logout()') 登出
-    include modaltemplate.html
-  .header_main_center
-    nav.main
-      .flex1
-        a(href='#').brand
-          img(src='routercomponent/routerimg/logo_nowords.png' alt='回到首页')
-      .flex3
-        .header_search
-          input(ng-model="$ctrl.query"  placeholder="输入关键字查询")
-          .sbtn(ng-click="$ctrl.select()") GO
-        ul
-          li
-            a(href="#")#mainpage 首页
-          li
-            a(href="#/new")#newpoll +发起投票
-          li
-            a(href="#/mypolls" )#findpoll 我发起的投票
-          li
-            a(href="#/myvotes")#findpoll 我参与的投票
+          a(href="#/new")#newpoll +发起投票
+        li
+          a(href="#/mypolls" )#findpoll 我发起的投票
+        li
+          a(href="#/myvotes")#findpoll 我参与的投票
       .flex1(ng-click="$ctrl.showmenu=$ctrl.showmenu?false:true" ng-init="$ctrl.showmenu=false")
         .wrap-tri-b
           .line-tri-b
