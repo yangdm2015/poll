@@ -592,6 +592,41 @@ input.scrollable-header{
 .panel-title{
   .oneline;
 }
+.flex-column-center{display: flex;flex-direction:column;justify-content:center;align-items:center;}
+.flex-column-center-start{display: flex;flex-direction:column;justify-content:center;align-items:flex-start;}
+.flex-row-center{display: flex;flex-direction:row;justify-content:center;align-items:center;}
+.flex-row-between{display: flex;flex-direction:row;justify-content:space-between;align-items:center;}
+.flex-row-start{display: flex;flex-direction:row;justify-content:flex-start;align-items:center;}
+
+.poll-group{
+  .poll-panel{
+    .flex-column-center;
+    .poll-heading{
+      height: 38px;width: 90%;
+      .flex-row-center;
+      h4{
+        flex:1 1 230px;.oneline;
+        margin-bottom: 0;
+      }
+      em{flex:0 0 80px;.oneline }
+      i{
+        flex:0 1 auto;
+      }
+    }
+    hr{margin-top:5px;margin-bottom: 2px;height: 2px;width:93%}
+    .poll-body{
+      width: 85%;
+      .flex-column-center-start;
+      .poll-time{
+        .flex-row-between;
+        width: 100%;
+        label{}
+      }
+      p{.flex-row-start}
+    }
+  }
+}
+
 @panel_height:57px;
 /* .panel-group .panel{
   flex:0 1 @panel_height;

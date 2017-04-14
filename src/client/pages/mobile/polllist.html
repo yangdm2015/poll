@@ -12,27 +12,29 @@
     <div style='float:left;margin-left:-1000px'  id="abtop">sdf</div>
     <div class="section">
     <!-- <div class="list-group"ui-shared-state="myAccordion"ui-default='2'> -->
-      <div class="panel-group" ui-shared-state="myAccordion">
-        <div class="panel panel-default"  ng-repeat="poll in polls" style="order:{{poll.order}} " >
-          <div class="panel-heading"  ng-click='toggle(poll.order)'>
-            <h4 class="panel-title">
+      <div class="poll-group" ui-shared-state="myAccordion">
+        <div class="poll-panel"  ng-repeat="poll in polls" style="order:{{poll.order}} " >
+          <div class="poll-heading"  ng-click='toggle(poll.order)'>
+            <h4>
                 {{poll.question}}
             </h4>
-            <h4 class="panel-title">
-                | by {{poll.created_user.nickname?poll.created_user.nickname:poll.created_user.account}}
-            </h4>
-              <i ng-class="{true:'fa fa-chevron-down pull-right',false:'fa fa-chevron-right pull-right'}[iarrow[poll.order]]" ng-init="iarrow[poll.order]=false"></i>
+            <em>| by {{poll.created_user.nickname?poll.created_user.nickname:poll.created_user.account}}</em>
+            <i ng-class="{true:'fa fa-chevron-down pull-right',false:'fa fa-chevron-right pull-right'}[iarrow[poll.order]]" ng-init="iarrow[poll.order]=false"></i>
           </div>
-          <div ui-if="myAccordion == {{poll.order}}">
-            <div class="panel-body abbr-choice-body">
-              <!-- <h4>{{poll.question}}</h4> -->
-              <p>{{poll.description}}</p>
-              <label>{{poll.meta.createAt|date:'MM/dd HH:mm'}} 创建</label><label class="pull-right">{{poll.meta.updateAt|date:'MM/dd HH:mm'}} 更新</label>
-              <div>
-                <a type="button" class="btn btn-primary pull-right" ng-click="showItemdetail(poll._id)">查看详情</a>
-              </div>
+          <!-- <div ui-if="myAccordion == {{poll.order}}"> -->
+          <div class="poll-body"ui-if="myAccordion == {{poll.order}}">
+            <!-- <h4>{{poll.question}}</h4> -->
+            <p>{{poll.description}}</p>
+            <div class="poll-time">
+              <label>{{poll.meta.createAt|date:'MM/dd HH:mm'}} 创建</label>
+              <label >{{poll.meta.updateAt|date:'MM/dd HH:mm'}} 更新</label>
+            </div>
+            <div class='poll-button'>
+              <a type="button" class="btn btn-primary" ng-click="showItemdetail(poll._id)">查看详情</a>
             </div>
           </div>
+          <!-- </div> -->
+          <hr>
          </div>
         </div>
       </div>

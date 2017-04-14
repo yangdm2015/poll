@@ -673,6 +673,26 @@ input.scrollable-header {
   text-overflow: ellipsis;
   max-width: 230px;
 }
+.poll-group .poll-panel {
+  height: 44px;
+  line-height: 44px;
+}
+.poll-group .poll-panel .poll-heading {
+  height: 38px;
+  display: flex;
+  align-items: center;
+}
+.poll-group .poll-panel .poll-heading h4 {
+  flex: 0 1 300px;
+  margin-bottom: 0;
+}
+.poll-group .poll-panel .poll-heading i {
+  flex: 0 1 auto;
+}
+.poll-group .poll-panel hr {
+  margin-top: 5px;
+  margin-bottom: 2px;
+}
 /* .panel-group .panel{
   flex:0 1 @panel_height;
 }
