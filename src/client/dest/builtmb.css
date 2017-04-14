@@ -673,18 +673,66 @@ input.scrollable-header {
   text-overflow: ellipsis;
   max-width: 230px;
 }
+.flex-column-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.flex-column-center-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.flex-row-between {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-row-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
 .poll-group .poll-panel {
-  height: 44px;
-  line-height: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .poll-group .poll-panel .poll-heading {
   height: 38px;
+  width: 90%;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
 }
 .poll-group .poll-panel .poll-heading h4 {
-  flex: 0 1 300px;
+  flex: 1 1 230px;
+  /* 一行显示 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 230px;
   margin-bottom: 0;
+}
+.poll-group .poll-panel .poll-heading em {
+  flex: 0 0 80px;
+  /* 一行显示 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 230px;
 }
 .poll-group .poll-panel .poll-heading i {
   flex: 0 1 auto;
@@ -692,6 +740,28 @@ input.scrollable-header {
 .poll-group .poll-panel hr {
   margin-top: 5px;
   margin-bottom: 2px;
+  height: 2px;
+  width: 93%;
+}
+.poll-group .poll-panel .poll-body {
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.poll-group .poll-panel .poll-body .poll-time {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.poll-group .poll-panel .poll-body p {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
 }
 /* .panel-group .panel{
   flex:0 1 @panel_height;
