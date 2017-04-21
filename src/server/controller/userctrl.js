@@ -192,7 +192,7 @@ exports.addtomyfavor=function(req,res){
     }
   })
   .then(function(user){
-    res.json({user:user})
+    res.json(user)
   })
   .catch(function(err){
     console.log(err)
@@ -212,7 +212,7 @@ exports.deletefrommyfavor=function(req,res){
     return user.save()
   })
   .then(function(user){
-    res.json({user:user})
+    res.json(user)
   })
   .catch(function(err){
     console.log(err)

@@ -71,17 +71,17 @@ polls1.controller('PollItemCtrl',['userservice','pollservice','$scope','messageS
       if(!$scope.favor){
         var url = $location.url()
         userservice.addtomyfavor($scope.poll._id,url)
-        .then(function(data){
-          messageService.publish('userupdate',{user:data.user})
+        .then(function(result){
+          messageService.publish('userupdate',{user:result.data})
           $scope.favor=true;
-          $scope.user=data.user;
+          $scope.user=result.data;
         })
       }else{
         userservice.deletefrommyfavor($scope.poll._id)
-        .then(function(data){
-          messageService.publish('userupdate',{user:data.user})
+        .then(function(result){
+          messageService.publish('userupdate',{user:result.data})
           $scope.favor=false;
-          $scope.user=data.user;
+          $scope.user=result.data;
         })
       }
     }
