@@ -71,17 +71,19 @@ polls1.controller('PollItemCtrl',['userservice','pollservice','$scope','messageS
       if(!$scope.favor){
         var url = $location.url()
         userservice.addtomyfavor($scope.poll._id,url)
-        .then(function(data){
-          messageService.publish('userupdate',{user:data.user})
+        .then(function(result){
+          console.log('添加用户收藏成功')
+          messageService.publish('userupdate',{user:result.data})
           $scope.favor=true;
-          $scope.user=data.user;
+          $scope.user=result.data;
+          console.log('添加用户收藏成功，user=',result.data)
         })
       }else{
         userservice.deletefrommyfavor($scope.poll._id)
-        .then(function(data){
-          messageService.publish('userupdate',{user:data.user})
+        .then(function(result){
+          messageService.publish('userupdate',{user:result.data})
           $scope.favor=false;
-          $scope.user=data.user;
+          $scope.user=result.data;
         })
       }
     }
@@ -197,7 +199,6 @@ polls1.controller('PollItemCtrl',['userservice','pollservice','$scope','messageS
   function getpoll(){
     pollservice.getpoll($routeParams.pollId)
     .then(function(result){
-      console.log('告诉我现在能拿到$scope.user吗？',$scope.user)
       var poll = result.data
       choicesvotepercent(poll);
       $scope.poll = poll;
