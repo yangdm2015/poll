@@ -9,7 +9,10 @@ exports.sendMsg2UserById = sendMsg2UserById;
 
 function getSessionId(cookieString, cookieName) {
     var matches = new RegExp(cookieName + '=([^;]+)(;|$)','gmi').exec(cookieString);
-    return matches[1] ? matches[1] : null;
+    if(matches){
+      return matches[1] ? matches[1] : null;
+    }
+    return null;
 }
 function addUser(name, account,session_id) {//添加用户
   var index = findInUsers(session_id);
