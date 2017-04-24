@@ -1395,6 +1395,7 @@ polls1.controller('msgController',['$scope','SharedState','commentservice','mess
     var abturl = /\/#\/(\w|\/|#)+/gmi.exec(notices.abturl)[0].split('/#')[1];
     var urls = /\/#\/(\w|\/|#)+/gmi.exec(notices.abturl)[0].split('/#')[1].split('#');
     $location.url(urls[0]);
+    messageService.publish('msgread',true)
     $timeout(function(){
       $location.hash(urls[1])
     },100)
@@ -1416,6 +1417,7 @@ polls1.controller('msgController',['$scope','SharedState','commentservice','mess
     .then(function(result){
       console.log(result)
       $scope.user = result.data;
+      messageService.publish('userupdate',{user:result.data})
     })
   }
 
@@ -1449,11 +1451,18 @@ polls1.controller('UserController', ['userservice','messageService','$scope','Sh
 
   messageService.subscribe('userupdate',function(event,data){
     $scope.user=data.user;
+    $scope.msgsnum=hasunread($scope.user.msgs).num;
+  })
+  messageService.subscribe('msgread',function(event,data){
+    if(data){
+      $scope.msgsnum--;
+    }
   })
 
   socket.on('newmsg',function(data){
     $scope.msgrem=true;
-    $scope.msgsnum=data
+    $scope.msgsnum=data.num;
+    /*alert($scope.msgsnum)*/
    /* hasunread($scope.user.msgs).num+1;*/
   })
 
@@ -1488,7 +1497,7 @@ polls1.controller('UserController', ['userservice','messageService','$scope','Sh
     return {hasunread:hasunread,num:num};
   }
   $scope.mylatestmsg=function(){
-    $scope.msgrem=false;
+    /*$scope.msgrem=false;*/
     $location.path('/mymsgs')
   }
   $scope.myfavor=function(){
